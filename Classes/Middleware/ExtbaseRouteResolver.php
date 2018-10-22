@@ -24,17 +24,14 @@ namespace LMS\Routes\Middleware;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Routes\Domain\Model\YamlConfiguration;
 use LMS\Routes\Service\Router;
 use LMS\Routes\Traits\ObjectManageable;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
+use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Http\NullResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Mvc\Web\{Response as ExtbaseResponse, Request as ExtbaseRequest};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -42,6 +39,11 @@ use TYPO3\CMS\Extbase\Mvc\Web\Response;
 class ExtbaseRouteResolver implements MiddlewareInterface
 {
     use ObjectManageable, Router;
+
+    /**
+     * @var YamlConfiguration
+     */
+    private $matchedRoute;
 
     /**
      * @return void
@@ -58,38 +60,38 @@ class ExtbaseRouteResolver implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
-            $configuration = $this->getRouter()->match($request->getUri()->getPath());
+            $config = $this->getRouter()->match($request->getUri()->getPath());
+            $this->matchedRoute = new YamlConfiguration($config);
         } catch (ResourceNotFoundException $e) {
             return $handler->handle($request);
         }
 
-        [$controllerFQCN, $action] = explode('::', $configuration['_controller']);
+        $response = new ExtbaseResponse();
 
-        $extbaseRequest = new \TYPO3\CMS\Extbase\Mvc\Request();
-        $extbaseRequest->setControllerObjectName($controllerFQCN);
-        $extbaseRequest->setControllerActionName($action);
-
-        foreach ($configuration as $key => $value) {
-            if (strpos($key,'_') === 0) {
-                continue;
-            }
-
-            $value = GeneralUtility::_GP($key) ?? $value;
-            if (MathUtility::canBeInterpretedAsInteger($value)) {
-                $value = (int) $value;
-            }
-
-            $extbaseRequest->setArgument($key, $value);
-        }
-
-        $extbaseRequest->setFormat($configuration['_format'] ?? 'html');
-
-        $response = new Response();
-
-        $controller = ObjectManageable::createObject($controllerFQCN);
-        $controller->processRequest($extbaseRequest, $response);
+        $controller = ObjectManageable::createObject($this->matchedRoute->getControllerFQCN());
+        $controller->processRequest($this->createExtbaseRequest(), $response);
 
         $response->send();
         return new NullResponse();
+    }
+
+    /**
+     * @return ExtbaseRequest
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
+     */
+    private function createExtbaseRequest(): ExtbaseRequest
+    {
+        /** @var ExtbaseRequest$request */
+        $request = ObjectManageable::createObject(ExtbaseRequest::class);
+        $request->setControllerObjectName($this->matchedRoute->getControllerFQCN());
+        $request->setControllerActionName($this->matchedRoute->getAction());
+        $request->setFormat($this->matchedRoute->getFormat());
+
+        foreach ($this->matchedRoute->getArguments() as $key => $value) {
+            $request->setArgument($key, $value);
+        }
+
+        return $request;
     }
 }

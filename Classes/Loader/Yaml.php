@@ -54,7 +54,7 @@ trait Yaml
     private function getPossiblePaths(): array
     {
         $customExtensionsFolderPath = Environment::getPublicPath() . '/typo3conf/ext/';
-        $yamlFolderPath = TypoScriptConfiguration::getSettings('suffix');
+        $yamlFolderPath = TypoScriptConfiguration::getSettings()['suffix'];
 
         $paths = [];
 
