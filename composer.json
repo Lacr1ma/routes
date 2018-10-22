@@ -1,0 +1,26 @@
+{
+  "name": "lms/routes",
+  "type": "typo3-cms-extension",
+  "description": "TBD",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Serhii Borulko",
+      "email": "borulkosergey@icloud.com"
+    }
+  ],
+  "require": {
+    "typo3/cms-core": "^9.5",
+    "symfony/config": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "LMS\\Routes\\": "Classes"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "LMS\\Routes\\Tests\\": "Tests"
+      }
+    }
+  }
+}
