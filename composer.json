@@ -11,7 +11,8 @@
   ],
   "require": {
     "typo3/cms-core": "^9.5",
-    "symfony/config": "*"
+    "symfony/config": "*",
+    "symfony/http-foundation": "*"
   },
   "autoload": {
     "psr-4": {

@@ -65,7 +65,7 @@ class ExtbaseRouteResolver implements MiddlewareInterface
         } catch (ResourceNotFoundException $e) {
             return $handler->handle($request);
         }
-
+\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->getRouter(), '');die();
         $response = new ExtbaseResponse();
 
         $controller = ObjectManageable::createObject($this->matchedRoute->getControllerFQCN());

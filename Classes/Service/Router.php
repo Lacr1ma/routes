@@ -26,6 +26,8 @@ namespace LMS\Routes\Service;
 
 use LMS\Routes\Loader\Yaml as YamlRouteDefinitionLoader;
 use Symfony\Component\Routing\Router as SymfonyRouter;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RequestContext;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -40,7 +42,9 @@ trait Router
      */
     public function getRouter(): SymfonyRouter
     {
-        return new SymfonyRouter($this->getLoader(), 'Routes.yml', $this->getOptions());
+        $requestContext = (new RequestContext())->fromRequest(Request::createFromGlobals());
+
+        return new SymfonyRouter($this->getLoader(),'Routes.yml', $this->getOptions(), $requestContext);
     }
 
     /**
