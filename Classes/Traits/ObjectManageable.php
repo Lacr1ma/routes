@@ -33,22 +33,22 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 trait ObjectManageable
 {
     /**
-     * Returns a fresh or existing instance of the object specified by $objectName.
+     * Create object instance by provided Full Qualified Class Name
      *
      * @api
-     * @param string $objectName The name of the object to return an instance of
-     * @return object The object instance
+     * @param  string $fqcn
+     * @return mixed
      */
-    public static function createObject(string $objectName)
+    public static function createObject(string $fqcn)
     {
-        return self::getObjectManager()->get($objectName);
+        return self::getObjectManager()->get($fqcn);
     }
 
     /**
-     * Returns a fresh or existing instance of the object specified by $objectName.
+     * Initialize and return the TYPO3 Object Manager instance
      *
      * @api
-     * @return ObjectManager|object
+     * @return ObjectManager|Object
      */
     public static function getObjectManager(): ObjectManager
     {

@@ -26,7 +26,7 @@ namespace LMS\Routes\Traits;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Configuration\{ConfigurationManager, ConfigurationManagerInterface};
+use TYPO3\CMS\Extbase\Configuration\{ConfigurationManager, ConfigurationManagerInterface as Configuration};
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
@@ -35,40 +35,40 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 trait TypoScriptConfiguration
 {
     /**
-     * Get TypoScript related settings
+     * Get TypoScript settings area from requested extension (tx_extensionKey.settings)
      *
      * @api
-     * @param string $key
+     * @param  string $extensionKey
      * @return array
      */
-    public static function getSettings(string $key = 'tx_routes'): array
+    public static function getSettings(string $extensionKey = 'tx_routes'): array
     {
-        $ts = self::getFullTS($key);
+        $ts = self::retrieveFullTypoScriptConfigurationFor($extensionKey);
 
         return (array) $ts['settings.'];
     }
 
     /**
-     * Returns an extension TypoScript
+     *  Get all TypoScript definition for the requested extension (tx_extensionKey)
      *
      * @api
-     * @param string $key
+     * @param  string $extensionKey
      * @return array
      */
-    public static function getFullTS(string $key = 'tx_routes'): array
+    public static function retrieveFullTypoScriptConfigurationFor(string $extensionKey): array
     {
         try {
             $ts = self::getConfigurationManager()
-                    ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+                    ->getConfiguration(Configuration::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         } catch (InvalidConfigurationTypeException $e) { return []; }
 
-        return $ts['plugin.'][$key . '.'] ?: [];
+        return $ts['plugin.'][$extensionKey . '.'] ?: [];
     }
 
     /**
-     * Returns the Configuration Manager Instance
+     * Returns the Configuration Manager instance
      *
-     * @return ConfigurationManager|object
+     * @return ConfigurationManager|Object
      */
     private static function getConfigurationManager(): ConfigurationManager
     {

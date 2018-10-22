@@ -25,25 +25,18 @@ namespace LMS\Routes\Middleware;
  * ************************************************************* */
 
 use LMS\Routes\Domain\Model\YamlConfiguration;
+use LMS\Routes\Extbase\RouteHandler;
 use LMS\Routes\Service\Router;
-use LMS\Routes\Traits\ObjectManageable;
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use TYPO3\CMS\Core\Http\NullResponse;
-use TYPO3\CMS\Extbase\Mvc\Web\{Response as ExtbaseResponse, Request as ExtbaseRequest};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class ExtbaseRouteResolver implements MiddlewareInterface
 {
-    use ObjectManageable, Router;
-
-    /**
-     * @var YamlConfiguration
-     */
-    private $matchedRoute;
+    use Router;
 
     /**
      * @return void
@@ -55,43 +48,33 @@ class ExtbaseRouteResolver implements MiddlewareInterface
     }
 
     /**
+     * @param  string $slug
+     * @return YamlConfiguration|null
+     */
+    private function findRouteConfigurationFor(string $slug): ?YamlConfiguration
+    {
+        try {
+            return new YamlConfiguration($this->getRouter()->match($slug));
+        } catch (ResourceNotFoundException $e) {
+            return null;
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        try {
-            $config = $this->getRouter()->match($request->getUri()->getPath());
-            $this->matchedRoute = new YamlConfiguration($config);
-        } catch (ResourceNotFoundException $e) {
+        $slug = $request->getUri()->getPath();
+
+        $routeConfiguration = $this->findRouteConfigurationFor($slug);
+        if ($routeConfiguration === null) {
             return $handler->handle($request);
         }
-\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->getRouter(), '');die();
-        $response = new ExtbaseResponse();
 
-        $controller = ObjectManageable::createObject($this->matchedRoute->getControllerFQCN());
-        $controller->processRequest($this->createExtbaseRequest(), $response);
+        (new RouteHandler($routeConfiguration))
+                ->sendResponse();
 
-        $response->send();
-        return new NullResponse();
-    }
-
-    /**
-     * @return ExtbaseRequest
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
-     */
-    private function createExtbaseRequest(): ExtbaseRequest
-    {
-        /** @var ExtbaseRequest$request */
-        $request = ObjectManageable::createObject(ExtbaseRequest::class);
-        $request->setControllerObjectName($this->matchedRoute->getControllerFQCN());
-        $request->setControllerActionName($this->matchedRoute->getAction());
-        $request->setFormat($this->matchedRoute->getFormat());
-
-        foreach ($this->matchedRoute->getArguments() as $key => $value) {
-            $request->setArgument($key, $value);
-        }
-
-        return $request;
+        exit();
     }
 }

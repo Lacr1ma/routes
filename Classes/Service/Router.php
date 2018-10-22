@@ -24,7 +24,7 @@ namespace LMS\Routes\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Loader\Yaml as YamlRouteDefinitionLoader;
+use LMS\Routes\Loader\Yaml as YamlFileLoader;
 use Symfony\Component\Routing\Router as SymfonyRouter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RequestContext;
@@ -34,17 +34,21 @@ use Symfony\Component\Routing\RequestContext;
  */
 trait Router
 {
-    use YamlRouteDefinitionLoader;
+    use YamlFileLoader;
 
     /**
      * @api
+     * @param  string        $fileName
      * @return SymfonyRouter
      */
-    public function getRouter(): SymfonyRouter
+    public function getRouter(string $fileName = 'Routes.yml'): SymfonyRouter
     {
-        $requestContext = (new RequestContext())->fromRequest(Request::createFromGlobals());
-
-        return new SymfonyRouter($this->getLoader(),'Routes.yml', $this->getOptions(), $requestContext);
+        return new SymfonyRouter(
+            $this->getLoader(),
+            $fileName,
+            $this->getOptions(),
+            $this->getRequestContext()
+        );
     }
 
     /**
@@ -53,7 +57,16 @@ trait Router
     private function getOptions(): array
     {
         return [
-            'cache_dir' => self::getSettings()['cacheDirectoryPath']
+            'cache_dir' => self::getSettings()['cacheDirectoryPath'] ?? ''
         ];
+    }
+
+    /**
+     * @return RequestContext
+     */
+    private function getRequestContext(): RequestContext
+    {
+        return (new RequestContext())
+                    ->fromRequest(Request::createFromGlobals());
     }
 }
