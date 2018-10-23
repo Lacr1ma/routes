@@ -24,43 +24,33 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Traits\TypoScriptConfiguration;
-use Symfony\Component\Config\FileLocator;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Routing\RouteCollection;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Yaml
+class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
 {
-    use TypoScriptConfiguration;
-
     /**
-     * @api
-     * @return YamlFileLoader
+     * {@inheritdoc}
      */
-    public function getLoader(): YamlFileLoader
+    public function load($file, $type = null)
     {
-        return new YamlFileLoader(
-            new FileLocator($this->getPossiblePaths())
-        );
+        $collection = new RouteCollection();
+
+        foreach ($this->getFoundPathList((string) $file) as $path) {
+            $collection->addCollection(parent::load($path));
+        }
+
+        return $collection;
     }
 
     /**
+     * @param  string $file
      * @return array
      */
-    private function getPossiblePaths(): array
+    private function getFoundPathList(string $file): array
     {
-        $customExtensionsFolderPath = Environment::getPublicPath() . '/typo3conf/ext/';
-        $yamlFolderPath = TypoScriptConfiguration::getSettings()['suffix'];
-
-        $paths = [];
-
-        foreach (GeneralUtility::get_dirs($customExtensionsFolderPath) as $extensionKey) {
-            $paths[] = $customExtensionsFolderPath . $extensionKey . $yamlFolderPath;
-        }
-
-        return $paths;
+        return $this->locator->locate($file, null, false);
     }
 }
