@@ -72,7 +72,7 @@ class ExtbaseRouteResolver implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        (new RouteHandler($routeConfiguration))
+        (new RouteHandler($routeConfiguration, $request))
                 ->sendResponse();
 
         exit();

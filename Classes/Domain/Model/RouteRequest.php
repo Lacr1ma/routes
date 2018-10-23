@@ -24,6 +24,7 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Exception\{InvalidActionNameException, InvalidArgumentNameException};
 
@@ -38,13 +39,15 @@ class RouteRequest extends Request
     private $route;
 
     /**
-     * @param  YamlConfiguration $route
+     * @param  YamlConfiguration            $route
+     * @param  ServerRequestInterface       $originalRequest
      * @throws InvalidActionNameException
      * @throws InvalidArgumentNameException
      */
-    public function __construct(YamlConfiguration $route)
+    public function __construct(YamlConfiguration $route, ServerRequestInterface $originalRequest)
     {
         $this->route = $route;
+        $this->originalRequest = $originalRequest;
 
         $this->initialize();
     }

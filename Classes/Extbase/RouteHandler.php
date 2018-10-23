@@ -27,6 +27,7 @@ namespace LMS\Routes\Extbase;
 use LMS\Routes\Domain\Model\RouteRequest;
 use LMS\Routes\Domain\Model\YamlConfiguration;
 use LMS\Routes\Traits\ObjectManageable;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\{InvalidActionNameException,
     InvalidArgumentNameException,
@@ -50,12 +51,12 @@ class RouteHandler
      * @param  YamlConfiguration $routeConfiguration
      * @return void
      */
-    public function __construct(YamlConfiguration $routeConfiguration)
+    public function __construct(YamlConfiguration $routeConfiguration, ServerRequestInterface $serverRequest)
     {
         $this->response = new ExtbaseResponse();
 
         try {
-            $request = new RouteRequest($routeConfiguration);
+            $request = new RouteRequest($routeConfiguration, $serverRequest);
         } catch (InvalidArgumentNameException | InvalidActionNameException $e) {
             return;
         }
