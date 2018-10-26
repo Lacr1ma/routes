@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Traits\Route;
+namespace LMS\Routes\Support\Extbase;
 
 /* * *************************************************************
  *
@@ -25,50 +25,27 @@ namespace LMS\Routes\Traits\Route;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Traits\Extbase\Request as ExtbaseRequest;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Controller
+trait Response
 {
     /**
-     * @var string
-     */
-    private $controllerFQCN;
-
-    /**
-     * Setup controller namespace
+     * Create the fresh instance of Response
      *
-     * @param string $controllerFQCN
-     * @return void
+     * @api
+     * @param  string $content
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    protected function initializeController(string $controllerFQCN): void
+    public static function createWith(string $content): ResponseInterface
     {
-        $this->controllerFQCN = $controllerFQCN;
-    }
+        if ($GLOBALS['TSFE']->contentType !== 'application/json') {
+            return new HtmlResponse($content);
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getController(): string
-    {
-        return ExtbaseRequest::getControllerNameBasedOn($this->controllerFQCN);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtension(): string
-    {
-        return ExtbaseRequest::getExtensionNameBasedOn($this->controllerFQCN);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVendor(): string
-    {
-        return ExtbaseRequest::getVendorNameBasedOn($this->controllerFQCN);
+        return new JsonResponse(json_decode($content, true));
     }
 }

@@ -25,9 +25,9 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Traits\Extbase\Plugin;
-use LMS\Routes\Traits\Route\Arguments as ContainsArguments;
-use LMS\Routes\Traits\Route\Controller as DefinesController;
+use LMS\Routes\Support\Extbase\Plugin;
+use LMS\Routes\Support\Route\Arguments as ContainsArguments;
+use LMS\Routes\Support\Route\Controller as DefinesController;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>

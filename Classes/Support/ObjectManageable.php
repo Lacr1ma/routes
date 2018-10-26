@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Traits\Extbase;
+namespace LMS\Routes\Support;
 
 /* * *************************************************************
  *
@@ -25,27 +25,34 @@ namespace LMS\Routes\Traits\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Response
+trait ObjectManageable
 {
     /**
-     * Create the fresh instance of Response
+     * Create object instance by provided Full Qualified Class Name
      *
      * @api
-     * @param  string $content
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param  string $fqcn
+     * @return mixed
      */
-    public static function createWith(string $content): ResponseInterface
+    public static function createObject(string $fqcn)
     {
-        if ($GLOBALS['TSFE']->contentType !== 'application/json') {
-            return new HtmlResponse($content);
-        }
+        return self::getObjectManager()->get($fqcn);
+    }
 
-        return new JsonResponse(json_decode($content, true));
+    /**
+     * Initialize and return the TYPO3 Object Manager instance
+     *
+     * @api
+     * @return ObjectManager|Object
+     */
+    public static function getObjectManager(): ObjectManager
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }

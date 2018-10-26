@@ -27,7 +27,7 @@ namespace LMS\Routes\Extbase;
 
 use LMS\Routes\Domain\Model\Route;
 use LMS\Routes\Service\RouteService;
-use LMS\Routes\Traits\{Extbase\Response, ServerRequest, ObjectManageable};
+use LMS\Routes\Support\{Extbase\Response, ServerRequest, ObjectManageable};
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Traits\Route;
+namespace LMS\Routes\Support;
 
 /* * *************************************************************
  *
@@ -25,56 +25,51 @@ namespace LMS\Routes\Traits\Route;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Arguments
+trait ServerRequest
 {
     /**
-     * @var array
-     */
-    private $arguments = [];
-
-    /**
-     * Return the list of the arguments related to current Extbase request
+     * Retrieve the current Server Request
      *
      * @api
-     * @return array
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
-    public function getArguments(): array
+    public static function getInstance(): ServerRequestInterface
     {
-        return $this->arguments;
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 
     /**
-     * Set all the arguments from the coming route config. Or if the key is empty try to find in globals
+     * Add new parameter values to the Server Request
      *
-     * @param array $configuration
-     * @return void
+     * @api
+     * @param string $name
+     * @param mixed  $value
+     * @param string $namespace
      */
-    protected function initializeArguments(array $configuration): void
+    public static function withParameter(string $name, $value, string $namespace): void
     {
-        foreach ($this->removeMetadataFrom($configuration) as $name => $value) {
-            $this->arguments[$name] = GeneralUtility::_GP($name) ?? $value;
-        }
+        $existingNamespaceValues = ServerRequest::getParametersFor($namespace);
+
+        $GLOBALS['TYPO3_REQUEST'] = ServerRequest::getInstance()->withQueryParams([
+            $namespace => array_merge([$name => $value], $existingNamespaceValues)
+        ]);
     }
 
     /**
-     * Remove all the keys that are not related to extbase argument
+     * Retrieve the defined server request parameters for passed name
      *
-     * @param  array $configuration
+     * @param  string $name
      * @return array
      */
-    private function removeMetadataFrom(array $configuration): array
+    private static function getParametersFor(string $name): array
     {
-        foreach ($configuration as $name => $value) {
-            if (strpos($name,'_') === 0) {
-                unset($configuration[$name]);
-            }
-        }
+        $allQueryParameters = ServerRequest::getInstance()->getQueryParams();
 
-        return $configuration;
+        return $allQueryParameters[$name] ?? [];
     }
 }

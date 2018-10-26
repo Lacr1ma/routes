@@ -25,7 +25,7 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Traits\TypoScriptConfiguration;
+use LMS\Routes\Support\Extbase\TypoScriptConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

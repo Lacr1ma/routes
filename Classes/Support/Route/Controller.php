@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Traits;
+namespace LMS\Routes\Support\Route;
 
 /* * *************************************************************
  *
@@ -25,34 +25,50 @@ namespace LMS\Routes\Traits;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use LMS\Routes\Support\Extbase\Request as ExtbaseRequest;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait ObjectManageable
+trait Controller
 {
     /**
-     * Create object instance by provided Full Qualified Class Name
-     *
-     * @api
-     * @param  string $fqcn
-     * @return mixed
+     * @var string
      */
-    public static function createObject(string $fqcn)
+    private $controllerFQCN;
+
+    /**
+     * Setup controller namespace
+     *
+     * @param string $controllerFQCN
+     * @return void
+     */
+    protected function initializeController(string $controllerFQCN): void
     {
-        return self::getObjectManager()->get($fqcn);
+        $this->controllerFQCN = $controllerFQCN;
     }
 
     /**
-     * Initialize and return the TYPO3 Object Manager instance
-     *
-     * @api
-     * @return ObjectManager|Object
+     * {@inheritdoc}
      */
-    public static function getObjectManager(): ObjectManager
+    public function getController(): string
     {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        return ExtbaseRequest::getControllerNameBasedOn($this->controllerFQCN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtension(): string
+    {
+        return ExtbaseRequest::getExtensionNameBasedOn($this->controllerFQCN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVendor(): string
+    {
+        return ExtbaseRequest::getVendorNameBasedOn($this->controllerFQCN);
     }
 }
