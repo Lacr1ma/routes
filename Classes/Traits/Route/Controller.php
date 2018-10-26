@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Loader;
+namespace LMS\Routes\Traits\Route;
 
 /* * *************************************************************
  *
@@ -25,33 +25,50 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Routing\RouteCollection;
+use LMS\Routes\Traits\Extbase\Request as ExtbaseRequest;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
+trait Controller
 {
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    public function load($file, $type = null): RouteCollection
+    private $controllerFQCN;
+
+    /**
+     * Setup controller namespace
+     *
+     * @param string $controllerFQCN
+     * @return void
+     */
+    protected function initializeController(string $controllerFQCN): void
     {
-        $collection = new RouteCollection();
-
-        foreach ($this->getFoundPathList((string) $file) as $path) {
-            $collection->addCollection(parent::load($path));
-        }
-
-        return $collection;
+        $this->controllerFQCN = $controllerFQCN;
     }
 
     /**
-     * @param  string $file
-     * @return array
+     * {@inheritdoc}
      */
-    private function getFoundPathList(string $file): array
+    public function getController(): string
     {
-        return $this->locator->locate($file, null, false);
+        return ExtbaseRequest::getControllerNameBasedOn($this->controllerFQCN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtension(): string
+    {
+        return ExtbaseRequest::getExtensionNameBasedOn($this->controllerFQCN);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVendor(): string
+    {
+        return ExtbaseRequest::getVendorNameBasedOn($this->controllerFQCN);
     }
 }

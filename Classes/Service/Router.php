@@ -39,17 +39,12 @@ trait Router
 
     /**
      * @api
-     * @param  string        $fileName
-     * @return SymfonyRouter
+     * @param  string $fileName
+     * @return \Symfony\Component\Routing\Router
      */
     public function getRouter(string $fileName = 'Routes.yml'): SymfonyRouter
     {
-        return new SymfonyRouter(
-            $this->getLoader(),
-            $fileName,
-            $this->getOptions(),
-            $this->getRequestContext()
-        );
+        return new SymfonyRouter($this->getLoader(), $fileName, $this->getOptions(), $this->getRequestContext());
     }
 
     /**
@@ -63,11 +58,10 @@ trait Router
     }
 
     /**
-     * @return RequestContext
+     * @return \Symfony\Component\Routing\RequestContext
      */
     private function getRequestContext(): RequestContext
     {
-        return (new RequestContext())
-                    ->fromRequest(Request::createFromGlobals());
+        return (new RequestContext())->fromRequest(Request::createFromGlobals());
     }
 }

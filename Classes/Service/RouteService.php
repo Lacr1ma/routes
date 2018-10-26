@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Loader;
+namespace LMS\Routes\Service;
 
 /* * *************************************************************
  *
@@ -25,33 +25,27 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Routing\RouteCollection;
+use LMS\Routes\Domain\Model\Route;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
+class RouteService
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load($file, $type = null): RouteCollection
-    {
-        $collection = new RouteCollection();
-
-        foreach ($this->getFoundPathList((string) $file) as $path) {
-            $collection->addCollection(parent::load($path));
-        }
-
-        return $collection;
-    }
+    use Router;
 
     /**
-     * @param  string $file
-     * @return array
+     * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
+     *
+     * @api
+     * @param  string $slug
+     * @return \LMS\Routes\Domain\Model\Route
+     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    private function getFoundPathList(string $file): array
+    public function findRouteFor(string $slug): Route
     {
-        return $this->locator->locate($file, null, false);
+        return new Route(
+            $this->getRouter()->match($slug)
+        );
     }
 }

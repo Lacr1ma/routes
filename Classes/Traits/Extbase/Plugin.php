@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Traits;
+namespace LMS\Routes\Traits\Extbase;
 
 /* * *************************************************************
  *
@@ -37,6 +37,7 @@ trait Plugin
     /**
      * Retrieve the Plugin namespace based on extension and plugin.
      *
+     * @api
      * @param  string $extensionName
      * @param  string $pluginTitle
      * @return string
@@ -49,6 +50,7 @@ trait Plugin
     /**
      * Retrieve the Plugin name by used extension, controller and action
      *
+     * @api
      * @param  string $extensionName
      * @param  string $controller
      * @param  string $action

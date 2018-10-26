@@ -25,18 +25,18 @@ namespace LMS\Routes\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Domain\Model\YamlConfiguration;
-use LMS\Routes\Traits\{ServerRequest, ObjectManageable};
+use LMS\Routes\Domain\Model\Route;
+use LMS\Routes\Service\RouteService;
+use LMS\Routes\Traits\{Extbase\Response, ServerRequest, ObjectManageable};
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
-use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class RouteHandler
 {
-    use ObjectManageable, ServerRequest;
+    use ObjectManageable, ServerRequest, Response;
 
     /**
      * @var string
@@ -44,11 +44,14 @@ class RouteHandler
     private $output;
 
     /**
-     * @param  YamlConfiguration $route
+     * @param  string $slug
+     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    public function __construct(YamlConfiguration $route)
+    public function __construct(string $slug)
     {
-        $this->initializeQueryParameters($route);
+        $route = $this->getRouteService()->findRouteFor($slug);
+
+        $this->initializeQueryFor($route);
 
         $this->run([
             'vendorName'    => $route->getVendor(),
@@ -58,25 +61,23 @@ class RouteHandler
     }
 
     /**
+     * Creates the PSR7 Response based on output that was retrieved from FrontendRequestHandler
+     *
      * @api
-     * @return ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function sendResponse(): ResponseInterface
+    public function generateResponse(): ResponseInterface
     {
-        $response = $this->createJsonResponse();
-        if ($response === null ) {
-            return new HtmlResponse($this->output);
-        }
-
-        return $response;
+        return Response::createWith($this->output);
     }
 
     /**
-     * @param \LMS\Routes\Domain\Model\YamlConfiguration $route
+     * @param  \LMS\Routes\Domain\Model\Route $route
+     * @return void
      */
-    private function initializeQueryParameters(YamlConfiguration $route): void
+    private function initializeQueryFor(Route $route): void
     {
-        $plugin = $route->getPluginNameSpace();
+        $plugin = $route->getPluginNamespace();
 
         ServerRequest::withParameter('action', $route->getAction(), $plugin);
 
@@ -86,8 +87,17 @@ class RouteHandler
     }
 
     /**
-     * @param array $config
-     * @return void
+     * Create the Route Service Instance
+     *
+     * @return \LMS\Routes\Service\RouteService
+     */
+    private function getRouteService(): RouteService
+    {
+        return ObjectManageable::createObject(RouteService::class);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     private function run(array $config): void
     {
@@ -95,18 +105,5 @@ class RouteHandler
         $bootstrap = ObjectManageable::createObject(Bootstrap::class);
 
         $this->output = $bootstrap->run('', $config);
-    }
-
-    /**
-     * @return JsonResponse|null
-     */
-    private function createJsonResponse(): ?JsonResponse
-    {
-        if ($GLOBALS['TSFE']->contentType !== 'application/json') {
-            return null;
-        }
-
-        $this->output = json_decode($this->output, true);
-        return new JsonResponse($this->output);
     }
 }

@@ -26,7 +26,6 @@ namespace LMS\Routes\Middleware;
  * ************************************************************* */
 
 use LMS\Routes\Extbase\RouteHandler;
-use LMS\Routes\Domain\Model\YamlConfiguration;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
 
@@ -35,30 +34,13 @@ use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
  */
 class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
 {
-    use \LMS\Routes\Service\Router;
-
     /**
-     * We need to initialize the TypoScriptFrontendController for working further on a request
+     * We need to initialize some of the TypoScriptFrontendController properties before working on a request
      */
     public function __construct()
     {
         $GLOBALS['TSFE']->determineId();
         $GLOBALS['TSFE']->getConfigArray();
-    }
-
-    /**
-     * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
-     *
-     * @param  string $slug
-     * @return \LMS\Routes\Domain\Model\YamlConfiguration|null
-     */
-    private function findRouteConfigurationFor(string $slug): ?YamlConfiguration
-    {
-        try {
-            return new YamlConfiguration($this->getRouter()->match($slug));
-        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
-            return null;
-        }
     }
 
     /**
@@ -68,13 +50,12 @@ class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
     {
         $slug = $request->getUri()->getPath();
 
-        $routeConfiguration = $this->findRouteConfigurationFor($slug);
-        if ($routeConfiguration === null) {
-            // Current request <slug> is not related to any existing Routes.yml entries, so go to the next middleware
+        try {
+            $extbaseRouteHandler = new RouteHandler($slug);
+        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
             return $handler->handle($request);
         }
 
-        return (new RouteHandler($routeConfiguration))
-                        ->sendResponse();
+        return $extbaseRouteHandler->generateResponse();
     }
 }

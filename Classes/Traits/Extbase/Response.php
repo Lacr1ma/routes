@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Loader;
+namespace LMS\Routes\Traits\Extbase;
 
 /* * *************************************************************
  *
@@ -25,33 +25,27 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Routing\RouteCollection;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
+trait Response
 {
     /**
-     * {@inheritdoc}
+     * Create the fresh instance of Response
+     *
+     * @api
+     * @param  string $content
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function load($file, $type = null): RouteCollection
+    public static function createWith(string $content): ResponseInterface
     {
-        $collection = new RouteCollection();
-
-        foreach ($this->getFoundPathList((string) $file) as $path) {
-            $collection->addCollection(parent::load($path));
+        if ($GLOBALS['TSFE']->contentType !== 'application/json') {
+            return new HtmlResponse($content);
         }
 
-        return $collection;
-    }
-
-    /**
-     * @param  string $file
-     * @return array
-     */
-    private function getFoundPathList(string $file): array
-    {
-        return $this->locator->locate($file, null, false);
+        return new JsonResponse(json_decode($content, true));
     }
 }
