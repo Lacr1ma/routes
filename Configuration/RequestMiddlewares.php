@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /* * *************************************************************
  *
@@ -32,7 +33,7 @@ return [
     'frontend' => [
         'lms/routes/extbase-route-resolver' => [
             'target' => ExtbaseRouteResolver::class,
-            'description' => 'Middleware that attempts to resolve the possible extbase Controller::action by YAML config',
+            'description' => 'Attempts to resolve the Extbase Action endpoint by existing YAML configs',
             'before' => [
                 'typo3/cms-frontend/page-resolver'
             ]

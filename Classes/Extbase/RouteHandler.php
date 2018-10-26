@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace LMS\Routes\Extbase;
 
 /* * *************************************************************
@@ -24,66 +25,88 @@ namespace LMS\Routes\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Domain\Model\RouteRequest;
 use LMS\Routes\Domain\Model\YamlConfiguration;
-use LMS\Routes\Traits\ObjectManageable;
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
-use TYPO3\CMS\Extbase\Mvc\Exception\{InvalidActionNameException,
-    InvalidArgumentNameException,
-    NoSuchControllerException,
-    UnsupportedRequestTypeException};
-use TYPO3\CMS\Extbase\Mvc\Web\Response as ExtbaseResponse;
+use LMS\Routes\Traits\{ServerRequest, ObjectManageable};
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class RouteHandler
 {
-    use ObjectManageable;
+    use ObjectManageable, ServerRequest;
 
     /**
-     * @var ExtbaseResponse
+     * @var string
      */
-    private $response;
+    private $output;
 
     /**
-     * @param  YamlConfiguration $routeConfiguration
-     * @return void
+     * @param  YamlConfiguration $route
      */
-    public function __construct(YamlConfiguration $routeConfiguration, ServerRequestInterface $serverRequest)
+    public function __construct(YamlConfiguration $route)
     {
-        $this->response = new ExtbaseResponse();
+        $this->initializeQueryParameters($route);
 
-        try {
-            $request = new RouteRequest($routeConfiguration, $serverRequest);
-        } catch (InvalidArgumentNameException | InvalidActionNameException $e) {
-            return;
+        $this->run([
+            'vendorName'    => $route->getVendor(),
+            'pluginName'    => $route->getPlugin(),
+            'extensionName' => $route->getExtension()
+        ]);
+    }
+
+    /**
+     * @api
+     * @return ResponseInterface
+     */
+    public function sendResponse(): ResponseInterface
+    {
+        $response = $this->createJsonResponse();
+        if ($response === null ) {
+            return new HtmlResponse($this->output);
         }
 
-        try {
-            $this->createControllerFrom($request)
-                        ->processRequest($request, $this->response);
-        } catch (UnsupportedRequestTypeException | NoSuchControllerException $e) {
-            return;
+        return $response;
+    }
+
+    /**
+     * @param \LMS\Routes\Domain\Model\YamlConfiguration $route
+     */
+    private function initializeQueryParameters(YamlConfiguration $route): void
+    {
+        $plugin = $route->getPluginNameSpace();
+
+        ServerRequest::withParameter('action', $route->getAction(), $plugin);
+
+        foreach ($route->getArguments() as $name => $value) {
+            ServerRequest::withParameter($name, $value, $plugin);
         }
     }
 
     /**
+     * @param array $config
      * @return void
      */
-    public function sendResponse(): void
+    private function run(array $config): void
     {
-        $this->response->send();
+        /** @var \TYPO3\CMS\Extbase\Core\Bootstrap $bootstrap */
+        $bootstrap = ObjectManageable::createObject(Bootstrap::class);
+
+        $this->output = $bootstrap->run('', $config);
     }
 
     /**
-     * @param  RouteRequest $request
-     * @return ControllerInterface
-     * @throws NoSuchControllerException
+     * @return JsonResponse|null
      */
-    private function createControllerFrom(RouteRequest $request): ControllerInterface
+    private function createJsonResponse(): ?JsonResponse
     {
-        return ObjectManageable::createObject($request->getControllerObjectName());
+        if ($GLOBALS['TSFE']->contentType !== 'application/json') {
+            return null;
+        }
+
+        $this->output = json_decode($this->output, true);
+        return new JsonResponse($this->output);
     }
 }

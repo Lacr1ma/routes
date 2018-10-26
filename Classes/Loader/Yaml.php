@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace LMS\Routes\Loader;
 
 /* * *************************************************************
@@ -25,7 +26,6 @@ namespace LMS\Routes\Loader;
  * ************************************************************* */
 
 use LMS\Routes\Traits\TypoScriptConfiguration;
-use Symfony\Component\Config\FileLocator;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -43,7 +43,7 @@ trait Yaml
     public function getLoader(): YamlFileLoader
     {
         return new YamlFileLoader(
-            new FileLocator($this->getPossiblePaths())
+            new \Symfony\Component\Config\FileLocator($this->getPossiblePaths())
         );
     }
 
@@ -56,7 +56,6 @@ trait Yaml
         $yamlFolderPath = TypoScriptConfiguration::getSettings()['suffix'];
 
         $paths = [];
-
         foreach (GeneralUtility::get_dirs($customExtensionsFolderPath) as $extensionKey) {
             $paths[] = $customExtensionsFolderPath . $extensionKey . $yamlFolderPath;
         }

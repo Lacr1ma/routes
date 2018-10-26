@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace LMS\Routes\Domain\Model;
 
 /* * *************************************************************
@@ -24,27 +25,27 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\{MathUtility, GeneralUtility};
+use LMS\Routes\Traits\Plugin;
+use LMS\Routes\Traits\ObjectManageable;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class YamlConfiguration
 {
+    use ObjectManageable, Plugin;
+
     /**
-     * @var string
+     * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
-    private $controllerFQCN;
+    private $request;
 
     /**
      * @var string
      */
     private $action;
-
-    /**
-     * @var string
-     */
-    private $format;
 
     /**
      * @var array
@@ -56,10 +57,20 @@ class YamlConfiguration
      */
     public function __construct(array $configuration)
     {
-        [$this->controllerFQCN, $this->action] = explode('::', $configuration['_controller']);
-        $this->format = $configuration['_format'] ?? 'html';
+        [$controllerFQCN, $this->action] = explode('::', $configuration['_controller']);
 
+        $this->initializeRequest($controllerFQCN);
         $this->initializeArguments($configuration);
+    }
+
+    /**
+     * @param string $controllerFQCN
+     * @return void
+     */
+    private function initializeRequest(string $controllerFQCN): void
+    {
+        $this->request = ObjectManageable::createObject(Request::class);
+        $this->request->setControllerObjectName($controllerFQCN);
     }
 
     /**
@@ -67,26 +78,25 @@ class YamlConfiguration
      */
     private function initializeArguments(array $configuration): void
     {
-        foreach ($configuration as $key => $value) {
-            if (strpos($key,'_') === 0) {
+        foreach ($configuration as $name => $value) {
+            // Any name that start by <_> are metadata and should not be initialized as arguments
+            if (strpos($name,'_') === 0) {
                 continue;
             }
 
-            $value = GeneralUtility::_GP($key) ?? $value;
-            if (MathUtility::canBeInterpretedAsInteger($value)) {
-                $value = (int) $value;
-            }
-
-            $this->arguments[$key] = $value;
+            $this->arguments[$name] = GeneralUtility::_GP($name) ?? $value;
         }
     }
 
     /**
      * @return string
      */
-    public function getControllerFQCN(): string
+    public function getPlugin(): string
     {
-        return $this->controllerFQCN;
+        $controller = $this->request->getControllerName();
+        $extensionKey = $this->getExtension();
+
+        return Plugin::getNameBasedOn($extensionKey, $controller, $this->getAction());
     }
 
     /**
@@ -98,18 +108,34 @@ class YamlConfiguration
     }
 
     /**
-     * @return string
-     */
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
-
-    /**
      * @return array
      */
     public function getArguments(): array
     {
         return $this->arguments;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtension(): string
+    {
+        return $this->request->getControllerExtensionName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendor(): string
+    {
+        return $this->request->getControllerVendorName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPluginNameSpace(): string
+    {
+        return Plugin::getNamespaceBasedOn($this->getExtension(), $this->getPlugin());
     }
 }

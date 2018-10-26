@@ -1,7 +1,7 @@
 {
   "name": "lms/routes",
   "type": "typo3-cms-extension",
-  "description": "TBD",
+  "description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
   "license": "MIT",
   "authors": [
     {

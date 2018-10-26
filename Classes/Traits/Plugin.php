@@ -27,55 +27,53 @@ namespace LMS\Routes\Traits;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Configuration\{ConfigurationManager, ConfigurationManagerInterface as Configuration};
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait TypoScriptConfiguration
+trait Plugin
 {
     /**
-     * Get TypoScript settings area from requested extension (tx_extensionKey.settings)
+     * Retrieve the Plugin namespace based on extension and plugin.
      *
-     * @api
-     * @param  string $extensionKey
-     * @return array
+     * @param  string $extensionName
+     * @param  string $pluginTitle
+     * @return string
      */
-    public static function getSettings(string $extensionKey = 'tx_routes'): array
+    public static function getNamespaceBasedOn(string $extensionName, string $pluginTitle): string
     {
-        $ts = self::retrieveFullTypoScriptConfigurationFor($extensionKey);
-
-        return (array) $ts['settings.'];
+        return self::getExtensionService()->getPluginNamespace($extensionName, $pluginTitle);
     }
 
     /**
-     *  Get all TypoScript definition for the requested extension (tx_extensionKey)
+     * Retrieve the Plugin name by used extension, controller and action
      *
-     * @api
-     * @param  string $extensionKey
-     * @return array
+     * @param  string $extensionName
+     * @param  string $controller
+     * @param  string $action
+     * @return string
      */
-    public static function retrieveFullTypoScriptConfigurationFor(string $extensionKey): array
+    public static function getNameBasedOn(string $extensionName, string $controller, string $action): string
     {
         try {
-            $ts = self::getConfigurationManager()
-                    ->getConfiguration(Configuration::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        } catch (InvalidConfigurationTypeException $e) { return []; }
-
-        return $ts['plugin.'][$extensionKey . '.'] ?: [];
+            return self::getExtensionService()
+                                ->getPluginNameByAction($extensionName, $controller, $action);
+        } catch (\TYPO3\CMS\Core\Exception $e) {
+            return '';
+        }
     }
 
     /**
-     * Returns the Configuration Manager instance
+     * Returns the Extension Service
      *
-     * @return ConfigurationManager|Object
+     * @return \TYPO3\CMS\Extbase\Service\ExtensionService|Object
      */
-    private static function getConfigurationManager(): ConfigurationManager
+    private static function getExtensionService(): ExtensionService
     {
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-        return $objectManager->get(ConfigurationManager::class);
+        return $objectManager->get(ExtensionService::class);
     }
 }

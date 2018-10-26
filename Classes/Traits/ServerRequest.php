@@ -25,34 +25,51 @@ namespace LMS\Routes\Traits;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait ObjectManageable
+trait ServerRequest
 {
     /**
-     * Create object instance by provided Full Qualified Class Name
+     * Retrieve the current Server Request
      *
      * @api
-     * @param  string $fqcn
-     * @return mixed
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
-    public static function createObject(string $fqcn)
+    public static function getInstance(): ServerRequestInterface
     {
-        return self::getObjectManager()->get($fqcn);
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 
     /**
-     * Initialize and return the TYPO3 Object Manager instance
+     * Add new parameter values to the Server Request
      *
      * @api
-     * @return ObjectManager|Object
+     * @param string $name
+     * @param string $value
+     * @param string $namespace
      */
-    public static function getObjectManager(): ObjectManager
+    public static function withParameter(string $name, string $value, string $namespace): void
     {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        $existingNamespaceValues = ServerRequest::getParametersFor($namespace);
+
+        $GLOBALS['TYPO3_REQUEST'] = ServerRequest::getInstance()->withQueryParams([
+            $namespace => array_merge([$name => $value], $existingNamespaceValues)
+        ]);
+    }
+
+    /**
+     * Retrieve the defined server request parameters for passed name
+     *
+     * @param  string $name
+     * @return array
+     */
+    private static function getParametersFor(string $name): array
+    {
+        $allQueryParameters = ServerRequest::getInstance()->getQueryParams();
+
+        return $allQueryParameters[$name] ?? [];
     }
 }

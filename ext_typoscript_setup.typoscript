@@ -1,0 +1,1 @@
+config.tx_extbase.features.requireCHashArgumentForActionArguments = 0

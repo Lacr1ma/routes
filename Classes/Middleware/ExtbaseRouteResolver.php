@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace LMS\Routes\Middleware;
 
 /* * *************************************************************
@@ -24,22 +25,20 @@ namespace LMS\Routes\Middleware;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Domain\Model\YamlConfiguration;
 use LMS\Routes\Extbase\RouteHandler;
-use LMS\Routes\Service\Router;
-use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
+use LMS\Routes\Domain\Model\YamlConfiguration;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class ExtbaseRouteResolver implements MiddlewareInterface
+class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
 {
-    use Router;
+    use \LMS\Routes\Service\Router;
 
     /**
-     * @return void
+     * We need to initialize the TypoScriptFrontendController for working further on a request
      */
     public function __construct()
     {
@@ -48,14 +47,16 @@ class ExtbaseRouteResolver implements MiddlewareInterface
     }
 
     /**
+     * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
+     *
      * @param  string $slug
-     * @return YamlConfiguration|null
+     * @return \LMS\Routes\Domain\Model\YamlConfiguration|null
      */
     private function findRouteConfigurationFor(string $slug): ?YamlConfiguration
     {
         try {
             return new YamlConfiguration($this->getRouter()->match($slug));
-        } catch (ResourceNotFoundException $e) {
+        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
             return null;
         }
     }
@@ -69,12 +70,11 @@ class ExtbaseRouteResolver implements MiddlewareInterface
 
         $routeConfiguration = $this->findRouteConfigurationFor($slug);
         if ($routeConfiguration === null) {
+            // Current request <slug> is not related to any existing Routes.yml entries, so go to the next middleware
             return $handler->handle($request);
         }
 
-        (new RouteHandler($routeConfiguration, $request))
-                ->sendResponse();
-
-        exit();
+        return (new RouteHandler($routeConfiguration))
+                        ->sendResponse();
     }
 }
