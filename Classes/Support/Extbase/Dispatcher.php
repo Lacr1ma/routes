@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace LMS\Routes\Service;
+namespace LMS\Routes\Support\Extbase;
 
 /* * *************************************************************
  *
@@ -25,39 +25,42 @@ namespace LMS\Routes\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Domain\Model\Route;
-use LMS\Routes\Support\Extbase\Dispatcher;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as ExtbaseDispatcher;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
+use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class RouteService
+trait Dispatcher
 {
-    use Router, Dispatcher;
-
     /**
-     * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
+     * Dispatches a signal by calling the registered Slot methods
      *
      * @api
-     * @param  string $slug
-     * @return \LMS\Routes\Domain\Model\Route
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @param  string $class
+     * @param  string $signalName
+     * @param  array  $arguments
+     * @return mixed
      */
-    public function findRouteFor(string $slug): Route
+    protected function emit(string $class, string $signalName, array $arguments = [])
     {
-        $routeSettings = $this->getRouter()->match($slug);
-
-        $this->dispatchSignal($routeSettings);
-
-        return new Route($routeSettings);
+        try {
+            return $this->getDispatcherInstance()->dispatch($class, $signalName, $arguments);
+        } catch (InvalidSlotReturnException | InvalidSlotException $e) {
+            return false;
+        }
     }
 
     /**
-     * @param  array $route
-     * @return void
+     * Create the Extbase Dispatcher Instance
+     *
+     * @api
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|Object
      */
-    private function dispatchSignal(array $route): void
+    protected function getDispatcherInstance(): ExtbaseDispatcher
     {
-        $this->emit(__CLASS__, 'beforeHandling', ['route' => $route]);
+        return GeneralUtility::makeInstance(ExtbaseDispatcher::class);
     }
 }
