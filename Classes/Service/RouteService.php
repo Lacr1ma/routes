@@ -47,16 +47,19 @@ class RouteService
     {
         $routeSettings = $this->getRouter()->match($slug);
 
-        $this->dispatchSignal($routeSettings);
+        $this->notifyListenersBeforeHandling($routeSettings);
 
         return new Route($routeSettings);
     }
 
     /**
+     * Other extensions could listen to Extbase Route Requests.
+     * They could deny the current request if used is not permitted to.
+     *
      * @param  array $route
      * @return void
      */
-    private function dispatchSignal(array $route): void
+    private function notifyListenersBeforeHandling(array $route): void
     {
         $this->emit(__CLASS__, 'beforeHandling', ['route' => $route]);
     }
