@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support\Route;
 
 /* * *************************************************************
@@ -41,6 +42,7 @@ trait Controller
      * Setup controller namespace
      *
      * @param string $controllerFQCN
+     *
      * @return void
      */
     protected function initializeController(string $controllerFQCN): void

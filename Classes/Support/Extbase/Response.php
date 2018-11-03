@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support\Extbase;
 
 /* * *************************************************************
@@ -37,7 +38,9 @@ trait Response
      * Create the fresh instance of Response
      *
      * @api
+     *
      * @param  string $content
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public static function createWith(string $content): ResponseInterface

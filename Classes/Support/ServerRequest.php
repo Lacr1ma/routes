@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support;
 
 /* * *************************************************************
@@ -47,6 +48,7 @@ trait ServerRequest
      * Add new parameter values to the Server Request
      *
      * @api
+     *
      * @param string $name
      * @param mixed  $value
      * @param string $namespace
@@ -64,6 +66,7 @@ trait ServerRequest
      * Retrieve the defined server request parameters for passed name
      *
      * @param  string $name
+     *
      * @return array
      */
     private static function getParametersFor(string $name): array

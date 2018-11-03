@@ -1,8 +1,8 @@
 plugin.tx_routes {
 
-    settings {
-        suffix             = {$plugin.tx_routes.settings.suffix}
-        cacheDirectoryPath = {$plugin.tx_routes.settings.cacheDirectoryPath}
-    }
+  settings {
+    suffix = {$plugin.tx_routes.settings.suffix}
+    cacheDirectoryPath = {$plugin.tx_routes.settings.cacheDirectoryPath}
+  }
 
 }

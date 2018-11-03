@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support\Extbase;
 
 /* * *************************************************************
@@ -38,8 +39,10 @@ trait Plugin
      * Retrieve the Plugin namespace based on extension and plugin.
      *
      * @api
+     *
      * @param  string $extensionName
      * @param  string $pluginTitle
+     *
      * @return string
      */
     public static function getNamespaceBasedOn(string $extensionName, string $pluginTitle): string
@@ -51,16 +54,18 @@ trait Plugin
      * Retrieve the Plugin name by used extension, controller and action
      *
      * @api
+     *
      * @param  string $extensionName
      * @param  string $controller
      * @param  string $action
+     *
      * @return string
      */
     public static function getNameBasedOn(string $extensionName, string $controller, string $action): string
     {
         try {
             return self::getExtensionService()
-                                ->getPluginNameByAction($extensionName, $controller, $action);
+                ->getPluginNameByAction($extensionName, $controller, $action);
         } catch (\TYPO3\CMS\Core\Exception $e) {
             return '';
         }

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Service;
 
 /* * *************************************************************
@@ -39,7 +40,9 @@ trait Router
 
     /**
      * @api
+     *
      * @param  string $fileName
+     *
      * @return \Symfony\Component\Routing\Router
      */
     public function getRouter(string $fileName = 'Routes.yml'): SymfonyRouter

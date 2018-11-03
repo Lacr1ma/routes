@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support\Extbase;
 
 /* * *************************************************************
@@ -39,9 +40,11 @@ trait Dispatcher
      * Dispatches a signal by calling the registered Slot methods
      *
      * @api
+     *
      * @param  string $class
      * @param  string $signalName
      * @param  array  $arguments
+     *
      * @return mixed
      */
     protected function emit(string $class, string $signalName, array $arguments = [])

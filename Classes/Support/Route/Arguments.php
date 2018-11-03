@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support\Route;
 
 /* * *************************************************************
@@ -53,6 +54,7 @@ trait Arguments
      * Set all the arguments from the coming route config. Or if the key is empty try to find in globals
      *
      * @param array $configuration
+     *
      * @return void
      */
     protected function initializeArguments(array $configuration): void
@@ -82,12 +84,13 @@ trait Arguments
      * Remove all the keys that are not related to extbase argument
      *
      * @param  array $configuration
+     *
      * @return array
      */
     private function removeMetadataFrom(array $configuration): array
     {
         foreach ($configuration as $name => $value) {
-            if (strpos($name,'_') === 0) {
+            if (strpos($name, '_') === 0) {
                 unset($configuration[$name]);
             }
         }

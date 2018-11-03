@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support;
 
 /* * *************************************************************
@@ -37,7 +38,9 @@ trait ObjectManageable
      * Create object instance by provided Full Qualified Class Name
      *
      * @api
+     *
      * @param  string $fqcn
+     *
      * @return mixed
      */
     public static function createObject(string $fqcn)

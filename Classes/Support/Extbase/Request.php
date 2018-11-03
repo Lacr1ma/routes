@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support\Extbase;
 
 /* * *************************************************************
@@ -38,7 +39,9 @@ trait Request
      * Retrieve the Controller name
      *
      * @api
+     *
      * @param  string $controllerFQCN
+     *
      * @return string
      */
     public static function getControllerNameBasedOn(string $controllerFQCN): string
@@ -50,7 +53,9 @@ trait Request
      * Retrieve Extension name from the request
      *
      * @api
+     *
      * @param  string $controllerFQCN
+     *
      * @return string
      */
     public static function getExtensionNameBasedOn(string $controllerFQCN): string
@@ -62,7 +67,9 @@ trait Request
      * Retrieve the Vendor prefix
      *
      * @api
+     *
      * @param  string $controllerFQCN
+     *
      * @return string
      */
     public static function getVendorNameBasedOn(string $controllerFQCN): string
@@ -74,6 +81,7 @@ trait Request
      * Create the fresh instance of Extbase Request
      *
      * @param  string $controllerFQCN
+     *
      * @return ExtbaseRequest|Object
      */
     private static function createInitialized(string $controllerFQCN): ExtbaseRequest

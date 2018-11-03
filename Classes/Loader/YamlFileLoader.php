@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Loader;
 
 /* * *************************************************************
@@ -39,7 +40,7 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
     {
         $collection = new RouteCollection();
 
-        foreach ($this->getFoundPathList((string) $file) as $path) {
+        foreach ($this->getFoundPathList((string)$file) as $path) {
             $collection->addCollection(parent::load($path));
         }
 
@@ -48,6 +49,7 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
 
     /**
      * @param  string $file
+     *
      * @return array
      */
     private function getFoundPathList(string $file): array

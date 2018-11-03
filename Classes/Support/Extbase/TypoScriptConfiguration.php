@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Support\Extbase;
 
 /* * *************************************************************
@@ -36,32 +37,48 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 trait TypoScriptConfiguration
 {
     /**
+     * Retrieve the storage page for requested extension
+     *
+     * @param string $extensionKey
+     *
+     * @return int
+     */
+    public static function getStoragePid(string $extensionKey): int
+    {
+        $ts = self::getSettings($extensionKey);
+
+        return (int)$ts['persistence.']['storagePid'] ?: 0;
+    }
+
+    /**
      * Get TypoScript settings area from requested extension (tx_extensionKey.settings)
      *
-     * @api
      * @param  string $extensionKey
+     *
      * @return array
      */
     public static function getSettings(string $extensionKey = 'tx_routes'): array
     {
         $ts = self::retrieveFullTypoScriptConfigurationFor($extensionKey);
 
-        return (array) $ts['settings.'];
+        return (array)$ts['settings.'];
     }
 
     /**
      *  Get all TypoScript definition for the requested extension (tx_extensionKey)
      *
-     * @api
      * @param  string $extensionKey
+     *
      * @return array
      */
     public static function retrieveFullTypoScriptConfigurationFor(string $extensionKey): array
     {
         try {
             $ts = self::getConfigurationManager()
-                    ->getConfiguration(Configuration::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        } catch (InvalidConfigurationTypeException $e) { return []; }
+                ->getConfiguration(Configuration::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        } catch (InvalidConfigurationTypeException $e) {
+            return [];
+        }
 
         return $ts['plugin.'][$extensionKey . '.'] ?: [];
     }
@@ -69,11 +86,10 @@ trait TypoScriptConfiguration
     /**
      * Returns the Configuration Manager instance
      *
-     * @return ConfigurationManager|Object
+     * @return ConfigurationManager
      */
     private static function getConfigurationManager(): ConfigurationManager
     {
-        /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
         return $objectManager->get(ConfigurationManager::class);

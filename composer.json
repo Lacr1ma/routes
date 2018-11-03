@@ -1,28 +1,28 @@
 {
-  "name": "lms/routes",
-  "type": "typo3-cms-extension",
-  "description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Serhii Borulko",
-      "email": "borulkosergey@icloud.com"
-    }
-  ],
-  "require": {
-    "typo3/cms-core": "^9.5",
-    "ext-json": "*",
-    "symfony/config": "*",
-    "symfony/http-foundation": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "LMS\\Routes\\": "Classes"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "LMS\\Routes\\Tests\\": "Tests"
-      }
-    }
-  }
+	"name": "lms/routes",
+	"type": "typo3-cms-extension",
+	"description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Serhii Borulko",
+			"email": "borulkosergey@icloud.com"
+		}
+	],
+	"require": {
+		"typo3/cms-core": "^9.5",
+		"ext-json": "*",
+		"symfony/config": "*",
+		"symfony/http-foundation": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"LMS\\Routes\\": "Classes"
+		},
+		"autoload-dev": {
+			"psr-4": {
+				"LMS\\Routes\\Tests\\": "Tests"
+			}
+		}
+	}
 }

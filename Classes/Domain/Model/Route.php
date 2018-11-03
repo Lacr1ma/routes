@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Domain\Model;
 
 /* * *************************************************************
@@ -67,7 +68,7 @@ class Route
      */
     public function getPlugin(): string
     {
-        $controller   = $this->getController();
+        $controller = $this->getController();
         $extensionKey = $this->getExtension();
 
         return Plugin::getNameBasedOn($extensionKey, $controller, $this->action);

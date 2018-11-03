@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Extbase;
 
 /* * *************************************************************
@@ -45,6 +46,7 @@ class RouteHandler
 
     /**
      * @param  string $slug
+     *
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function __construct(string $slug)
@@ -54,8 +56,8 @@ class RouteHandler
         $this->initializeQueryFor($route);
 
         $this->run([
-            'vendorName'    => $route->getVendor(),
-            'pluginName'    => $route->getPlugin(),
+            'vendorName' => $route->getVendor(),
+            'pluginName' => $route->getPlugin(),
             'extensionName' => $route->getExtension()
         ]);
     }
@@ -73,6 +75,7 @@ class RouteHandler
 
     /**
      * @param  \LMS\Routes\Domain\Model\Route $route
+     *
      * @return void
      */
     private function initializeQueryFor(Route $route): void

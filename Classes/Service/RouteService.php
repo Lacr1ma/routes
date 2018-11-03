@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace LMS\Routes\Service;
 
 /* * *************************************************************
@@ -39,7 +40,9 @@ class RouteService
      * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
      *
      * @api
+     *
      * @param  string $slug
+     *
      * @return \LMS\Routes\Domain\Model\Route
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
@@ -57,6 +60,7 @@ class RouteService
      * They could deny the current request if used is not permitted to.
      *
      * @param  array $route
+     *
      * @return void
      */
     private function notifyListenersBeforeHandling(array $route): void
