@@ -45,7 +45,7 @@ trait TypoScriptConfiguration
      */
     public static function getStoragePid(string $extensionKey): int
     {
-        $ts = self::getSettings($extensionKey);
+        $ts = self::retrieveFullTypoScriptConfigurationFor($extensionKey);
 
         return (int)$ts['persistence.']['storagePid'] ?: 0;
     }
