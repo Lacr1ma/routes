@@ -2,7 +2,7 @@ plugin.tx_routes {
 
   settings {
     # cat=plugin.tx_routes//b; type=string; label=Folder for saving parsed routes. It should be writable.
-    cacheDirectoryPath = typo3temp/var/cache
+    cacheDirectoryPath =
     # cat=plugin.tx_routes//b; type=string; label=This probably always should have the default value.
     suffix = /Configuration
   }

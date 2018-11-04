@@ -55,9 +55,9 @@ trait Router
      */
     private function getOptions(): array
     {
-        return [
-            'cache_dir' => self::getSettings()['cacheDirectoryPath'] ?? ''
-        ];
+        $cacheDirectory = self::getSettings()['cacheDirectoryPath'] ?? '';
+
+        return $cacheDirectory ? ['cache_dir' => $cacheDirectory] : [];
     }
 
     /**
