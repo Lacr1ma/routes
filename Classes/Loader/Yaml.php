@@ -38,8 +38,10 @@ trait Yaml
     use TypoScriptConfiguration;
 
     /**
+     * Get the loader, which contains all the possible locations where we could find Routes.yml
+     *
      * @api
-     * @return YamlFileLoader
+     * @return \LMS\Routes\Loader\YamlFileLoader
      */
     public function getLoader(): YamlFileLoader
     {
@@ -49,12 +51,21 @@ trait Yaml
     }
 
     /**
+     * Returns the array, that collects paths, of all custom extensions that have been installed.
+     * Also as need to search under custom extension suffix, each path will contains that suffix as well.
+     *
+     * Let's imagine that we have only 2 custom extensions (news, blog)  installed on a system, then the result will be:
+     * [
+     *    0 => 'typo3conf/ext/news/Configuration',
+     *    1 => 'typo3conf/ext/blog/Configuration',
+     * }
+     *
      * @return array
      */
     private function getPossiblePaths(): array
     {
         $customExtensionsFolderPath = Environment::getPublicPath() . '/typo3conf/ext/';
-        $yamlFolderPath = TypoScriptConfiguration::getSettings()['suffix'];
+        $yamlFolderPath = TypoScriptConfiguration::getSettings()['suffix'] ?? '/Configuration';
 
         $paths = [];
         foreach (GeneralUtility::get_dirs($customExtensionsFolderPath) as $extensionKey) {
