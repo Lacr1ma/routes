@@ -26,6 +26,7 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use TYPO3\CMS\Core\Routing\RouteCollection;
 
 /**
@@ -54,6 +55,10 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
      */
     private function getFoundPathList(string $file): array
     {
-        return $this->locator->locate($file, null, false);
+        try {
+            return $this->locator->locate($file, null, false);
+        } catch (FileLocatorFileNotFoundException $e) {
+            return [];
+        }
     }
 }
