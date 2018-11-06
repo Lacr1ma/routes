@@ -1,4 +1,7 @@
 <?php
+declare(strict_types = 1);
+
+namespace LMS\Routes\Controller;
 
 /* * *************************************************************
  *
@@ -23,21 +26,36 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+use LMS\Routes\Service\Router;
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'LMS.Routes',
-    'site',
-    'routes',
-    '',
-    [
-        'Management' => 'index, show'
-    ],
-    [
-        'icon' => 'EXT:routes/ext_icon.svg',
-        'access' => 'group, user',
-        'labels' => 'LMS: Routes'
-    ]
-);
+/**
+ * @author Sergey Borulko <borulkosergey@icloud.com>
+ */
+class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
+    use Router;
+
+    /**
+     * @return void
+     */
+    public function indexAction(): void
+    {
+        $this->view->assign('routes', $this->getRouter()->getRouteCollection());
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return void
+     */
+    public function showAction(string $name): void
+    {
+        foreach ($this->getRouter()->getRouteCollection() as $key => $routeConfig) {
+            if ($key !== $name) {
+                continue;
+            }
+
+            $this->view->assign('route', $routeConfig);
+        }
+    }
+}

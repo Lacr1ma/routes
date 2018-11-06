@@ -6,3 +6,24 @@ plugin.tx_routes {
   }
 
 }
+
+module.tx_routes {
+
+  view {
+    templateRootPaths {
+      0 = EXT:routes/Resources/Private/Backend/Templates/
+      1 = {$module.tx_routes.view.templateRootPath}
+    }
+
+    partialRootPaths {
+      0 = EXT:routes/Resources/Private/Backend/Partials/
+      1 = {$module.tx_routes.view.partialRootPath}
+    }
+
+    layoutRootPaths {
+      0 = EXT:routes/Resources/Private/Backend/Layouts/
+      1 = {$module.tx_routes.view.layoutRootPath}
+    }
+  }
+
+}
