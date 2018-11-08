@@ -28,8 +28,9 @@ namespace LMS\Routes\Extbase;
 
 use LMS\Routes\Domain\Model\Route;
 use LMS\Routes\Service\RouteService;
-use LMS\Routes\Support\{Extbase\Response, ServerRequest, ObjectManageable};
+use LMS\Routes\Support\{ErrorBuilder, Extbase\Response, ServerRequest, ObjectManageable};
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Routing\Exception\{MethodNotAllowedException, NoConfigurationException};
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 
 /**
@@ -51,9 +52,14 @@ class RouteHandler
      */
     public function __construct(string $slug)
     {
-        $route = $this->getRouteService()->findRouteFor($slug);
+        try {
+            $route = $this->getRouteService()->findRouteFor($slug);
+        } catch (NoConfigurationException | MethodNotAllowedException $exception) {
+            $this->output = ErrorBuilder::messageFor($exception);
+            return;
+        }
 
-        $this->initializeQueryFor($route);
+        $this->createActionArgumentsFrom($route);
 
         $this->run([
             'vendorName' => $route->getVendor(),
@@ -78,7 +84,7 @@ class RouteHandler
      *
      * @return void
      */
-    private function initializeQueryFor(Route $route): void
+    private function createActionArgumentsFrom(Route $route): void
     {
         $plugin = $route->getPluginNamespace();
 
