@@ -45,10 +45,27 @@ trait Response
      */
     public static function createWith(string $content): ResponseInterface
     {
-        if ($GLOBALS['TSFE']->contentType !== 'application/json') {
-            return new HtmlResponse($content);
+        if (Response::isJson()) {
+            return new JsonResponse(json_decode($content, true));
         }
 
-        return new JsonResponse(json_decode($content, true));
+        return new HtmlResponse($content);
+    }
+
+    /**
+     * Tells us weather request related to JSON or not
+     *
+     * @api
+     * @return bool
+     */
+    public static function isJson(): bool
+    {
+        $requestType = $GLOBALS['TYPO3_REQUEST']->getHeaderLine('content-type');
+
+        if ($requestType === 'application/json') {
+            return true;
+        }
+
+        return $GLOBALS['TSFE']->contentType === 'application/json';
     }
 }
