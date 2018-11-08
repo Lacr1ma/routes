@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Routes\Service;
+namespace LMS\Routes\Support;
 
 /* * *************************************************************
  *
@@ -26,47 +26,44 @@ namespace LMS\Routes\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Domain\Model\Route;
-use LMS\Routes\Support\Extbase\Dispatcher;
+use LMS\Routes\Support\Extbase\Response;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class RouteService
+trait Error
 {
-    use Router, Dispatcher;
-
     /**
-     * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
+     * Build exception error message based on request type
      *
      * @api
      *
-     * @param  string $slug
+     * @param \Exception $exception
      *
-     * @return \LMS\Routes\Domain\Model\Route
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
-     * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
+     * @return string
      */
-    public function findRouteFor(string $slug): Route
+    public static function generateMessageFor(\Exception $exception): string
     {
-        $routeSettings = $this->getRouter()->match($slug);
+        $message = $exception->getMessage();
 
-        $this->notifyListenersBeforeHandling($routeSettings);
+        if ($message === '') {
+            $message = class_basename($exception);
+        }
 
-        return new Route($routeSettings);
+        return self::buildErrorWith($message);
     }
 
     /**
-     * Other extensions could listen to Extbase Route Requests.
-     * They could deny the current request if used is not permitted to.
+     * @param string
      *
-     * @param  array $route
-     *
-     * @return void
+     * @return string
      */
-    private function notifyListenersBeforeHandling(array $route): void
+    private static function buildErrorWith(string $message): string
     {
-        $this->emit(__CLASS__, 'beforeHandling', ['route' => $route]);
+        if (Response::isJson()) {
+            return json_encode(['error' => $message]);
+        }
+
+        return $message;
     }
 }
