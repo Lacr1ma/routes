@@ -31,7 +31,7 @@ use LMS\Routes\Support\Extbase\Response;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Error
+trait ErrorBuilder
 {
     /**
      * Build exception error message based on request type
@@ -42,7 +42,7 @@ trait Error
      *
      * @return string
      */
-    public static function generateMessageFor(\Exception $exception): string
+    public static function messageFor(\Exception $exception): string
     {
         $message = $exception->getMessage();
 
