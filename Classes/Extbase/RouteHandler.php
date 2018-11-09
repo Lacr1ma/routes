@@ -30,7 +30,7 @@ use LMS\Routes\Domain\Model\Route;
 use LMS\Routes\Service\RouteService;
 use LMS\Routes\Support\{ErrorBuilder, Extbase\Response, ServerRequest, ObjectManageable};
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Routing\Exception\{MethodNotAllowedException, NoConfigurationException};
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 
 /**
@@ -49,12 +49,13 @@ class RouteHandler
      * @param  string $slug
      *
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
      */
     public function __construct(string $slug)
     {
         try {
             $route = $this->getRouteService()->findRouteFor($slug);
-        } catch (NoConfigurationException | MethodNotAllowedException $exception) {
+        } catch (MethodNotAllowedException $exception) {
             $this->output = ErrorBuilder::messageFor($exception);
             return;
         }

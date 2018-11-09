@@ -53,7 +53,7 @@ class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
 
         try {
             $extbaseRouteHandler = new RouteHandler($slug);
-        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
+        } catch (\Exception $e) {
             return $handler->handle($request);
         }
 
