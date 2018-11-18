@@ -41,9 +41,9 @@ trait ObjectManageable
      *
      * @param  string $fqcn
      *
-     * @return mixed
+     * @return Object
      */
-    public static function createObject(string $fqcn)
+    public static function createObject(string $fqcn): Object
     {
         return self::getObjectManager()->get($fqcn);
     }
@@ -52,7 +52,7 @@ trait ObjectManageable
      * Initialize and return the TYPO3 Object Manager instance
      *
      * @api
-     * @return ObjectManager|Object
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     public static function getObjectManager(): ObjectManager
     {

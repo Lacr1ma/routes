@@ -26,10 +26,8 @@ namespace LMS\Routes\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use LMS\Routes\Support\ObjectManageable;
 use TYPO3\CMS\Extbase\Configuration\{ConfigurationManager, ConfigurationManagerInterface as Configuration};
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -76,7 +74,7 @@ trait TypoScriptConfiguration
         try {
             $ts = self::getConfigurationManager()
                 ->getConfiguration(Configuration::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        } catch (InvalidConfigurationTypeException $e) {
+        } catch (\Exception $e) {
             return [];
         }
 
@@ -86,12 +84,10 @@ trait TypoScriptConfiguration
     /**
      * Returns the Configuration Manager instance
      *
-     * @return ConfigurationManager
+     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
      */
     private static function getConfigurationManager(): ConfigurationManager
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
-        return $objectManager->get(ConfigurationManager::class);
+        return ObjectManageable::createObject(ConfigurationManager::class);
     }
 }

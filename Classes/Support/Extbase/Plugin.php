@@ -26,8 +26,7 @@ namespace LMS\Routes\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use LMS\Routes\Support\ObjectManageable;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
@@ -74,13 +73,10 @@ trait Plugin
     /**
      * Returns the Extension Service
      *
-     * @return \TYPO3\CMS\Extbase\Service\ExtensionService|Object
+     * @return \TYPO3\CMS\Extbase\Service\ExtensionService
      */
     private static function getExtensionService(): ExtensionService
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
-        return $objectManager->get(ExtensionService::class);
+        return ObjectManageable::createObject(ExtensionService::class);
     }
 }

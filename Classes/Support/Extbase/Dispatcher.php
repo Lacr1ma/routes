@@ -28,8 +28,6 @@ namespace LMS\Routes\Support\Extbase;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as ExtbaseDispatcher;
-use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
-use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -51,7 +49,7 @@ trait Dispatcher
     {
         try {
             return $this->getDispatcherInstance()->dispatch($class, $signalName, $arguments);
-        } catch (InvalidSlotReturnException | InvalidSlotException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -60,7 +58,7 @@ trait Dispatcher
      * Create the Extbase Dispatcher Instance
      *
      * @api
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|Object
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     protected function getDispatcherInstance(): ExtbaseDispatcher
     {
