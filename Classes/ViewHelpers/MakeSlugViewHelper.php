@@ -36,7 +36,7 @@ class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
     use Router;
 
     /**
-     * @return void
+     * We expect <for> to be initialized
      */
     public function initializeArguments(): void
     {

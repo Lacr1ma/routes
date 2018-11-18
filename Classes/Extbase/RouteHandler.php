@@ -82,8 +82,6 @@ class RouteHandler
 
     /**
      * @param  \LMS\Routes\Domain\Model\Route $route
-     *
-     * @return void
      */
     private function createActionArgumentsFrom(Route $route): void
     {

@@ -54,8 +54,6 @@ trait Arguments
      * Set all the arguments from the coming route config. Or if the key is empty try to find in globals
      *
      * @param array $configuration
-     *
-     * @return void
      */
     protected function initializeArguments(array $configuration): void
     {
@@ -68,8 +66,6 @@ trait Arguments
 
     /**
      * Check if there's any arguments passed inside request Body
-     *
-     * @return void
      */
     private function initializeBodyParameters(): void
     {

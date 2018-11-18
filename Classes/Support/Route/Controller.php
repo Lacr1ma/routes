@@ -42,8 +42,6 @@ trait Controller
      * Setup controller namespace
      *
      * @param string $controllerFQCN
-     *
-     * @return void
      */
     protected function initializeController(string $controllerFQCN): void
     {

@@ -36,7 +36,7 @@ class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     use Router;
 
     /**
-     * @return void
+     * Render existing routes
      */
     public function indexAction(): void
     {
@@ -45,8 +45,6 @@ class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 
     /**
      * @param string $name
-     *
-     * @return void
      */
     public function showAction(string $name): void
     {

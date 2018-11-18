@@ -62,8 +62,6 @@ class RouteService
      * They could deny the current request if used is not permitted to.
      *
      * @param  array $route
-     *
-     * @return void
      */
     private function notifyListenersBeforeHandling(array $route): void
     {
