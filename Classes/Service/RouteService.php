@@ -26,8 +26,8 @@ namespace LMS\Routes\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Domain\Model\Route;
-use LMS\Routes\Support\Extbase\Dispatcher;
+use Symfony\Component\Routing\Route as SymfonyRoute;
+use LMS\Routes\{Domain\Model\Route, Support\Extbase\Dispatcher, Support\Extbase\TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -39,9 +39,7 @@ class RouteService
     /**
      * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
      *
-     * @api
-     *
-     * @param  string $slug
+     * @param string $slug
      *
      * @return \LMS\Routes\Domain\Model\Route
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
@@ -52,19 +50,51 @@ class RouteService
     {
         $routeSettings = $this->getRouter()->match($slug);
 
-        $this->notifyListenersBeforeHandling($routeSettings);
-
         return new Route($routeSettings);
     }
 
     /**
-     * Other extensions could listen to Extbase Route Requests.
-     * They could deny the current request if used is not permitted to.
+     * Attempt to retrieve all associated middleware by query
      *
-     * @param  array $route
+     * @param string $slug
+     *
+     * @return array
      */
-    private function notifyListenersBeforeHandling(array $route): void
+    public function findMiddlewareFor(string $slug): array
     {
-        $this->emit(__CLASS__, 'beforeHandling', ['route' => $route]);
+        return collect($this->getRouteFor($slug)->getOptions()['middleware'])
+            ->map(function (string $middleware) {
+                return $this->getMiddlewareNamespaceByName($middleware) ?: $middleware;
+            })
+            ->flatten()
+            ->all();
+    }
+
+    /**
+     * Attempt to retrieve all associated middleware by query
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    private function getMiddlewareNamespaceByName(string $name): array
+    {
+        $namespaces = TypoScriptConfiguration::getSettings()['middleware.'];
+
+        return array_values($namespaces["$name."] ?? []);
+    }
+
+    /**
+     * Get Route settings by it's slug
+     *
+     * @param string $slug
+     *
+     * @return \Symfony\Component\Routing\Route|null
+     */
+    private function getRouteFor(string $slug): ?SymfonyRoute
+    {
+        return $this->getRouter()->getRouteCollection()->get(
+            $this->getRouter()->match($slug)['_route']
+        );
     }
 }
