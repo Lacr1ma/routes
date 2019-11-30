@@ -1,7 +1,9 @@
 <div class="panel panel-primary">
 
     <div class="panel-body">
-        <b>Defaults</b>
+        <b>
+            <f:translate key="route.defaults" extensionName="routes"/>
+        </b>
     </div>
 
     <div class="panel-footer">
@@ -9,7 +11,10 @@
 
             <f:switch expression="{key}">
                 <f:case value="_scopes">
-                    <b>Scopes: </b>
+                    <b>
+                        <f:translate key="route.scope" extensionName="routes"/>
+                    </b>
+
                     <f:for each="{option}" as="option">
                         <f:render section="DefaultEntry" arguments="{entry: option}" />
                     </f:for>
@@ -17,7 +22,10 @@
                 </f:case>
 
                 <f:case value="_controller">
-                    <b>Controller: </b>{option}<br/>
+                    <b>
+                        <f:translate key="route.controller" extensionName="routes"/>:
+                    </b>
+                    {option}<br/>
                 </f:case>
 
                 <f:defaultCase>

@@ -1,13 +1,18 @@
 <div class="panel panel-primary">
 
     <div class="panel-body">
-        <b>Options</b>
+        <b>
+            <f:translate key="route.options" extensionName="routes"/>
+        </b>
     </div>
 
     <div class="panel-footer">
         <f:if condition="{route.options.middleware}">
 
-            <b>Middleware: </b>
+            <b>
+                <f:translate key="route.middleware" extensionName="routes"/>:
+            </b>
+
             <br/>
             <f:for each="{route.options.middleware}" as="middleware">
                 <b>- </b>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" product-name="routes">
+		<header/>
+		<body>
+			<trans-unit id="route.id">
+				<source>ID</source>
+			</trans-unit>
+			<trans-unit id="route.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="route.conditions">
+				<source>Conditions</source>
+			</trans-unit>
+			<trans-unit id="route.defaults">
+				<source>Defaults</source>
+			</trans-unit>
+			<trans-unit id="route.scope">
+				<source>Scope</source>
+			</trans-unit>
+			<trans-unit id="route.controller">
+				<source>Controller</source>
+			</trans-unit>
+			<trans-unit id="route.endpoint">
+				<source>Endpoint</source>
+			</trans-unit>
+			<trans-unit id="route.methods">
+				<source>Methods</source>
+			</trans-unit>
+			<trans-unit id="route.options">
+				<source>Options</source>
+			</trans-unit>
+			<trans-unit id="route.middleware">
+				<source>Middleware</source>
+			</trans-unit>
+			<trans-unit id="route.requirements">
+				<source>Requirements</source>
+			</trans-unit>
+			<trans-unit id="route.schemas">
+				<source>Schemas</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
