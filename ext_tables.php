@@ -31,13 +31,13 @@ if (!defined('TYPO3_MODE')) {
     'LMS.Routes',
     'site',
     'routes',
-    '',
+    'bottom',
     [
         'Management' => 'index, show'
     ],
     [
         'icon' => 'EXT:routes/ext_icon.svg',
-        'access' => 'group, user',
-        'labels' => 'LMS: Routes'
+        'access' => 'admin',
+        'labels' => 'LLL:EXT:routes/Resources/Private/Language/locallang_mod.xlf'
     ]
 );
