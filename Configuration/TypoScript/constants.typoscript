@@ -8,7 +8,7 @@ plugin.tx_routes {
 
     redirect {
       # cat=plugin.tx_routes//b; type=int; label=Login page id.
-      loginPage = 2
+      loginPage =
     }
 
   }
