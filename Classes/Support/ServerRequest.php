@@ -31,7 +31,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait ServerRequest
+class ServerRequest
 {
     /**
      * Retrieve the current Server Request
@@ -73,6 +73,6 @@ trait ServerRequest
     {
         $allQueryParameters = ServerRequest::getInstance()->getQueryParams();
 
-        return $allQueryParameters[$name] ?? [];
+        return $allQueryParameters[$name] ?: [];
     }
 }
