@@ -18,13 +18,6 @@
 			<f:for each="{route.defaults}" key="key" as="option">
 
 				<f:switch expression="{key}">
-					<f:case value="_middlewares">
-						<b>Middlewares: </b>
-						<f:for each="{option}" as="option">
-							<f:render section="DefaultEntry" arguments="{entry: option}" />
-						</f:for>
-						<br/>
-					</f:case>
 					<f:case value="_scopes">
 						<b>Scopes: </b>
 						<f:for each="{option}" as="option">
@@ -64,6 +57,21 @@
 			<div class="panel-footer">
 				<b>- </b>
 				{route.condition}
+			</div>
+		</div>
+	</f:if>
+
+    <f:if condition="{route.options}">
+		<div class="panel panel-primary">
+			<div class="panel-body"><b>Options</b></div>
+			<div class="panel-footer">
+                <b>Middleware: </b>
+                <br/>
+                <f:for each="{route.options.middleware}" as="middleware">
+                    <b>- </b>
+                    {middleware}
+                </f:for>
+                <br/>
 			</div>
 		</div>
 	</f:if>
