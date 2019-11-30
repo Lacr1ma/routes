@@ -5,6 +5,12 @@ plugin.tx_routes {
     cacheDirectoryPath =
     # cat=plugin.tx_routes//b; type=string; label=This probably always should have the default value.
     suffix = /Configuration
+
+    redirect {
+      # cat=plugin.tx_routes//b; type=int; label=Login page id.
+      loginPage = 2
+    }
+
   }
 
 }
