@@ -26,27 +26,24 @@ namespace LMS\Routes\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Domain\Model\Route;
-use LMS\Routes\Service\RouteService;
-use LMS\Routes\Support\{ErrorBuilder, Extbase\Response, ServerRequest, ObjectManageable};
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
+use Psr\Http\Message\ResponseInterface;
+use LMS\Routes\{Domain\Model\Route, Service\RouteService};
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use LMS\Routes\Support\{ErrorBuilder, Extbase\Response, ServerRequest, ObjectManageable};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class RouteHandler
 {
-    use ObjectManageable, ServerRequest, Response;
-
     /**
      * @var string
      */
     private $output;
 
     /**
-     * @param  string $slug
+     * @param string $slug
      *
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
@@ -55,6 +52,8 @@ class RouteHandler
     {
         try {
             $route = $this->getRouteService()->findRouteFor($slug);
+
+            $this->processMiddleware($slug, $route->getArguments());
         } catch (MethodNotAllowedException $exception) {
             $this->output = ErrorBuilder::messageFor($exception);
             return;
@@ -72,7 +71,6 @@ class RouteHandler
     /**
      * Creates the PSR7 Response based on output that was retrieved from FrontendRequestHandler
      *
-     * @api
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function generateResponse(): ResponseInterface
@@ -81,7 +79,22 @@ class RouteHandler
     }
 
     /**
-     * @param  \LMS\Routes\Domain\Model\Route $route
+     * Check if the specific route has any middleware and execute them
+     *
+     * @param string $slug
+     * @param array $arguments
+     *
+     * @throws \RuntimeException
+     */
+    private function processMiddleware(string $slug, array $arguments): void
+    {
+        foreach ($this->getRouteService()->findMiddlewareFor($slug) as $middleware) {
+            (new $middleware())->process($arguments);
+        }
+    }
+
+    /**
+     * @param \LMS\Routes\Domain\Model\Route $route
      */
     private function createActionArgumentsFrom(Route $route): void
     {
