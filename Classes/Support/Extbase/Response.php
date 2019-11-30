@@ -32,14 +32,12 @@ use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Response
+class Response
 {
     /**
      * Create the fresh instance of Response
      *
-     * @api
-     *
-     * @param  string $content
+     * @param string $content
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -55,17 +53,10 @@ trait Response
     /**
      * Tells us weather request related to JSON or not
      *
-     * @api
      * @return bool
      */
     public static function isJson(): bool
     {
-        $requestType = $GLOBALS['TYPO3_REQUEST']->getHeaderLine('content-type');
-
-        if ($requestType === 'application/json') {
-            return true;
-        }
-
-        return $GLOBALS['TSFE']->contentType === 'application/json';
+        return $GLOBALS['TYPO3_REQUEST']->getHeaderLine('accept') === 'application/json';
     }
 }
