@@ -13,7 +13,7 @@
 
 #### Installation using Composer
 
-The recommended way to install the extension is by using [Composer][2]. In your Composer based TYPO3 project root, just do `composer require lms/routes`. 
+The recommended way to install the extension is by using [Composer][2]. In your Composer based TYPO3 project root, just do `composer require lms/routes`.
 
 #### Installation as extension from TYPO3 Extension Repository (TER)
 
@@ -45,10 +45,10 @@ This is minimum that should be provided for any route definition
 - controller
     - Defines the endpoint Extbase Action, that will be triggered by defined path
     - Required: **yes**
-  
+
 ```php
     /**
-     * @return void
+     * Show all clients
      */
     public function indexAction(): void
     {
@@ -75,9 +75,9 @@ client_edit:
 
 ```php
     /**
-     * @param \Vendor\Extension\Domain\Model\Client $client
+     * Modify client information
      *
-     * @return void
+     * @param \Vendor\Extension\Domain\Model\Client $client
      */
     public function editAction(Client $client): void
     {
@@ -94,24 +94,24 @@ client_create:
   controller:    Vendor\Extension\Controller\ClientController::create
   defaults:
     title:
-    description: 
+    description:
 ```
-In situation when data is not present in the request URL, but anyways passed thought POST, the names of the passed 
+In situation when data is not present in the request URL, but anyways passed thought POST, the names of the passed
 parameters should be present in **defaults** section.
 
 ```php
     /**
-     * @param  string $title
-     * @param  string $description
+     * Create a brand new client based on passed data
      *
-     * @return void
+     * @param string $title
+     * @param string $description
      */
     public function createAction(string $title, string $description): void
     {
         $this->view->setVariablesToRender(['client']);
-        
+
         $client = $clientRepository->create($title, $description);
-        
+
         $this->view->assign('client', $client);
     }
 ```
@@ -134,9 +134,9 @@ client_remove:
     - Options: **GET** **POST** **DELETE** **HEAD**
 ```php
     /**
-     * @param  \Vendor\Extension\Domain\Model\Client $client
+     * Remove existing client
      *
-     * @return void
+     * @param \Vendor\Extension\Domain\Model\Client $client
      */
     public function deleteAction(Client $client): void
     {
@@ -162,7 +162,7 @@ client_list:
     - Route will be called only if scheme is matched
     - Required: **no**
     - Options: **http** **https**
-    
+
 ### 6. Route View Helper
 ```html
 {namespace route = LMS\Routes\ViewHelpers}
@@ -170,6 +170,67 @@ client_list:
 <a href="{route:makeSlug( for: 'client_edit', with: {client: 2} )}">
     Edit
 </a>
-```   
+```
+
+### 7. Csrf Token
+- HTML Scope
+
+```html
+{namespace route = LMS\Routes\ViewHelpers}
+
+{route:csrfToken()}
+```
+- JavaScript Scope:
+
+```javascript
+document.head.querySelector('meta[name="x-csrf-token"]').content
+```
+
+### 8. Route Middleware
+
+```yaml
+# ext/example/Configuration/Routes.yml
+
+client_list:
+  path:         clients
+  controller:   Vendor\Extension\Controller\ClientController::index
+  options:
+    middleware:
+      - auth
+      - Vendor\Extension\Middleware\Api\MyCustomMiddleware
+```
+- middleware
+    - Action will be called only if middleware passed
+    - Required: **no**
+    - Variants:
+        * LMS\Routes\Middleware\Api\Authenticate
+        * LMS\Routes\Middleware\Api\VerifyCsrfToken
+        * Vendor\Extension\Middleware\Api\MyCustomMiddleware
+        * auth just sugar that combines (Authenticate and VerifyCsrfToken)
+
+- Middleware doesn't need to follow any contracts, here's an example:
+```php
+    namespace Vendor\Extension\Middleware\Api;
+
+    use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+
+    class MyCustomMiddleware
+    {
+        /**
+         * @param array $arguments
+         */
+        public function process(array $arguments): void
+        {
+            $isOk = true;
+
+            if ($isOk) {
+                return;
+            }
+
+           throw new MethodNotAllowedException([], 'Denied!');
+        }
+    }
+```
+
 [1]: https://docs.typo3.org/typo3cms/extensions/routes/
 [2]: https://getcomposer.org/
