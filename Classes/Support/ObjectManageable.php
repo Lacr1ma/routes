@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait ObjectManageable
+class ObjectManageable
 {
     /**
      * Create object instance by provided Full Qualified Class Name
