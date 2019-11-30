@@ -31,12 +31,10 @@ use LMS\Routes\Support\Extbase\Response;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait ErrorBuilder
+class ErrorBuilder
 {
     /**
      * Build exception error message based on request type
-     *
-     * @api
      *
      * @param \Exception $exception
      *
@@ -47,7 +45,7 @@ trait ErrorBuilder
         $message = $exception->getMessage();
 
         if ($message === '') {
-            $message = class_basename($exception);
+            $message = basename(str_replace('\\', '/', get_class($exception)));
         }
 
         return self::buildErrorWith($message);
