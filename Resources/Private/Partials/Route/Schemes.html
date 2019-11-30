@@ -1,0 +1,24 @@
+<div class="panel panel-primary">
+
+    <div class="panel-body">
+        <b>Schemes</b>
+    </div>
+
+    <div class="panel-footer">
+        <f:if condition="{route.schemes}">
+            <f:then>
+                <f:for each="{route.schemes}" as="scheme">
+                    <b>- </b>
+                    {scheme}
+                </f:for>
+            </f:then>
+            <f:else>
+                <b>- </b>
+                HTTP<br/>
+                <b>- </b>
+                HTTPS
+            </f:else>
+        </f:if>
+    </div>
+
+</div>

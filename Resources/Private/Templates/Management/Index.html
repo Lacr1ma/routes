@@ -7,8 +7,7 @@
 			<thead>
 				<tr>
 					<th width="40">ID</th>
-					<th width="300">Name</th>
-					<th>Methods</th>
+					<th>Name</th>
 				</tr>
 			</thead>
 
@@ -20,11 +19,6 @@
 							<f:link.action action="show" arguments="{name: key}">
 								{key}
 							</f:link.action>
-						</td>
-						<td>
-							<f:for each="{route.methods}" as="method">
-								{method}&nbsp;
-							</f:for>
 						</td>
 					</tr>
 				</f:for>

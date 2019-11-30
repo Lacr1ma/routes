@@ -1,0 +1,21 @@
+<div class="panel panel-primary">
+
+    <div class="panel-body">
+        <b>Options</b>
+    </div>
+
+    <div class="panel-footer">
+        <f:if condition="{route.options.middleware}">
+
+            <b>Middleware: </b>
+            <br/>
+            <f:for each="{route.options.middleware}" as="middleware">
+                <b>- </b>
+                {middleware}
+            </f:for>
+            <br/>
+
+        </f:if>
+    </div>
+
+</div>

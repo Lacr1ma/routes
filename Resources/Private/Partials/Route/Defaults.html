@@ -1,0 +1,48 @@
+<div class="panel panel-primary">
+
+    <div class="panel-body">
+        <b>Defaults</b>
+    </div>
+
+    <div class="panel-footer">
+        <f:for each="{route.defaults}" key="key" as="option">
+
+            <f:switch expression="{key}">
+                <f:case value="_scopes">
+                    <b>Scopes: </b>
+                    <f:for each="{option}" as="option">
+                        <f:render section="DefaultEntry" arguments="{entry: option}" />
+                    </f:for>
+                    <br/>
+                </f:case>
+
+                <f:case value="_controller">
+                    <b>Controller: </b>{option}<br/>
+                </f:case>
+
+                <f:defaultCase>
+                    <f:render section="DefaultEntry" arguments="{key: key, entry: option}" />
+                </f:defaultCase>
+            </f:switch>
+
+        </f:for>
+    </div>
+
+</div>
+
+
+<f:section name="DefaultEntry">
+    <f:if condition="{key}">
+        <b>{key}: </b>
+    </f:if>
+
+    <f:if condition="{entry}">
+        <f:then>{entry}</f:then>
+        <f:else>*</f:else>
+    </f:if>
+
+    <f:if condition="{key}">
+        <br/>
+    </f:if>
+
+</f:section>

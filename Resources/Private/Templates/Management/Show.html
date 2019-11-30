@@ -2,114 +2,30 @@
 
 <f:section name="Content">
 
-	<div class="panel panel-primary">
-		<div class="panel-body"><b>Request Methods</b></div>
-		<div class="panel-footer">
-			<f:for each="{route.methods}" as="method">
-				<b>- </b>
-				{method}
-			</f:for>
-		</div>
-	</div>
+    <f:render partial="Route/Endpoint" arguments="{_all}"/>
 
-	<div class="panel panel-primary">
-		<div class="panel-body"><b>Defaults</b></div>
-		<div class="panel-footer">
-			<f:for each="{route.defaults}" key="key" as="option">
+    <f:if condition="{route.methods}">
+	    <f:render partial="Route/Method" arguments="{_all}"/>
+    </f:if>
 
-				<f:switch expression="{key}">
-					<f:case value="_scopes">
-						<b>Scopes: </b>
-						<f:for each="{option}" as="option">
-							<f:render section="DefaultEntry" arguments="{entry: option}" />
-						</f:for>
-						<br/>
-					</f:case>
-
-					<f:case value="_controller">
-						<b>Controller: </b>{option}<br/>
-					</f:case>
-					<f:defaultCase>
-						<f:render section="DefaultEntry" arguments="{key: key, entry: option}" />
-					</f:defaultCase>
-				</f:switch>
-
-			</f:for>
-		</div>
-	</div>
+    <f:if condition="{route.defaults}">
+        <f:render partial="Route/Defaults" arguments="{_all}"/>
+    </f:if>
 
 	<f:if condition="{route.requirements}">
-		<div class="panel panel-primary">
-			<div class="panel-body"><b>Requirements</b></div>
-			<div class="panel-footer">
-				<f:for each="{route.requirements}" key="key" as="requirement">
-					<b>{key}: </b>
-					{requirement}
-					<br/>
-				</f:for>
-			</div>
-		</div>
+        <f:render partial="Route/Requirements" arguments="{_all}"/>
 	</f:if>
 
 	<f:if condition="{route.condition}">
-		<div class="panel panel-primary">
-			<div class="panel-body"><b>Conditions</b></div>
-			<div class="panel-footer">
-				<b>- </b>
-				{route.condition}
-			</div>
-		</div>
+        <f:render partial="Route/Condition" arguments="{_all}"/>
 	</f:if>
 
-    <f:if condition="{route.options}">
-		<div class="panel panel-primary">
-			<div class="panel-body"><b>Options</b></div>
-			<div class="panel-footer">
-                <b>Middleware: </b>
-                <br/>
-                <f:for each="{route.options.middleware}" as="middleware">
-                    <b>- </b>
-                    {middleware}
-                </f:for>
-                <br/>
-			</div>
-		</div>
+    <f:if condition="{route.options -> f:count()} > 1">
+        <f:render partial="Route/Options" arguments="{_all}"/>
 	</f:if>
 
-	<div class="panel panel-primary">
-		<div class="panel-body"><b>Schemes</b></div>
-		<div class="panel-footer">
-				<f:if condition="{route.schemes}">
-					<f:then>
-						<f:for each="{route.schemes}" as="scheme">
-							<b>- </b>
-							{scheme}
-						</f:for>
-					</f:then>
-					<f:else>
-						<b>- </b>
-						HTTP<br/>
-						<b>- </b>
-						HTTPS
-					</f:else>
-				</f:if>
-		</div>
-	</div>
-
-</f:section>
-
-<f:section name="DefaultEntry">
-	<f:if condition="{key}">
-		<b>{key}: </b>
-	</f:if>
-
-	<f:if condition="{entry}">
-	    <f:then>{entry}</f:then>
-	    <f:else>*</f:else>
-	</f:if>
-
-	<f:if condition="{key}">
-		<br/>
+    <f:if condition="{route.schemes}">
+        <f:render partial="Route/Schemes" arguments="{_all}"/>
 	</f:if>
 
 </f:section>

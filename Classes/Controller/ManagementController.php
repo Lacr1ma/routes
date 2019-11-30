@@ -48,12 +48,14 @@ class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      */
     public function showAction(string $name): void
     {
+        $host = str_replace('/typo3/', '', $this->request->getBaseUri());
+
         foreach ($this->getRouter()->getRouteCollection() as $key => $routeConfig) {
             if ($key !== $name) {
                 continue;
             }
 
-            $this->view->assign('route', $routeConfig);
+            $this->view->assign('route', $routeConfig->setHost($host));
         }
     }
 }
