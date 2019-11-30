@@ -28,8 +28,7 @@ namespace LMS\Routes\Service;
 
 use LMS\Routes\Loader\Yaml as YamlFileLoader;
 use Symfony\Component\Routing\Router as SymfonyRouter;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\{HttpFoundation\Request, Routing\RequestContext};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -39,8 +38,6 @@ trait Router
     use YamlFileLoader;
 
     /**
-     * @api
-     *
      * @param  string $fileName
      *
      * @return \Symfony\Component\Routing\Router
