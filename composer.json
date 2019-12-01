@@ -19,11 +19,11 @@
 	"autoload": {
 		"psr-4": {
 			"LMS\\Routes\\": "Classes"
-		},
-		"autoload-dev": {
-			"psr-4": {
-				"LMS\\Routes\\Tests\\": "Tests"
-			}
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"LMS\\Routes\\Tests\\": "Tests"
 		}
 	}
 }
