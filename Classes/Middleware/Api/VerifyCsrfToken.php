@@ -26,8 +26,7 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\{HttpFoundation\Request, Routing\Exception\MethodNotAllowedException};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>

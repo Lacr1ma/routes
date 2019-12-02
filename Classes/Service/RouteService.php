@@ -26,15 +26,16 @@ namespace LMS\Routes\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Routes\Domain\Model\Route;
+use LMS\Facade\Extbase\TypoScriptConfiguration;
 use Symfony\Component\Routing\Route as SymfonyRoute;
-use LMS\Routes\{Domain\Model\Route, Support\Extbase\Dispatcher, Support\Extbase\TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class RouteService
 {
-    use Router, Dispatcher;
+    use Router;
 
     /**
      * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
@@ -79,7 +80,7 @@ class RouteService
      */
     private function getMiddlewareNamespaceByName(string $name): array
     {
-        $namespaces = TypoScriptConfiguration::getSettings()['middleware.'];
+        $namespaces = TypoScriptConfiguration::getSettings('tx_routes')['middleware.'];
 
         return array_values($namespaces["$name."] ?? []);
     }

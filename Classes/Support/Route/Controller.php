@@ -26,7 +26,7 @@ namespace LMS\Routes\Support\Route;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Support\Extbase\Request as ExtbaseRequest;
+use LMS\Facade\Extbase\Request;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -53,7 +53,7 @@ trait Controller
      */
     public function getController(): string
     {
-        return ExtbaseRequest::getControllerNameBasedOn($this->controllerFQCN);
+        return Request::getControllerNameBasedOn($this->controllerFQCN);
     }
 
     /**
@@ -61,7 +61,7 @@ trait Controller
      */
     public function getExtension(): string
     {
-        return ExtbaseRequest::getExtensionNameBasedOn($this->controllerFQCN);
+        return Request::getExtensionNameBasedOn($this->controllerFQCN);
     }
 
     /**
@@ -69,6 +69,6 @@ trait Controller
      */
     public function getVendor(): string
     {
-        return ExtbaseRequest::getVendorNameBasedOn($this->controllerFQCN);
+        return Request::getVendorNameBasedOn($this->controllerFQCN);
     }
 }

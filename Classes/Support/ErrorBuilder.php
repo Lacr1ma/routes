@@ -26,7 +26,7 @@ namespace LMS\Routes\Support;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Support\Extbase\Response;
+use LMS\Facade\Extbase\Response;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>

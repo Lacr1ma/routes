@@ -27,6 +27,7 @@ namespace LMS\Routes\Service;
  * ************************************************************* */
 
 use LMS\Routes\Loader\Yaml as YamlFileLoader;
+use LMS\Facade\Extbase\TypoScriptConfiguration as TS;
 use Symfony\Component\Routing\Router as SymfonyRouter;
 use Symfony\Component\{HttpFoundation\Request, Routing\RequestContext};
 
@@ -52,7 +53,7 @@ trait Router
      */
     private function getOptions(): array
     {
-        $cacheDirectory = self::getSettings()['cacheDirectoryPath'] ?? '';
+        $cacheDirectory = TS::getSettings('tx_routes')['cacheDirectoryPath'] ?: '';
 
         return $cacheDirectory ? ['cache_dir' => $cacheDirectory] : [];
     }

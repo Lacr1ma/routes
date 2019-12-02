@@ -36,7 +36,6 @@ class ServerRequest
     /**
      * Retrieve the current Server Request
      *
-     * @api
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     public static function getInstance(): ServerRequestInterface
@@ -46,8 +45,6 @@ class ServerRequest
 
     /**
      * Add new parameter values to the Server Request
-     *
-     * @api
      *
      * @param string $name
      * @param mixed  $value
@@ -65,7 +62,7 @@ class ServerRequest
     /**
      * Retrieve the defined server request parameters for passed name
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return array
      */

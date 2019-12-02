@@ -42,7 +42,6 @@ trait Arguments
     /**
      * Return the list of the arguments related to current Extbase request
      *
-     * @api
      * @return array
      */
     public function getArguments(): array
@@ -79,7 +78,7 @@ trait Arguments
     /**
      * Remove all the keys that are not related to extbase argument
      *
-     * @param  array $configuration
+     * @param array $configuration
      *
      * @return array
      */

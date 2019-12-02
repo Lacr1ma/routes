@@ -14,7 +14,7 @@
 		"ext-json": "*",
 		"symfony/config": "*",
 		"symfony/http-foundation": "*",
-		"tightenco/collect": "*"
+		"lms/facade": "dev-master"
 	},
 	"autoload": {
 		"psr-4": {

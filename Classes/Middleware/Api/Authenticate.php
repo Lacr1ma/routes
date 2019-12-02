@@ -28,7 +28,7 @@ namespace LMS\Routes\Middleware\Api;
 
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use LMS\Routes\Support\Extbase\{User\StateContext, Response, TypoScriptConfiguration};
+use LMS\Facade\Extbase\{Response, User\StateContext, TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -56,7 +56,7 @@ class Authenticate
      */
     private function loginPageUrl(): string
     {
-        $pid = (int)TypoScriptConfiguration::getSettings()['redirect.']['loginPage'];
+        $pid = (int)TypoScriptConfiguration::getSettings('tx_routes')['redirect.']['loginPage'];
 
         return "/index.php?id={$pid}";
     }

@@ -28,9 +28,10 @@ namespace LMS\Routes\Extbase;
 
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use Psr\Http\Message\ResponseInterface;
+use LMS\Facade\{Extbase\Response, ObjectManageable};
+use LMS\Routes\Support\{ErrorBuilder, ServerRequest};
 use LMS\Routes\{Domain\Model\Route, Service\RouteService};
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use LMS\Routes\Support\{ErrorBuilder, Extbase\Response, ServerRequest, ObjectManageable};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -82,7 +83,7 @@ class RouteHandler
      * Check if the specific route has any middleware and execute them
      *
      * @param string $slug
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @throws \RuntimeException
      */
