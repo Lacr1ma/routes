@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Routing\RouteCollection;
 class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
 {
     /**
+     * @psalm-suppress InternalClass
      * {@inheritdoc}
      */
     public function load($file, $type = null): RouteCollection
@@ -49,14 +50,14 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
     }
 
     /**
-     * @param  string $file
+     * @param string $file
      *
      * @return array
      */
     private function getFoundPathList(string $file): array
     {
         try {
-            return $this->locator->locate($file, null, false);
+            return (array)$this->locator->locate($file, null, false);
         } catch (FileLocatorFileNotFoundException $e) {
             return [];
         }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Routes\Controller;
+namespace LMS\Routes\Tests\Acceptance\Backend;
 
 /* * *************************************************************
  *
@@ -26,34 +26,22 @@ namespace LMS\Routes\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Service\Router;
+use LMS\Routes\Tests\Acceptance\Support\BackendTester;
 
 /**
- * @psalm-suppress PropertyNotSetInConstructor
- * @author         Sergey Borulko <borulkosergey@icloud.com>
+ * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ModuleCest
 {
-    use Router;
-
     /**
-     * Render existing routes
+     * @param BackendTester $I
      */
-    public function indexAction(): void
+    public function _before(BackendTester $I)
     {
-        $this->view->assign('routes', $this->getRouter()->getRouteCollection());
-    }
+        $I->useExistingSession('admin');
 
-    /**
-     * @psalm-suppress UndefinedMethod
-     * @psalm-suppress PossiblyNullReference
-     *
-     * @param string $name
-     */
-    public function showAction(string $name): void
-    {
-        $host = str_replace('/typo3/', '', $this->request->getBaseUri());
+        $I->click('LMS: Routes', '#site_RoutesRoutes');
 
-        $this->view->assign('route', $this->getRouter()->getRouteCollection()->get($name)->setHost($host));
+        $I->switchToContentFrame();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Routes\Controller;
+namespace LMS\Routes\Tests\Acceptance\Support;
 
 /* * *************************************************************
  *
@@ -26,34 +26,13 @@ namespace LMS\Routes\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Service\Router;
+use TYPO3\TestingFramework\Core\Acceptance\Step\FrameSteps;
+use LMS\Routes\Tests\Acceptance\Support\_generated\BackendTesterActions;
 
 /**
- * @psalm-suppress PropertyNotSetInConstructor
- * @author         Sergey Borulko <borulkosergey@icloud.com>
+ * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class BackendTester extends \Codeception\Actor
 {
-    use Router;
-
-    /**
-     * Render existing routes
-     */
-    public function indexAction(): void
-    {
-        $this->view->assign('routes', $this->getRouter()->getRouteCollection());
-    }
-
-    /**
-     * @psalm-suppress UndefinedMethod
-     * @psalm-suppress PossiblyNullReference
-     *
-     * @param string $name
-     */
-    public function showAction(string $name): void
-    {
-        $host = str_replace('/typo3/', '', $this->request->getBaseUri());
-
-        $this->view->assign('route', $this->getRouter()->getRouteCollection()->get($name)->setHost($host));
-    }
+    use BackendTesterActions, FrameSteps;
 }

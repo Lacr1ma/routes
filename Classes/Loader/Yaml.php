@@ -56,6 +56,8 @@ trait Yaml
      *    1 => 'typo3conf/ext/blog/Configuration',
      * }
      *
+     * @psalm-suppress PossiblyNullIterator
+     * @psalm-suppress PossiblyInvalidIterator
      * @return array
      */
     private function getPossiblePaths(): array

@@ -111,6 +111,8 @@ class RouteHandler
     /**
      * Create the Route Service Instance
      *
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      * @return \LMS\Routes\Service\RouteService
      */
     private function getRouteService(): RouteService
