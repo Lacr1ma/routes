@@ -1,0 +1,14 @@
+APIVersion: v1.11.2
+name: routes
+type: typo3
+docroot: public
+php_version: "7.2"
+webserver_type: nginx-fpm
+router_http_port: "80"
+router_https_port: "443"
+xdebug_enabled: false
+additional_hostnames: []
+additional_fqdns: []
+mariadb_version: "10.2"
+nfs_mount_enabled: false
+provider: default
