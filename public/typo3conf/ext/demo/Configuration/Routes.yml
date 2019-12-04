@@ -4,6 +4,7 @@ demo_middleware:
   options:
     middleware:
       - auth
+      - LMS\Routes\Middleware\Api\VerifyAdminBackendSession
 
 demo_action_with_params:
   path:         api/demo/test/with_params

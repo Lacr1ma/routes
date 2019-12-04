@@ -557,7 +557,7 @@ LOCK TABLES `fe_sessions` WRITE;
 
 INSERT INTO `fe_sessions` (`ses_id`, `ses_iplock`, `ses_userid`, `ses_tstamp`, `ses_data`, `ses_permanent`, `ses_anonymous`)
 VALUES
-	('53574eb0bafe1c0a4d8a2cfc0cf726da','[DISABLED]',1,1777777777,'',0,1);
+	('53574eb0bafe1c0a4d8a2cfc0cf726da','[DISABLED]',1,1777777777,'',0,0);
 
 /*!40000 ALTER TABLE `fe_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
