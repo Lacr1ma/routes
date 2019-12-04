@@ -1,0 +1,58 @@
+demo_middleware:
+  path:         api/demo/middleware
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  options:
+    middleware:
+      - auth
+
+demo_action_with_params:
+  path:         api/demo/test/with_params
+  controller:   LMS\Demo\Controller\DemoApiController::testWithParams
+  defaults:
+    title:       default-title
+    description: default-description
+
+https_only:
+  path:         api/demo/https/only
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  schemes:      https
+
+
+
+demo_list:
+  path:         api/demo/entity
+  controller:   LMS\Demo\Controller\DemoApiController::list
+  methods:      GET
+
+demo_show:
+  path:         api/demo/entity/{uid}
+  controller:   LMS\Demo\Controller\DemoApiController::show
+  methods:      GET
+  requirements:
+    uid:        \d+
+
+demo_create:
+  path:         api/demo/entity
+  controller:   LMS\Demo\Controller\DemoApiController::create
+  methods:      POST
+  defaults:
+    # data here is required, otherwise we don't know which arguments to expect
+    data:
+
+demo_update:
+  path:         api/demo/entity/{uid}
+  controller:   LMS\Demo\Controller\DemoApiController::edit
+  methods:      PUT
+  requirements:
+    uid:        \d+
+  defaults:
+    # data here is required, otherwise we don't know which arguments to expect
+    # use query params here instead of form data
+    data:
+
+demo_delete:
+  path:         api/demo/entity/{uid}
+  controller:   LMS\Demo\Controller\DemoApiController::destroy
+  methods:      DELETE
+  requirements:
+    uid:        \d+
