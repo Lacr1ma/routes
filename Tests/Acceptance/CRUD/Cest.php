@@ -87,9 +87,9 @@ class Cest
     public function demo_delete(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendDELETE('demo/entity/4');
+        $I->sendDELETE('demo/entity/999');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseContains('success');
+        $I->seeResponseContainsJson(['success' => true]);
     }
 }

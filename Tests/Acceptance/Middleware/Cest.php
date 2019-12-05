@@ -80,6 +80,6 @@ class Cest
         $I->sendGET('demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'text/html; charset=utf-8');
-        $I->seeResponseContains('login_form');
+        $I->seeResponseContains('<title>Auth</title>');
     }
 }
