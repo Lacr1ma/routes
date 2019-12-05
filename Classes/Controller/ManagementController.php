@@ -29,7 +29,8 @@ namespace LMS\Routes\Controller;
 use LMS\Routes\Service\Router;
 
 /**
- * @author Sergey Borulko <borulkosergey@icloud.com>
+ * @psalm-suppress PropertyNotSetInConstructor
+ * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
 class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -44,18 +45,15 @@ class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     }
 
     /**
+     * @psalm-suppress UndefinedMethod
+     * @psalm-suppress PossiblyNullReference
+     *
      * @param string $name
      */
     public function showAction(string $name): void
     {
         $host = str_replace('/typo3/', '', $this->request->getBaseUri());
 
-        foreach ($this->getRouter()->getRouteCollection() as $key => $routeConfig) {
-            if ($key !== $name) {
-                continue;
-            }
-
-            $this->view->assign('route', $routeConfig->setHost($host));
-        }
+        $this->view->assign('route', $this->getRouter()->getRouteCollection()->get($name)->setHost($host));
     }
 }
