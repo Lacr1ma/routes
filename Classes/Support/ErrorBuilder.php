@@ -59,7 +59,7 @@ class ErrorBuilder
     private static function buildErrorWith(string $message): string
     {
         if (Response::isJson()) {
-            return json_encode(['error' => $message]);
+            return (string)json_encode(['error' => $message]);
         }
 
         return $message;
