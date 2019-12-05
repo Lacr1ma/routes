@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
 use LMS\Facade\{Extbase\Response, ObjectManageable};
 use LMS\Routes\Support\{ErrorBuilder, ServerRequest};
 use LMS\Routes\{Domain\Model\Route, Service\RouteService};
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\{NoConfigurationException, ResourceNotFoundException};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -46,8 +46,8 @@ class RouteHandler
     /**
      * @param string $slug
      *
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
+     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function __construct(string $slug)
     {
@@ -55,7 +55,9 @@ class RouteHandler
             $route = $this->getRouteService()->findRouteFor($slug);
 
             $this->processMiddleware($slug, $route->getArguments());
-        } catch (MethodNotAllowedException $exception) {
+        } catch (NoConfigurationException | ResourceNotFoundException $e) {
+            throw $e;
+        } catch (\Exception $exception) {
             $this->output = ErrorBuilder::messageFor($exception);
             return;
         }
@@ -111,6 +113,8 @@ class RouteHandler
     /**
      * Create the Route Service Instance
      *
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      * @return \LMS\Routes\Service\RouteService
      */
     private function getRouteService(): RouteService
