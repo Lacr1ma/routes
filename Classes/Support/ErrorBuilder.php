@@ -52,7 +52,7 @@ class ErrorBuilder
     }
 
     /**
-     * @param string
+     * @param string $message
      *
      * @return string
      */
