@@ -25,7 +25,7 @@ suites:
 
 extensions:
   enabled:
-    - LMS\Login\Tests\Acceptance\Support\Extension\BackendEnvironment
+    - LMS\Routes\Tests\Acceptance\Support\Extension\BackendEnvironment
     - Codeception\Extension\RunFailed
     - Codeception\Extension\Recorder
 
