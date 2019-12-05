@@ -1,0 +1,37 @@
+namespace: LMS\Routes\Tests\Acceptance\Support
+suites:
+  acceptance:
+    actor: AcceptanceTester
+    path: .
+    modules:
+      enabled:
+        - REST:
+            depends: PhpBrowser
+            url: http://routes.ddev.site/api/
+            part: Json
+extensions:
+  enabled:
+    - Codeception\Extension\Recorder
+
+params:
+  - env
+
+env:
+  ddev:
+    modules:
+      config:
+
+  github:
+    modules:
+      config:
+
+paths:
+  tests: Acceptance/CRUD
+  data: Acceptance/_data
+  output: Acceptance/_output
+  support: Acceptance/Support
+
+settings:
+  shuffle: false
+  lint: true
+  colors: true

@@ -1,0 +1,41 @@
+namespace: LMS\Routes\Tests\Acceptance\Support
+suites:
+  acceptance:
+    actor: AcceptanceTester
+    path: .
+    modules:
+      enabled:
+        - REST:
+            depends: PhpBrowser
+            url: http://routes.ddev.site/api/
+            part: Json
+extensions:
+  enabled:
+    - Codeception\Extension\Recorder
+
+params:
+  - env
+
+env:
+  ddev:
+    modules:
+      config:
+        Db:
+          dsn: 'mysql:host=db;dbname=db_at'
+
+  github:
+    modules:
+      config:
+        Db:
+          dsn: 'mysql:host=db;dbname=db'
+
+paths:
+  tests: Acceptance/Middleware
+  data: Acceptance/_data
+  output: Acceptance/_output
+  support: Acceptance/Support
+
+settings:
+  shuffle: false
+  lint: true
+  colors: true
