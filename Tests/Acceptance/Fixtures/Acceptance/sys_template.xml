@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <sys_template>
+        <uid>1</uid>
+        <pid>1</pid>
+        <title>Root</title>
+        <root>1</root>
+        <clear>3</clear>
+        <include_static_file>EXT:routes/Configuration/TypoScript,EXT:bootstrap_package/Configuration/TypoScript</include_static_file>
+        <constants>plugin.tx_routes.settings.redirect.loginPage = 3</constants>
+    </sys_template>
+</dataset>

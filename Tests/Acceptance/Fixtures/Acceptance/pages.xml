@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>Home</title>
+        <slug>/</slug>
+        <doktype>1</doktype>
+        <is_siteroot>1</is_siteroot>
+        <backend_layout>pagets__default</backend_layout>
+        <backend_layout_next_level>pagets__default</backend_layout_next_level>
+        <tsconfig_includes></tsconfig_includes>
+    </pages>
+
+    <pages>
+        <uid>2</uid>
+        <pid>1</pid>
+        <title>404</title>
+        <slug>/404</slug>
+        <doktype>1</doktype>
+    </pages>
+
+    <pages>
+        <uid>3</uid>
+        <pid>1</pid>
+        <title>Auth</title>
+        <slug>/login</slug>
+        <doktype>1</doktype>
+    </pages>
+
+</dataset>
