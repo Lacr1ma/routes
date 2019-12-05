@@ -1,0 +1,47 @@
+language: php
+
+php:
+  - 7.2
+
+sudo: true
+
+before_install:
+  # Update docker
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  # Update docker-compose
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  # Install ddev
+  - curl -L https://raw.githubusercontent.com/drud/ddev/master/scripts/install_ddev.sh | sudo bash
+  - ddev config global --instrumentation-opt-in=false
+
+install:
+  - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
+  - cd $TRAVIS_REPO_SLUG
+  - git checkout tests
+  - ddev start
+  - ddev import-db --src=./dump.sql
+  - ddev import-files --src=./assets
+  - ddev composer install
+  - ddev exec sudo chmod -R 777 /var/www/html/
+
+script:
+  # Check code style
+  - ddev exec bin/psalm
+
+  # Unit Tests
+  #- ddev exec bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/UnitTests.xml
+
+  # Functional Tests
+  #- ddev exec bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
+
+  # Acceptance Tests
+  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
+  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/middleware.yml --env github
+  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
+  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
