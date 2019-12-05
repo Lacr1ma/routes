@@ -33,7 +33,7 @@ env:
     modules:
       config:
         Db:
-          dsn: 'mysql:host=db;dbname=db_at'
+          dsn: 'mysql:host=db;dbname=db'
           user: 'root'
           password: 'root'
 
