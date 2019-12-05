@@ -5,11 +5,6 @@ suites:
     path: .
     modules:
       enabled:
-        - Db:
-            dsn: 'mysql:host=db;dbname=db_at'
-            user: 'root'
-            password: 'root'
-            populate: true
         - REST:
             depends: PhpBrowser
             url: http://routes.ddev.site/api/
@@ -25,17 +20,12 @@ env:
   ddev:
     modules:
       config:
-        Db:
-          dsn: 'mysql:host=db;dbname=db_at'
-          user: 'root'
-          password: 'root'
+        REST:
+
   github:
     modules:
       config:
-        Db:
-          dsn: 'mysql:host=db;dbname=db'
-          user: 'root'
-          password: 'root'
+        REST:
 
 paths:
   tests: Acceptance/CRUD

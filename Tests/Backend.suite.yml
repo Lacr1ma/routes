@@ -6,7 +6,10 @@ suites:
     path: .
     modules:
       enabled:
-        - Db
+        - Db:
+            dsn: 'mysql:host=db;dbname=db'
+            user: 'root'
+            password: 'root'
         - Asserts
         - WebDriver:
             url: http://%TESTING_DOMAIN%/
@@ -17,11 +20,6 @@ suites:
             sessions:
               editor: ff83dfd81e20b34c27d3e97771a4525a
               admin: 886526ce72b86870739cc41991144ec1
-      config:
-        Db:
-          dsn: 'mysql:host=db;dbname=db_at'
-          user: 'root'
-          password: 'root'
 
 extensions:
   enabled:
@@ -36,10 +34,6 @@ env:
         WebDriver:
           url: https://routes.ddev.site
           host: ddev-routes-chrome
-        Db:
-          dsn: 'mysql:host=db;dbname=db_at'
-          user: 'root'
-          password: 'root'
 
   github:
     modules:
@@ -47,10 +41,6 @@ env:
         WebDriver:
           url: http://routes.ddev.site
           host: ddev-routes-chrome
-        Db:
-          dsn: 'mysql:host=db;dbname=db_at'
-          user: 'root'
-          password: 'root'
 
 paths:
   tests: Acceptance/Backend

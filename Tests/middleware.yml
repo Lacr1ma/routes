@@ -20,14 +20,12 @@ env:
   ddev:
     modules:
       config:
-        Db:
-          dsn: 'mysql:host=db;dbname=db_at'
+        REST:
 
   github:
     modules:
       config:
-        Db:
-          dsn: 'mysql:host=db;dbname=db'
+        REST:
 
 paths:
   tests: Acceptance/Middleware
