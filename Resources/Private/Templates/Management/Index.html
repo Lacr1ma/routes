@@ -3,7 +3,7 @@
 <f:section name="Content">
 
 	<div class="panel panel-default">
-		<table class="table table-striped table-hover">
+		<table id="routes" class="table table-striped table-hover">
 			<thead>
 				<tr>
 					<th width="40">
@@ -20,7 +20,7 @@
 					<tr>
 						<td>{i.cycle}</td>
 						<td>
-							<f:link.action action="show" arguments="{name: key}">
+							<f:link.action id="route_{i.cycle}" action="show" arguments="{name: key}">
 								{key}
 							</f:link.action>
 						</td>
