@@ -57,6 +57,8 @@ class RouteService
     /**
      * Attempt to retrieve all associated middleware by query
      *
+     * @psalm-suppress PossiblyNullReference
+     *
      * @param string $slug
      *
      * @return array
