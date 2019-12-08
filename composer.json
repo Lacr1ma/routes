@@ -11,6 +11,8 @@
 	],
 	"require": {
 		"typo3/cms-core": "^9.5",
+		"symfony/config": "*",
+		"symfony/http-foundation": "*",
 		"lms/facade": "dev-master"
 	},
 	"autoload": {
