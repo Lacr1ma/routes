@@ -45,13 +45,13 @@ trait Router
      */
     public function getRouter(string $fileName = 'Routes.yml'): SymfonyRouter
     {
-        return new SymfonyRouter($this->getLoader(), $fileName, $this->getOptions(), $this->getRequestContext());
+        return new SymfonyRouter($this->getLoader(), $fileName, $this->getRouteOptions(), $this->getRequestContext());
     }
 
     /**
      * @return array
      */
-    private function getOptions(): array
+    private function getRouteOptions(): array
     {
         $cacheDirectory = TS::getSettings('tx_routes')['cacheDirectoryPath'] ?: '';
 

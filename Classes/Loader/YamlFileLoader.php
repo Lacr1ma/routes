@@ -26,8 +26,8 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use TYPO3\CMS\Core\Routing\RouteCollection;
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
