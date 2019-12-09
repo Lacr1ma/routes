@@ -43,11 +43,18 @@ class Route
     private $action;
 
     /**
+     * @var string
+     */
+    private $format;
+
+    /**
      * @param array $configuration
      */
     public function __construct(array $configuration)
     {
         [$controllerFQCN, $this->action] = explode('::', $configuration['_controller']);
+
+        $this->format = $configuration['_format'] ?: '';
 
         $this->initializeController($controllerFQCN);
         $this->initializeArguments($configuration);
@@ -61,6 +68,16 @@ class Route
     public function getAction(): string
     {
         return $this->action;
+    }
+
+    /**
+     * Get Request Format
+     *
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
     }
 
     /**

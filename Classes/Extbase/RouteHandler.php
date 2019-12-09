@@ -104,6 +104,7 @@ class RouteHandler
         $plugin = $route->getPluginNamespace();
 
         ServerRequest::withParameter('action', $route->getAction(), $plugin);
+        ServerRequest::withParameter('format', $route->getFormat(), $plugin);
 
         foreach ($route->getArguments() as $name => $value) {
             ServerRequest::withParameter($name, $value, $plugin);
