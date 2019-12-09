@@ -36,6 +36,18 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
+    public function custom_format_applied(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->sendPOST('demo/custom/view');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['ok' => true]);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
     public function https_protocol_requirement_applied(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
