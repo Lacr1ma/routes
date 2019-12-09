@@ -1,0 +1,1 @@
+plugin.tx_demo.view.templateRootPath = EXT:demo/Resources/Private/Templates/

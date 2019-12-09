@@ -11727,7 +11727,7 @@ LOCK TABLES `sys_template` WRITE;
 
 INSERT INTO `sys_template` (`uid`, `pid`, `tstamp`, `crdate`, `cruser_id`, `deleted`, `hidden`, `starttime`, `endtime`, `sorting`, `description`, `t3_origuid`, `t3ver_oid`, `t3ver_id`, `t3ver_label`, `t3ver_wsid`, `t3ver_state`, `t3ver_stage`, `t3ver_count`, `t3ver_tstamp`, `t3ver_move_id`, `title`, `sitetitle`, `root`, `clear`, `include_static_file`, `constants`, `config`, `nextLevel`, `basedOn`, `includeStaticAfterBasedOn`, `static_file_mode`, `tx_impexp_origuid`)
 VALUES
-	(1,1,1575285407,1571484694,1,0,0,0,0,256,NULL,0,0,0,'',0,0,0,0,0,0,'Root','',1,0,'EXT:routes/Configuration/TypoScript,EXT:bootstrap_package/Configuration/TypoScript','config.contentObjectExceptionHandler = 0\r\n\r\nplugin.tx_routes.settings.redirect.loginPage = 3','config.contentObjectExceptionHandler = 0','','',0,0,0);
+	(1, 1, 1575895168, 1571484694, 1, 0, 0, 0, 0, 256, NULL, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 'Root', '', 1, 0, 'EXT:routes/Configuration/TypoScript,EXT:demo/Configuration/TypoScript,EXT:bootstrap_package/Configuration/TypoScript', 'config.contentObjectExceptionHandler = 0\r\n\r\nplugin.tx_routes.settings.redirect.loginPage = 3', 'config.contentObjectExceptionHandler = 0', '', '', 0, 0, 0);
 
 /*!40000 ALTER TABLE `sys_template` ENABLE KEYS */;
 UNLOCK TABLES;
