@@ -14,6 +14,7 @@ Condition
    :glob:
 
    Property/Path
+   Property/Format
    Property/Params
    Property/Schemes
    Property/Methods
