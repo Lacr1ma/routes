@@ -18,6 +18,10 @@ https_only:
   controller:   LMS\Demo\Controller\DemoApiController::test
   schemes:      https
 
+custom_format:
+  path:         api/demo/custom/view
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  format:       json
 
 
 demo_list:
