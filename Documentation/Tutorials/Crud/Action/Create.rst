@@ -17,7 +17,7 @@ CREATE
       :linenos:
 
       demo_create:
-         path:         api/demo/entity
+         path:         api/demo/photos
          controller:   Vendor\Demo\Controller\DemoApiController::create
          methods:      POST
          defaults:
@@ -42,11 +42,11 @@ CREATE
 
       ...
 
-      createResource('/api/demo/entity', {title: 'My new entity'}).then(function (isOk) {
+      storeResource('/api/demo/photos', {title: 'My new entity'}).then(function (isOk) {
          console.log(isOk);
       });
 
       ...
 
    .. tip::
-         **createResource** function has been already implemented in our predefined Routes.js.
+         **storeResource** function has been already implemented in our predefined Routes.js.

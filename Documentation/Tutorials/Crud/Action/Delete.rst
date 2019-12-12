@@ -17,7 +17,7 @@ DELETE
       :linenos:
 
       demo_delete:
-         path:         api/demo/entity/{uid}
+         path:         api/demo/photos/{uid}
          controller:   Vendor\Demo\Controller\DemoApiController::destroy
          methods:      DELETE
          requirements:
@@ -41,7 +41,7 @@ DELETE
 
       ...
 
-      deleteResource('/api/demo/entity/1').then(function (isOk) {
+      deleteResource('/api/demo/photos/1').then(function (isOk) {
          console.log(isOk);
       });
 

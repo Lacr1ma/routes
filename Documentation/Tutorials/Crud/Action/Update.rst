@@ -17,7 +17,7 @@ UPDATE
       :linenos:
 
       demo_update:
-         path:         api/demo/entity/{uid}
+         path:         api/demo/photos/{uid}
          controller:   Vendor\Demo\Controller\DemoApiController::edit
          methods:      PUT
          requirements:
@@ -45,7 +45,7 @@ UPDATE
 
       ...
 
-      updateResource('/api/demo/entity/1', {title: 'Title 1'}).then(function (isOk) {
+      updateResource('/api/demo/photos/1', {title: 'Title 1'}).then(function (isOk) {
          console.log(isOk);
       });
 

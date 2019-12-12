@@ -17,7 +17,7 @@ LIST
       :linenos:
 
       demo_list:
-         path:         api/demo/entity
+         path:         api/demo/photos
          controller:   Vendor\Demo\Controller\DemoApiController::list
          methods:      GET
          options:
@@ -37,7 +37,7 @@ LIST
 
       ...
 
-      listResource('/api/demo/entity').then(function (entities) {
+      listResource('/api/demo/photos').then(function (entities) {
          console.log(entities);
       });
 

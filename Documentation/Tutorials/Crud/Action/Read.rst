@@ -17,7 +17,7 @@ READ
       :linenos:
 
       demo_show:
-         path:         api/demo/entity/{uid}
+         path:         api/demo/photos/{uid}
          controller:   Vendor\Demo\Controller\DemoApiController::show
          methods:      GET
          requirements:
@@ -41,8 +41,8 @@ READ
 
       ...
 
-      readResource('/api/demo/entity/1').then(function (entity) {
-         console.log(entity);
+      readResource('/api/demo/photos/1').then(function (photo) {
+         console.log(photo);
       });
 
       ...

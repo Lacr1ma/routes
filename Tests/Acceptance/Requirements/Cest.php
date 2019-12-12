@@ -86,7 +86,7 @@ class Cest
     public function requirement_integer_only_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/entity/1a');
+        $I->sendGET('demo/photos/1a');
 
         $I->seeResponseCodeIs(404);
     }
@@ -97,7 +97,7 @@ class Cest
     public function requirement_integer_only_applied(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/entity/1');
+        $I->sendGET('demo/photos/1');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['uid' => 1, 'title' => 'Title 1']);
@@ -108,7 +108,7 @@ class Cest
      */
     public function response_format_is_html_when_accept_header_missing(AcceptanceTester $I)
     {
-        $I->sendGET('demo/entity');
+        $I->sendGET('demo/photos');
 
         $I->seeHttpHeader('Content-Type', 'text/html; charset=utf-8');
     }

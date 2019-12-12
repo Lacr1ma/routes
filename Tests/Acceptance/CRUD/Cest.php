@@ -36,10 +36,10 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
-    public function demo_list(AcceptanceTester $I)
+    public function index(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/entity');
+        $I->sendGET('demo/photos');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContains('title');
@@ -48,10 +48,10 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
-    public function demo_show(AcceptanceTester $I)
+    public function show(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/entity/1');
+        $I->sendGET('demo/photos/1');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContains('title');
@@ -60,10 +60,10 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
-    public function demo_create(AcceptanceTester $I)
+    public function store(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPOST('demo/entity', ['data' => ['title' => 'new']]);
+        $I->sendPOST('demo/photos', ['data' => ['title' => 'new']]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -72,10 +72,10 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
-    public function demo_update(AcceptanceTester $I)
+    public function update(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPUT('demo/entity/1?data[title]=Title 1');
+        $I->sendPATCH('demo/photos/1?data[title]=Title 1');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -84,10 +84,10 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
-    public function demo_delete(AcceptanceTester $I)
+    public function destroy(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendDELETE('demo/entity/999');
+        $I->sendDELETE('demo/photos/999');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);

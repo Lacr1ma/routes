@@ -47,7 +47,7 @@ const deleteResource = async (url) => {
  * @param {Object}   data        Contains properties that should be updated on an object
  * @return {boolean}
  */
-const createResource = async (url, data) => {
+const storeResource = async (url, data) => {
   initializeRequestHeaders();
 
   const result = await axios.post(url, {data: data});
