@@ -30,7 +30,7 @@ namespace LMS\Demo\Controller;
  * @psalm-suppress PropertyNotSetInConstructor
  * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
-class DemoApiResourceController extends Base\ApiResourceController
+class DemoApiController extends Base\ApiResourceController
 {
     /**
      * {@inheritdoc}
