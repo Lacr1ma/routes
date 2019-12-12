@@ -24,40 +24,43 @@ custom_format:
   format:       json
 
 
-demo_list:
-  path:         api/demo/entity
-  controller:   LMS\Demo\Controller\DemoApiController::list
+demo_index:
+  path:         api/demo/photos
+  controller:   LMS\Demo\Controller\DemoApiController::index
   methods:      GET
 
 demo_show:
-  path:         api/demo/entity/{uid}
+  path:         api/demo/photos/{uid}
   controller:   LMS\Demo\Controller\DemoApiController::show
   methods:      GET
   requirements:
+    # The name should be exactly like in controller, as we use Resource Controller, it will be <uid>
     uid:        \d+
 
-demo_create:
-  path:         api/demo/entity
-  controller:   LMS\Demo\Controller\DemoApiController::create
+demo_store:
+  path:         api/demo/photos
+  controller:   LMS\Demo\Controller\DemoApiController::store
   methods:      POST
   defaults:
     # data here is required, otherwise we don't know which arguments to expect
     data:
 
 demo_update:
-  path:         api/demo/entity/{uid}
-  controller:   LMS\Demo\Controller\DemoApiController::edit
-  methods:      PUT
+  path:         api/demo/photos/{uid}
+  controller:   LMS\Demo\Controller\DemoApiController::update
+  methods:      [PUT, PATCH]
   requirements:
-    uid:        \d+
+    # The name should be exactly like in controller, as we use Resource Controller, it will be <uid>
+    uid:      \d+
   defaults:
     # data here is required, otherwise we don't know which arguments to expect
     # use query params here instead of form data
     data:
 
-demo_delete:
-  path:         api/demo/entity/{uid}
+demo_destroy:
+  path:         api/demo/photos/{uid}
   controller:   LMS\Demo\Controller\DemoApiController::destroy
   methods:      DELETE
   requirements:
-    uid:        \d+
+    # The name should be exactly like in controller, as we use Resource Controller, it will be <uid>
+    uid:      \d+

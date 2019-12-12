@@ -1,26 +1,26 @@
 function demo() {
   // Create resource entity
-  createResource('/api/demo/entity', {title: 'Created by js.'}).then(function (isOk) {
+  storeResource('/api/demo/photos', {title: 'Created by js.'}).then(function (isOk) {
     console.log(isOk);
   });
 
   // Retrieve requested entity data
-  readResource('/api/demo/entity/1').then(function (entity) {
+  readResource('/api/demo/photos/1').then(function (entity) {
     console.log(entity);
   });
 
   // Update resource entity
-  updateResource('/api/demo/entity/1', {title: 'Title 1'}).then(function (isOk) {
+  updateResource('/api/demo/photos/1', {title: 'Title 1'}).then(function (isOk) {
     console.log(isOk);
   });
 
   // Delete resource entity
-  deleteResource('/api/demo/entity/999').then(function (isOk) {
+  deleteResource('/api/demo/photos/999').then(function (isOk) {
     console.log(isOk);
   });
 
   // Retrieve all recourse entities
-  listResource('/api/demo/entity').then(function (entities) {
+  listResource('/api/demo/photos').then(function (entities) {
     console.log(entities);
   });
 }

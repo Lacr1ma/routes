@@ -31,9 +31,9 @@ if (!defined('TYPO3_MODE')) {
     'LMS.' . $_EXTKEY,
     'DemoApi',
     [
-        'DemoApi' => 'show, list, create, edit, destroy, fail, test, testWithParams'
+        'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams'
     ],
     [
-        'DemoApi' => 'show, list, create, edit, destroy, fail, test, testWithParams'
+        'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams'
     ]
 );
