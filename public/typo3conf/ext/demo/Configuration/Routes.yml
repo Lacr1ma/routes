@@ -6,6 +6,13 @@ demo_middleware:
       - auth
       - LMS\Routes\Middleware\Api\VerifyAdminBackendSession
 
+demo_throttle:
+  path:         api/demo/throttle
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  options:
+    middleware:
+      - LMS\Routes\Middleware\Api\Throttle:3,1
+
 demo_action_with_params:
   path:         api/demo/test/with_params
   controller:   LMS\Demo\Controller\DemoApiController::testWithParams
