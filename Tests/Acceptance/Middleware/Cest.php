@@ -36,6 +36,24 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
+    public function throttle_middleware_blocks_dos(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+
+        foreach (range(0, 1) as $step) {
+            $I->sendGET('demo/throttle');
+            $I->seeResponseContainsJson(['success' => true]);
+        }
+
+        $I->sendGET('demo/throttle');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['error' => 'Too Many Attempts.']);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
     public function auth_middleware_requires_user_to_be_logged_in(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
@@ -59,17 +77,33 @@ class Cest
     }
 
     /**
+     * We have an editor session, but not admin
+     *
      * @param AcceptanceTester $I
      */
-    public function active_backend_session_required(AcceptanceTester $I)
+    public function admin_backend_user_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=ff83dfd81e20b34c27d3e97771a4525a');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->sendGET('demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseContainsJson(['error' => 'Active BE session is required.']);
+        $I->seeResponseContainsJson(['error' => 'Admin user is required.']);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function active_backend_session_pass(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=886526ce72b86870739cc41991144ec1');
+        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->sendGET('demo/middleware');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['success' => true]);
     }
 
     /**
