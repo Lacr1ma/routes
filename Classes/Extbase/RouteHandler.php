@@ -27,10 +27,10 @@ namespace LMS\Routes\Extbase;
  * ************************************************************* */
 
 use TYPO3\CMS\Extbase\Core\Bootstrap;
-use Psr\Http\Message\ResponseInterface;
 use LMS\Facade\{Extbase\Response, ObjectManageable};
 use LMS\Routes\Support\{ErrorBuilder, ServerRequest};
-use LMS\Routes\{Domain\Model\Route, Service\RouteService};
+use Psr\Http\{Message\ResponseInterface, Message\ServerRequestInterface};
+use LMS\Routes\{Domain\Model\Middleware, Domain\Model\Route, Service\RouteService};
 use Symfony\Component\Routing\Exception\{NoConfigurationException, ResourceNotFoundException};
 
 /**
@@ -44,17 +44,18 @@ class RouteHandler
     private $output;
 
     /**
-     * @param string $slug
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      *
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    public function __construct(string $slug)
+    public function __construct(ServerRequestInterface $request)
     {
+        $slug = $request->getUri()->getPath();
+
         try {
             $route = $this->getRouteService()->findRouteFor($slug);
-
-            $this->processMiddleware($slug, $route->getArguments());
+            $this->processMiddleware($request);
         } catch (NoConfigurationException | ResourceNotFoundException $e) {
             throw $e;
         } catch (\Exception $exception) {
@@ -84,15 +85,16 @@ class RouteHandler
     /**
      * Check if the specific route has any middleware and execute them
      *
-     * @param string $slug
-     * @param array  $arguments
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @throws \RuntimeException
+     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
      */
-    private function processMiddleware(string $slug, array $arguments): void
+    private function processMiddleware(ServerRequestInterface $request): void
     {
-        foreach ($this->getRouteService()->findMiddlewareFor($slug) as $middleware) {
-            (new $middleware())->process($arguments);
+        $slug = $request->getUri()->getPath();
+
+        foreach ($this->getRouteService()->findMiddlewareFor($slug) as $middlewareRoute) {
+            (new Middleware($middlewareRoute))->process($request);
         }
     }
 
