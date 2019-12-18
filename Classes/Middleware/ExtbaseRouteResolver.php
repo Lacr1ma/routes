@@ -26,9 +26,11 @@ namespace LMS\Routes\Middleware;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Logger\Logger;
 use LMS\Routes\Extbase\RouteHandler;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
+use Symfony\Component\Routing\Exception\{NoConfigurationException, ResourceNotFoundException};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -51,10 +53,25 @@ class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
     {
         try {
             $extbaseRouteHandler = new RouteHandler($request);
+        } catch (ResourceNotFoundException | NoConfigurationException $e) {
+            return $handler->handle($request);
         } catch (\Exception $e) {
+            $this->log($e->getMessage(), $request->getUri()->getPath());
+
             return $handler->handle($request);
         }
 
         return $extbaseRouteHandler->generateResponse();
+    }
+
+    /**
+     * Write error message to log file
+     *
+     * @param string $error
+     * @param string $path
+     */
+    private function log(string $error, string $path): void
+    {
+        Logger::get(__CLASS__)->error($error, compact('path'));
     }
 }
