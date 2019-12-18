@@ -26,39 +26,44 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use LMS\Facade\Extbase\{Response, User\StateContext};
+use LMS\Facade\Traits\Throttler;
 
 /**
- * @author Sergey Borulko <borulkosergey@icloud.com>
+ * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
-class Authenticate extends AbstractRouteMiddleware
+class Throttle extends AbstractRouteMiddleware
 {
+    use Throttler;
+
     /**
-     * Redirect to login page if not authorized
-     *
      * {@inheritDoc}
      */
     public function process(): void
     {
-        if (StateContext::isLoggedIn()) {
-            return;
-        }
+        $this->incrementAttempts();
 
-        if (!Response::isJson()) {
-            HttpUtility::redirect($this->loginPageUrl());
+        if ($this->hasTooManyAttempts()) {
+            $this->deny('Too Many Attempts.');
         }
-
-        $this->deny('Authentication required.');
     }
 
     /**
-     * @return string
+     * First parameter in the route is maxAttempts count
+     *
+     * {@inheritDoc}
      */
-    private function loginPageUrl(): string
+    public function maxAttempts(): int
     {
-        $pid = (int)$this->getSettings('tx_routes')['redirect.']['loginPage'];
+        return (int)$this->getProperties()[0];
+    }
 
-        return "/index.php?id={$pid}";
+    /**
+     * Second parameter is blocking time
+     *
+     * {@inheritDoc}
+     */
+    protected function decayMinutes(): int
+    {
+        return (int)$this->getProperties()[1];
     }
 }

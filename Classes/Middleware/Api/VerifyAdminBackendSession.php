@@ -26,31 +26,41 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Symfony\Component\{HttpFoundation\Request, Routing\Exception\MethodNotAllowedException};
-
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class VerifyAdminBackendSession
+class VerifyAdminBackendSession extends AbstractRouteMiddleware
 {
     /**
      * Ensure an activate backend session exist and user is actually admin
+     *
+     * {@inheritDoc}
      */
     public function process(): void
     {
-        if ($this->backendSessionID() === $this->backendUser()['ses_id'] && $this->isBackendUserAdmin()) {
-            return;
+        if (!$this->isAdmin()) {
+            $this->deny('Admin user is required.');
         }
 
-        throw new MethodNotAllowedException([], 'Active BE session is required.');
+        if ($this->getActiveSessionID() !== $this->getCookieSessionID()) {
+            $this->deny('BE session mismatch');
+        }
     }
 
     /**
      * @return string
      */
-    private function backendSessionID(): string
+    private function getCookieSessionID(): string
     {
-        return Request::createFromGlobals()->cookies->get('be_typo_user') ?: '';
+        return $this->getRequest()->getCookieParams()['be_typo_user'] ?: '';
+    }
+
+    /**
+     * @return string
+     */
+    private function getActiveSessionID(): string
+    {
+        return $this->backendUser()['ses_id'] ?: '';
     }
 
     /**
@@ -58,7 +68,7 @@ class VerifyAdminBackendSession
      *
      * @return bool
      */
-    private function isBackendUserAdmin(): bool
+    private function isAdmin(): bool
     {
         return (bool)$this->backendUser()['admin'] ?: false;
     }

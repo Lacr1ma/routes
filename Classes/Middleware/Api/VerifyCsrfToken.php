@@ -26,15 +26,15 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Symfony\Component\{HttpFoundation\Request, Routing\Exception\MethodNotAllowedException};
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class VerifyCsrfToken
+class VerifyCsrfToken extends AbstractRouteMiddleware
 {
     /**
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * {@inheritDoc}
      */
     public function process(): void
     {
@@ -42,7 +42,7 @@ class VerifyCsrfToken
             return;
         }
 
-        throw new MethodNotAllowedException([], 'CSRF token mismatch.');
+        $this->deny('CSRF token mismatch.');
     }
 
     /**
@@ -50,7 +50,7 @@ class VerifyCsrfToken
      */
     public function getRequestToken(): string
     {
-        return Request::createFromGlobals()->headers->get('X-CSRF-TOKEN') ?: '';
+        return $this->getRequest()->getHeaderLine('X-CSRF-TOKEN');
     }
 
     /**
@@ -58,6 +58,6 @@ class VerifyCsrfToken
      */
     public function getSessionToken(): string
     {
-        return Request::createFromGlobals()->cookies->get('fe_typo_user') ?: '';
+        return $this->getRequest()->getCookieParams()['fe_typo_user'];
     }
 }
