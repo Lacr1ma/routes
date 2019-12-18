@@ -26,6 +26,7 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Extbase\User;
 use Psr\Http\Message\ServerRequestInterface;
 use LMS\Facade\Extbase\TypoScriptConfiguration;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -35,6 +36,8 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
  */
 abstract class AbstractRouteMiddleware
 {
+    use \LMS\Facade\Model\Property\User;
+
     /**
      * @var \Psr\Http\Message\ServerRequestInterface $request
      */
@@ -53,6 +56,8 @@ abstract class AbstractRouteMiddleware
     {
         $this->request = $request;
         $this->properties = $properties;
+
+        $this->setUser(User::currentUid());
     }
 
     /**
