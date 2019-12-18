@@ -26,44 +26,39 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Traits\Throttler;
-
 /**
  * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
-class Throttle extends AbstractRouteMiddleware
+class VerifyGroup extends AbstractRouteMiddleware
 {
-    use Throttler;
-
     /**
      * {@inheritDoc}
      */
     public function process(): void
     {
-        $this->incrementAttempts();
+        $actual = $this->getUserGroupsUserBelongTo();
+        $expected = $this->getRouteGroups();
 
-        if ($this->hasTooManyAttempts()) {
-            $this->deny('Too Many Attempts.');
+        if ((bool)array_intersect($actual, $expected)) {
+            return;
         }
+
+        $this->deny('User does not belong to required group.');
     }
 
     /**
-     * First parameter in the route is maxAttempts count
-     *
-     * {@inheritDoc}
+     *  Fetch all the groups current user belong to
      */
-    public function maxAttempts(): int
+    public function getUserGroupsUserBelongTo(): array
     {
-        return (int)$this->getProperties()[0];
+        return explode(',', $this->fetchUserProperty('usergroup'));
     }
 
     /**
-     * Second parameter is blocking time
-     *
-     * {@inheritDoc}
+     *  Retrieve group that guards the route
      */
-    protected function decayMinutes(): int
+    protected function getRouteGroups(): array
     {
-        return (int)$this->getProperties()[1];
+        return $this->getProperties();
     }
 }
