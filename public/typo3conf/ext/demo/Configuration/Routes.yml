@@ -1,3 +1,10 @@
+demo_middleware_auth:
+  path:         api/demo/middleware/auth-required
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  options:
+    middleware:
+      - auth
+
 demo_middleware:
   path:         api/demo/middleware
   controller:   LMS\Demo\Controller\DemoApiController::test
@@ -12,6 +19,22 @@ demo_throttle:
   options:
     middleware:
       - LMS\Routes\Middleware\Api\Throttle:3,1
+
+demo_middleware_groups:
+  path:         api/demo/middleware/in-group
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  options:
+    middleware:
+      - auth
+      - LMS\Routes\Middleware\Api\VerifyGroup:1,2
+
+demo_middleware_groups_blocked:
+  path:         api/demo/middleware/in-group-blocked
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  options:
+    middleware:
+      - auth
+      - LMS\Routes\Middleware\Api\VerifyGroup:999
 
 demo_action_with_params:
   path:         api/demo/test/with_params
