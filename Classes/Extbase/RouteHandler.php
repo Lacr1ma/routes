@@ -29,9 +29,9 @@ namespace LMS\Routes\Extbase;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use LMS\Facade\{Extbase\Response, ObjectManageable};
 use LMS\Routes\Support\{ErrorBuilder, ServerRequest};
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Psr\Http\{Message\ResponseInterface, Message\ServerRequestInterface};
 use LMS\Routes\{Domain\Model\Middleware, Domain\Model\Route, Service\RouteService};
-use Symfony\Component\Routing\Exception\{NoConfigurationException, ResourceNotFoundException};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -54,22 +54,10 @@ class RouteHandler
         $slug = $request->getUri()->getPath();
 
         try {
-            $route = $this->getRouteService()->findRouteFor($slug);
-            $this->processMiddleware($request);
-        } catch (NoConfigurationException | ResourceNotFoundException $e) {
-            throw $e;
-        } catch (\Exception $exception) {
+            $this->processRoute($request, $this->getRouteService()->findRouteFor($slug));
+        } catch (MethodNotAllowedException $exception) {
             $this->output = ErrorBuilder::messageFor($exception);
-            return;
         }
-
-        $this->createActionArgumentsFrom($route);
-
-        $this->run([
-            'vendorName' => $route->getVendor(),
-            'pluginName' => $route->getPlugin(),
-            'extensionName' => $route->getExtension()
-        ]);
     }
 
     /**
@@ -80,6 +68,27 @@ class RouteHandler
     public function generateResponse(): ResponseInterface
     {
         return Response::createWith($this->output);
+    }
+
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \LMS\Routes\Domain\Model\Route           $route
+     *
+     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     */
+    private function processRoute(ServerRequestInterface $request, Route $route): void
+    {
+        $this->processMiddleware(
+            $request->withQueryParams($route->getArguments())
+        );
+
+        $this->createActionArgumentsFrom($route);
+
+        $this->run([
+            'vendorName' => $route->getVendor(),
+            'pluginName' => $route->getPlugin(),
+            'extensionName' => $route->getExtension()
+        ]);
     }
 
     /**
