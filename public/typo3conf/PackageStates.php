@@ -119,9 +119,6 @@ return [
         'workspaces' => [
             'packagePath' => 'typo3/sysext/workspaces/',
         ],
-        'bootstrap_package' => [
-            'packagePath' => 'typo3conf/ext/bootstrap_package/',
-        ],
         'ddev_utilities' => [
             'packagePath' => 'typo3conf/ext/ddev_utilities/',
         ],
