@@ -10,7 +10,7 @@
 		"bk2k/introduction-website": "dev-master",
 
 		"lms/facade": "dev-master",
-		"lms/routes": "dev-master"
+		"lms/routes": "~1.6"
 	},
 	"require-dev": {
 		"vimeo/psalm": "^3",
