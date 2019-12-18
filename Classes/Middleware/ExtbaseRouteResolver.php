@@ -49,10 +49,8 @@ class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $slug = $request->getUri()->getPath();
-
         try {
-            $extbaseRouteHandler = new RouteHandler($slug);
+            $extbaseRouteHandler = new RouteHandler($request);
         } catch (\Exception $e) {
             return $handler->handle($request);
         }
