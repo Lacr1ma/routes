@@ -50,6 +50,8 @@ class Middleware
      */
     public function __construct(string $route)
     {
+        $this->properties = [];
+
         $this->initializeNamespace($route);
         $this->initializeProperties($route);
     }
@@ -70,9 +72,6 @@ class Middleware
     }
 
     /**
-     * @psalm-suppress MissingClosureReturnType
-     * @psalm-suppress MissingClosureParamType
-     *
      * @param string $route
      */
     private function initializeProperties(string $route): void
@@ -80,10 +79,6 @@ class Middleware
         if ($length = strpos($route, ':')) {
             $this->properties = explode(',', Str::substr($route, ++$length));
         }
-
-        $this->properties = collect($this->properties)->map(function ($property) {
-            return is_numeric($property) ? (int)$property : $property;
-        })->all();
     }
 
     /**
