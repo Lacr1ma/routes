@@ -1,9 +1,12 @@
 language: php
 
 php:
-  - 7.2
+  - 7.3
 
 sudo: true
+
+directories:
+  - $HOME/.composer/cache/files
 
 before_install:
   # Update docker
@@ -27,8 +30,8 @@ install:
   - ddev start
   - ddev import-db --src=./dump.sql
   - ddev import-files --src=./assets
-  - ddev composer install
-  - ddev exec sudo chmod -R 777 /var/www/html/
+  - ddev composer install --prefer-dist
+  - ddev exec sudo chmod -R 777 /var/www/html/var/
 
 script:
   # Check code style
