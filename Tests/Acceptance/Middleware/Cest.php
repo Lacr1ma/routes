@@ -34,6 +34,44 @@ use LMS\Routes\Tests\Acceptance\Support\AcceptanceTester;
 class Cest
 {
     /**
+     * This route requires user that makes a request is the same as in param for access.
+     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has uid <1>
+     * We pass <user> in params with same identifier
+     * So we should give the access
+     *
+     * @param AcceptanceTester $I
+     */
+    public function user_middleware_can_pass(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->sendGET('demo/middleware/own?user=1&title=demo');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['user' => 1]);
+    }
+
+    /**
+     * This route requires user that makes a request is the same as in param for access.
+     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has uid <1>
+     * We pass <user> in params with identifier that equal <999>
+     * So we should deny the request
+     *
+     * @param AcceptanceTester $I
+     */
+    public function user_middleware_can_block(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->sendGET('demo/middleware/own?user=999&title=demo');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['error' => 'User is not a resource owner.']);
+    }
+
+    /**
      * This route requires group of UID 999 for access.
      * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has group 1.
      * So we should deny the request
