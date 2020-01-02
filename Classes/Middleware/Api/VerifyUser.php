@@ -29,33 +29,37 @@ namespace LMS\Routes\Middleware\Api;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class VerifyCsrfToken extends AbstractRouteMiddleware
+class VerifyUser extends AbstractRouteMiddleware
 {
     /**
      * {@inheritDoc}
      */
     public function process(): void
     {
-        if ($this->getRequestToken() === $this->getSessionToken()) {
+        if ($this->getUser() === $this->getRequestUserID()) {
             return;
         }
-
-        $this->deny('CSRF token mismatch.');
+ 
+        $this->deny('User is not a resource owner.');
     }
 
     /**
-     * @return string
+     * Retrieves the value of the action parameter that contains <user identifier>
+     *
+     * @return int
      */
-    public function getRequestToken(): string
+    public function getRequestUserID(): int
     {
-        return $this->getRequest()->getHeaderLine('X-CSRF-TOKEN');
+        return (int)$this->getQuery()[$this->getUserPropertyName()];
     }
 
     /**
+     * Retrieve the name of the parameter that related to user field
+     *
      * @return string
      */
-    public function getSessionToken(): string
+    public function getUserPropertyName(): string
     {
-        return $this->getRequest()->getCookieParams()['fe_typo_user'];
+        return (string)$this->getProperties()[0];
     }
 }
