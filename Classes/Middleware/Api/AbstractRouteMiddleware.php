@@ -92,6 +92,22 @@ abstract class AbstractRouteMiddleware
     }
 
     /**
+     * @return array
+     */
+    public function getOriginalParams(): array
+    {
+        return (array)$this->getRequest()->getAttributes()['_originalGetParameters'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getQuery(): array
+    {
+        return (array)$this->getRequest()->getQueryParams();
+    }
+
+    /**
      * @param string $extKey
      *
      * @return array
