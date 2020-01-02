@@ -48,6 +48,8 @@ class VerifyGroup extends AbstractRouteMiddleware
 
     /**
      *  Fetch all the groups current user belong to
+     *
+     * @return array
      */
     public function getUserGroupsUserBelongTo(): array
     {
@@ -56,6 +58,8 @@ class VerifyGroup extends AbstractRouteMiddleware
 
     /**
      *  Retrieve group that guards the route
+     *
+     * @return array
      */
     protected function getRouteGroups(): array
     {
