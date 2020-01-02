@@ -20,6 +20,19 @@ demo_throttle:
     middleware:
       - LMS\Routes\Middleware\Api\Throttle:3,1
 
+demo_middleware_user_owner:
+  path:         api/demo/middleware/own
+  controller:   LMS\Demo\Controller\DemoApiController::checkOwner
+  requirements:
+    user:       \d+
+    title:      "[^/]+"
+  defaults:
+    user:
+    title:
+  options:
+    middleware:
+      - LMS\Routes\Middleware\Api\VerifyUser:user
+
 demo_middleware_groups:
   path:         api/demo/middleware/in-group
   controller:   LMS\Demo\Controller\DemoApiController::test

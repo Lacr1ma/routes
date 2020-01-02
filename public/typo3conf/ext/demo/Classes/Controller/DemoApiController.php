@@ -41,6 +41,19 @@ class DemoApiController extends Base\ApiResourceController
     }
 
     /**
+     * Created for VerifyUser Middleware.
+     * We allow the access to this action only if user that makes a request is
+     * the same as mentioned in params
+     *
+     * @param int    $user
+     * @param string $title
+     */
+    public function checkOwnerAction(int $user, string $title): void
+    {
+        $this->view->assign('value', compact('user', 'title'));
+    }
+
+    /**
      *
      */
     public function testAction(): void
