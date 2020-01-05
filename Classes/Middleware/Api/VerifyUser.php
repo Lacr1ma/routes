@@ -40,7 +40,7 @@ class VerifyUser extends AbstractRouteMiddleware
             return;
         }
  
-        $this->deny('User is not a resource owner.');
+        $this->deny('User is not a resource owner.', 403);
     }
 
     /**
