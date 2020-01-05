@@ -43,7 +43,7 @@ class VerifyGroup extends AbstractRouteMiddleware
             return;
         }
 
-        $this->deny('User does not belong to required group.');
+        $this->deny('User does not belong to required group.', 403);
     }
 
     /**
