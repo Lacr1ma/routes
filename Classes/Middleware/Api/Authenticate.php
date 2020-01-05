@@ -49,7 +49,7 @@ class Authenticate extends AbstractRouteMiddleware
             HttpUtility::redirect($this->loginPageUrl());
         }
 
-        $this->deny('Authentication required.');
+        $this->deny('Authentication required.', 401);
     }
 
     /**
