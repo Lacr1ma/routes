@@ -40,7 +40,7 @@ class VerifyCsrfToken extends AbstractRouteMiddleware
             return;
         }
 
-        $this->deny('CSRF token mismatch.');
+        $this->deny('CSRF token mismatch.', 401);
     }
 
     /**
