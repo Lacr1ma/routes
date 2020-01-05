@@ -1,15 +1,22 @@
 /**
+ * Initialize axios for every request.
+ */
+document.addEventListener("DOMContentLoaded", function () {
+    if (typeof axios !== 'undefined') {
+        initializeRequestHeaders();
+    }
+});
+
+/**
  * Fetch the specific recourse
  *
  * @param {string}   url         Endpoint route to call
  * @return {Array}
  */
 const readResource = async (url) => {
-  initializeRequestHeaders();
+    const result = await axios.get(url);
 
-  const result = await axios.get(url);
-
-  return result.data[0];
+    return result.data[0];
 };
 
 /**
@@ -19,11 +26,9 @@ const readResource = async (url) => {
  * @return {Object}
  */
 const listResource = async (url) => {
-  initializeRequestHeaders();
+    const result = await axios.get(url);
 
-  const result = await axios.get(url);
-
-  return result.data;
+    return result.data;
 };
 
 /**
@@ -33,11 +38,9 @@ const listResource = async (url) => {
  * @return {boolean}
  */
 const deleteResource = async (url) => {
-  initializeRequestHeaders();
+    const result = await axios.delete(url);
 
-  const result = await axios.delete(url);
-
-  return result.data.success;
+    return result.data.success;
 };
 
 /**
@@ -48,11 +51,9 @@ const deleteResource = async (url) => {
  * @return {boolean}
  */
 const storeResource = async (url, data) => {
-  initializeRequestHeaders();
+    const result = await axios.post(url, {data: data});
 
-  const result = await axios.post(url, {data: data});
-
-  return result.data.success;
+    return result.data.success;
 };
 
 /**
@@ -63,11 +64,9 @@ const storeResource = async (url, data) => {
  * @return {boolean}
  */
 const updateResource = async (url, data) => {
-  initializeRequestHeaders();
+    const result = await axios.put(url, {data: data});
 
-  const result = await axios.put(url, {data: data});
-
-  return result.data.success;
+    return result.data.success;
 };
 
 /**
@@ -76,9 +75,9 @@ const updateResource = async (url, data) => {
  * and csrf token initialized if it is available.
  */
 const initializeRequestHeaders = () => {
-  const csrf = document.head.querySelector('meta[name="x-csrf-token"]');
+    const csrf = document.head.querySelector('meta[name="x-csrf-token"]');
 
-  axios.defaults.headers.common['Accept'] = 'application/json';
-  axios.defaults.headers.common['Content-Type'] = 'application/json';
-  axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf ? csrf.content : '';
+    axios.defaults.headers.common['Accept'] = 'application/json';
+    axios.defaults.headers.common['Content-Type'] = 'application/json';
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf ? csrf.content : '';
 };
