@@ -43,7 +43,7 @@ class Throttle extends AbstractRouteMiddleware
         $this->incrementAttempts();
 
         if ($this->hasTooManyAttempts()) {
-            $this->deny('Too Many Attempts.');
+            $this->deny('Too Many Attempts.', 429);
         }
     }
 
