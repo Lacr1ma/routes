@@ -39,11 +39,11 @@ class VerifyAdminBackendSession extends AbstractRouteMiddleware
     public function process(): void
     {
         if (!$this->isAdmin()) {
-            $this->deny('Admin user is required.');
+            $this->deny('Admin user is required.', 403);
         }
 
         if ($this->getActiveSessionID() !== $this->getCookieSessionID()) {
-            $this->deny('BE session mismatch');
+            $this->deny('BE session mismatch', 403);
         }
     }
 
