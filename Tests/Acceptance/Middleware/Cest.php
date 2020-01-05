@@ -34,6 +34,45 @@ use LMS\Routes\Tests\Acceptance\Support\AcceptanceTester;
 class Cest
 {
     /**
+     * This route requires group of UID 5 for access,
+     * or admin group (1 | 2)
+     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has group 1.
+     * So we should give the access
+     *
+     * @param AcceptanceTester $I
+     */
+    public function group_middleware_can_pass_if_admin(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->sendGET('demo/middleware/in-group/admin');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['success' => true]);
+    }
+
+    /**
+     * This route requires user that makes a request is the same as in param for access,
+     * or user from admin list can also perform the request
+     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has uid <1>
+     * We pass <user> in params with <22>, but it's not an owner of the resource.
+     * But our admin user has uid <1>, so we should give the access
+     *
+     * @param AcceptanceTester $I
+     */
+    public function user_middleware_can_pass_if_admin(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->sendGET('demo/middleware/user/admin?user=22&title=demo');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['user' => 22]);
+    }
+
+    /**
      * This route requires user that makes a request is the same as in param for access.
      * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has uid <1>
      * We pass <user> in params with same identifier
