@@ -44,6 +44,11 @@ class RouteHandler
     private $output;
 
     /**
+     * @var int
+     */
+    private $status = 200;
+
+    /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
@@ -57,6 +62,7 @@ class RouteHandler
             $this->processRoute($request, $this->getRouteService()->findRouteFor($slug));
         } catch (MethodNotAllowedException $exception) {
             $this->output = ErrorBuilder::messageFor($exception);
+            $this->status = (int)$exception->getCode() ?: 200;
         }
     }
 
@@ -67,7 +73,7 @@ class RouteHandler
      */
     public function generateResponse(): ResponseInterface
     {
-        return Response::createWith($this->output);
+        return Response::createWith($this->output, $this->status);
     }
 
     /**
