@@ -29,6 +29,7 @@ namespace LMS\Routes\Middleware\Api;
 use LMS\Facade\Traits\Throttler;
 
 /**
+ * @psalm-suppress PropertyNotSetInConstructor
  * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
 class Throttle extends AbstractRouteMiddleware

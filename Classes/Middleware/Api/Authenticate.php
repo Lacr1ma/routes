@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use LMS\Facade\Extbase\{Response, User\StateContext};
 
 /**
+ * @psalm-suppress PropertyNotSetInConstructor
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class Authenticate extends AbstractRouteMiddleware

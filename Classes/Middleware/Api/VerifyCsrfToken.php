@@ -27,6 +27,7 @@ namespace LMS\Routes\Middleware\Api;
  * ************************************************************* */
 
 /**
+ * @psalm-suppress PropertyNotSetInConstructor
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class VerifyCsrfToken extends AbstractRouteMiddleware
