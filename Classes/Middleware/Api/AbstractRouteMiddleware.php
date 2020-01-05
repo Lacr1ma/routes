@@ -67,12 +67,13 @@ abstract class AbstractRouteMiddleware
 
     /**
      * @param string $message
+     * @param int $status
      *
      * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
      */
-    protected function deny(string $message): void
+    protected function deny(string $message, int $status = 200): void
     {
-        throw new MethodNotAllowedException([], $message);
+        throw new MethodNotAllowedException([], $message, $status);
     }
 
     /**
