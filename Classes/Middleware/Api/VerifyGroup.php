@@ -26,11 +26,17 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use LMS\Facade\{Assist\Str, Extbase\ExtensionHelper};
+
 /**
+ * @psalm-suppress PropertyNotSetInConstructor
  * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
 class VerifyGroup extends AbstractRouteMiddleware
 {
+    use ExtensionHelper;
+
     /**
      * {@inheritDoc}
      */
@@ -51,9 +57,11 @@ class VerifyGroup extends AbstractRouteMiddleware
      *
      * @return array
      */
-    public function getUserGroupsUserBelongTo(): array
+    private function getUserGroupsUserBelongTo(): array
     {
-        return explode(',', $this->fetchUserProperty('usergroup'));
+        $userGroups = $this->fetchUserProperty('usergroup');
+
+        return GeneralUtility::intExplode(',', $userGroups, true);
     }
 
     /**
@@ -61,8 +69,40 @@ class VerifyGroup extends AbstractRouteMiddleware
      *
      * @return array
      */
-    protected function getRouteGroups(): array
+    private function getRouteGroups(): array
     {
+        if (Str::start(array_last($this->getProperties()), 'tx_')) {
+            $accessGroups = array_slice($this->getProperties(), 0, -1);
+
+            return array_merge($accessGroups, $this->getAdminGroups());
+        }
+
         return $this->getProperties();
+    }
+
+    /**
+     * Retrieve the name of the extension that is related to the endpoint
+     *
+     * @return string
+     */
+    private function getAdminExtensionName(): string
+    {
+        $extKey = (string)array_last($this->getProperties());
+
+        return $extKey ?: self::extensionTypoScriptKey();
+    }
+
+    /**
+     * Find all admin users related to current request
+     *
+     * @return array
+     */
+    private function getAdminGroups(): array
+    {
+        $ext = $this->getAdminExtensionName();
+
+        $adminGroups = $this->getSettings($ext)['middleware.']['admin.']['groups'];
+
+        return GeneralUtility::intExplode(',', $adminGroups, true);
     }
 }

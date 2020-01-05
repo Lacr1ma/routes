@@ -26,11 +26,17 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use LMS\Facade\Extbase\{User, ExtensionHelper};
+
 /**
+ * @psalm-suppress PropertyNotSetInConstructor
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class VerifyUser extends AbstractRouteMiddleware
 {
+    use ExtensionHelper;
+
     /**
      * {@inheritDoc}
      */
@@ -39,7 +45,11 @@ class VerifyUser extends AbstractRouteMiddleware
         if ($this->getUser() === $this->getRequestUserID()) {
             return;
         }
- 
+
+        if (in_array(User::currentUid(), $this->getAdminUsers(), true)) {
+            return;
+        }
+
         $this->deny('User is not a resource owner.', 403);
     }
 
@@ -48,7 +58,7 @@ class VerifyUser extends AbstractRouteMiddleware
      *
      * @return int
      */
-    public function getRequestUserID(): int
+    private function getRequestUserID(): int
     {
         return (int)$this->getQuery()[$this->getUserPropertyName()];
     }
@@ -58,8 +68,32 @@ class VerifyUser extends AbstractRouteMiddleware
      *
      * @return string
      */
-    public function getUserPropertyName(): string
+    private function getUserPropertyName(): string
     {
         return (string)$this->getProperties()[0];
+    }
+
+    /**
+     * Retrieve the name of the extension that is related to the endpoint
+     *
+     * @return string
+     */
+    private function getAdminExtensionName(): string
+    {
+        return (string)$this->getProperties()[1] ?: self::extensionTypoScriptKey();
+    }
+
+    /**
+     * Find all admin users related to current request
+     *
+     * @return array
+     */
+    private function getAdminUsers(): array
+    {
+        $ext = $this->getAdminExtensionName();
+
+        $admins = $this->getSettings($ext)['middleware.']['admin.']['users'];
+
+        return GeneralUtility::intExplode(',', $admins, true);
     }
 }
