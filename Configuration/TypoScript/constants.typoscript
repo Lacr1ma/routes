@@ -11,6 +11,16 @@ plugin.tx_routes {
       loginPage =
     }
 
+    middleware {
+      admin {
+        # cat=plugin.tx_routes//b; type=string; label=Comma separated list of users who have full access
+        users =
+
+        # cat=plugin.tx_routes//b; type=string; label=Comma separated list of groups that have full access
+        groups =
+      }
+    }
+
   }
 
 }

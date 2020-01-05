@@ -13,6 +13,12 @@ plugin.tx_routes {
         10 = LMS\Routes\Middleware\Api\Authenticate
         20 = LMS\Routes\Middleware\Api\VerifyCsrfToken
       }
+
+      admin {
+        users = {$plugin.tx_routes.settings.middleware.admin.users}
+        groups = {$plugin.tx_routes.settings.middleware.admin.groups}
+      }
+
     }
 
   }
