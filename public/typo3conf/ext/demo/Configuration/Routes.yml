@@ -33,6 +33,29 @@ demo_middleware_user_owner:
     middleware:
       - LMS\Routes\Middleware\Api\VerifyUser:user
 
+demo_middleware_user_global_admin:
+  path:         api/demo/middleware/user/admin
+  controller:   LMS\Demo\Controller\DemoApiController::checkOwner
+  methods:      GET
+  requirements:
+    user:       \d+
+    title:      "[^/]+"
+  defaults:
+    user:
+    title:
+  options:
+    middleware:
+      - LMS\Routes\Middleware\Api\VerifyUser:user,tx_demo
+
+
+demo_middleware_group_global_admin:
+  path:         api/demo/middleware/in-group/admin
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  options:
+    middleware:
+      - auth
+      - LMS\Routes\Middleware\Api\VerifyGroup:5,tx_demo
+
 demo_middleware_groups:
   path:         api/demo/middleware/in-group
   controller:   LMS\Demo\Controller\DemoApiController::test

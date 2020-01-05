@@ -1,1 +1,6 @@
 plugin.tx_demo.view.templateRootPath = {$plugin.tx_demo.view.templateRootPath}
+
+plugin.tx_demo.settings.middleware.admin {
+    users = {$plugin.tx_demo.settings.middleware.admin.users}
+    groups = {$plugin.tx_demo.settings.middleware.admin.groups}
+}
