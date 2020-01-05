@@ -68,6 +68,7 @@ class Cest
         $I->sendGET('demo/middleware/own?user=999&title=demo');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseCodeIs(403);
         $I->seeResponseContainsJson(['error' => 'User is not a resource owner.']);
     }
 
@@ -86,6 +87,7 @@ class Cest
         $I->sendGET('demo/middleware/in-group-blocked');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseCodeIs(403);
         $I->seeResponseContainsJson(['error' => 'User does not belong to required group.']);
     }
 
@@ -125,6 +127,7 @@ class Cest
         $I->sendGET('demo/throttle');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseCodeIs(429);
         $I->seeResponseContainsJson(['error' => 'Too Many Attempts.']);
     }
 
@@ -140,6 +143,7 @@ class Cest
         $I->sendGET('demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseCodeIs(401);
         $I->seeResponseContainsJson(['error' => 'Authentication required.']);
     }
 
@@ -157,6 +161,7 @@ class Cest
         $I->sendGET('demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseCodeIs(401);
         $I->seeResponseContainsJson(['error' => 'CSRF token mismatch.']);
     }
 
@@ -192,6 +197,7 @@ class Cest
         $I->sendGET('demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseCodeIs(403);
         $I->seeResponseContainsJson(['error' => 'Admin user is required.']);
     }
 
