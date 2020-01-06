@@ -26,17 +26,16 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\User;
 use Psr\Http\Message\ServerRequestInterface;
-use LMS\Facade\Extbase\TypoScriptConfiguration;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use LMS\Facade\Extbase\{User, ExtensionHelper, TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 abstract class AbstractRouteMiddleware
 {
-    use \LMS\Facade\Model\Property\User;
+    use \LMS\Facade\Model\Property\User, ExtensionHelper;
 
     /**
      * @var \Psr\Http\Message\ServerRequestInterface $request
@@ -106,6 +105,18 @@ abstract class AbstractRouteMiddleware
     public function getQuery(): array
     {
         return (array)$this->getRequest()->getQueryParams();
+    }
+
+    /**
+     * Retrieve the name of the extension that is related to the endpoint
+     *
+     * @return string
+     */
+    protected function getAdminExtensionName(): string
+    {
+        $extKey = (string)array_last($this->getProperties());
+
+        return $extKey ?: self::extensionTypoScriptKey();
     }
 
     /**

@@ -26,8 +26,8 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Extbase\User;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use LMS\Facade\Extbase\{User, ExtensionHelper};
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -35,8 +35,6 @@ use LMS\Facade\Extbase\{User, ExtensionHelper};
  */
 class VerifyUser extends AbstractRouteMiddleware
 {
-    use ExtensionHelper;
-
     /**
      * {@inheritDoc}
      */
@@ -71,16 +69,6 @@ class VerifyUser extends AbstractRouteMiddleware
     private function getUserPropertyName(): string
     {
         return (string)$this->getProperties()[0];
-    }
-
-    /**
-     * Retrieve the name of the extension that is related to the endpoint
-     *
-     * @return string
-     */
-    private function getAdminExtensionName(): string
-    {
-        return (string)$this->getProperties()[1] ?: self::extensionTypoScriptKey();
     }
 
     /**
