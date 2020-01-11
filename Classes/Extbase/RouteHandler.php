@@ -106,6 +106,10 @@ class RouteHandler
      */
     private function processMiddleware(ServerRequestInterface $request): void
     {
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+            return;
+        }
+
         $slug = $request->getUri()->getPath();
 
         foreach ($this->getRouteService()->findMiddlewareFor($slug) as $middlewareRoute) {
