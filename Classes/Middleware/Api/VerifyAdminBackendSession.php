@@ -44,7 +44,7 @@ class VerifyAdminBackendSession extends AbstractRouteMiddleware
         }
 
         if ($this->getActiveSessionID() !== $this->getCookieSessionID()) {
-            $this->deny('BE session mismatch', 403);
+            $this->deny('BE session mismatch.', 403);
         }
     }
 
