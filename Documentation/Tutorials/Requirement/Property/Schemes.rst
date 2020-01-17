@@ -9,21 +9,39 @@
 Schemes
 ===================================
 
+You can set a rule, that your action will be triggered only by https.
+By default ( when schemes is not specified ) protocol is not important,
+so both **http** and **https** will pass.
+
 .. code-block:: yaml
    :linenos:
    :emphasize-lines: 4
 
-   demo_test:
-      path:         api/demo
-      controller:   Vendor\Demo\Controller\DemoApiController::test
-      schemes:      [https]
+   demo_clients-destroy:
+     path:         api/demo/clients/{uid}
+     controller:   LMS\Demo\Controller\ClientApiController::destroy
+     schemes:      https
+     requirements:
+        uid:       \d+
 
 .. tip::
-   Route will be triggered only if *scheme* is matched
 
-   **Required**: No
+    **Required**: No
 
-   **Variants**: http | https
+    **Variants**: http | https
 
-.. tip::
-      By default ( when schemes is not specified ) both http and https is taking place.
+Multiple protocols
+^^^^^^^^^^^^^^^^^^^
+
+You can specify more than just one protocol
+
+.. code-block:: yaml
+   :linenos:
+   :emphasize-lines: 4
+
+   demo_clients-destroy:
+      path:         api/demo/clients/{uid}
+      controller:   LMS\Demo\Controller\ClientApiController::destroy
+      schemes:      [http, https]
+      requirements:
+         uid:       \d+

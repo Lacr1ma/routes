@@ -13,40 +13,29 @@ CREATE
 
 #. Define appropriate route.
 
-   .. code-block:: yaml
-      :linenos:
+    .. include:: ../../../_Shared/Yaml/Photos/Store.rst
 
-      demo_create:
-         path:         api/demo/photos
-         controller:   Vendor\Demo\Controller\DemoApiController::create
-         methods:      POST
-         defaults:
-            data:
-         options:
-            middleware:
-               - auth
+    .. tip::
+        **store** action has been already implemented in our predefined controller.
 
+        **POST** is not required, but as we follow the concept, we should always use it.
 
-   .. tip::
-      **create** action has been already implemented in our predefined controller.
+        **json** is not required, but it gives a little bit of clarity.
 
-      **POST** is not required, but as we follow the concept, we should always use it.
+        **data** is required argument here, as we later pass data that will be placed inside *data* argument.
 
-      **data** is required argument here, as we later pass data that will be placed inside *data* argument.
+        **auth** FE user session is required as well as proper csrf token.
 
-      **auth** FE user session is required as well as proper csrf token.
+        **Throttle** It's optional, but quite useful. Usually we want to limit creation of certain recourse per time.
 
 #. Use defined above endpoint in JavaScript scope.
 
-   .. code-block:: javascript
+    .. code-block:: javascript
 
-      ...
+        storeResource('/api/demo/photos', {title: 'My new entity'}).then(function (isOk) {
+            console.log(isOk);
+        });
 
-      storeResource('/api/demo/photos', {title: 'My new entity'}).then(function (isOk) {
-         console.log(isOk);
-      });
+.. tip::
 
-      ...
-
-   .. tip::
-         **storeResource** function has been already implemented in our predefined Routes.js.
+    **storeResource** function has been already implemented in our predefined Routes.js.

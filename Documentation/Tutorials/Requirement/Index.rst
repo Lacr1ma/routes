@@ -13,11 +13,12 @@ Condition
    :titlesonly:
    :glob:
 
+   Property/Name
    Property/Path
-   Property/Format
+   Property/Controller
+   Property/Methods
+   Property/Format/Index
    Property/Params
    Property/Schemes
-   Property/Methods
-   Property/Controller
-   Property/Middleware
    Property/Requirements
+   Property/Middleware

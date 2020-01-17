@@ -25,7 +25,7 @@ API Routes
 		routes
 
 	:Copyright:
-		2019
+		2020
 
 	:Author:
 		Borulko Serhii
@@ -52,3 +52,4 @@ API Routes
 	AdministratorManual/Index
 	DeveloperManual/Index
 	Tutorials/Index
+	Error/Index

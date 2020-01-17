@@ -12,11 +12,11 @@ Preparation
 
 #. Define appropriate route.
 
-   Create your route collection file under :file:`EXT:demo/Configuration/Routes.yml`:
+   Create your route collection file under :file:`Configuration/Routes.yml`:
 
 #. Your Resource repository must extend our predefined **AbstractRepository**.
 
-   Create your repository under :file:`EXT:demo/Classes/Domain/Repository/EntityRepository.php`:
+   Create your repository under :file:`Classes/Domain/Repository/EntityRepository.php`:
 
    .. code-block:: php
 
@@ -27,15 +27,16 @@ Preparation
 
          class EntityRepository extends \LMS\Facade\Repository\AbstractRepository
          {
+            // ...
          }
 
    .. tip::
 
-            **EntityRepository** replace with your real repository name.
+        **EntityRepository** replace with your real repository name.
 
 #. Create your own **JsonView**.
 
-   Create your view under :file:`EXT:demo/Classes/Mvc/View/JsonView.php`:
+   Create your view under :file:`Classes/Mvc/View/JsonView.php`:
 
    .. code-block:: php
 
@@ -66,7 +67,7 @@ Preparation
 
 #. Your Controller must extend our predefined **AbstractApiController**.
 
-   Create your view under :file:`EXT:demo/Classes/Controller/DemoApiController.php`:
+   Create your view under :file:`Classes/Controller/DemoApiController.php`:
 
    .. code-block:: php
 
@@ -126,20 +127,20 @@ CRUD
    #. :yaml:`controller` Indicates which Extbase Controller and action inside it should be triggered during the request.
    #. :yaml:`methods` Specifies which request type is granted to call the action ( could be more than just one).
    #. :yaml:`schemes` Which protocol should be used during the request.
+   #. :yaml:`format` Indicates which view format we deal with. By default Extbase will trigger MyView.html, if it is set to json, the result will be MyView.json
    #. :yaml:`defaults` This is a container that may contain predefined values for your action, so-called arguments.
    #. :yaml:`data` Required when we pass any data using POST or PUT methods. Just keep it empty for those methods.
    #. :yaml:`requirements` Allow us to control the variable type for dynamic variable in the route.
    #. :yaml:`middleware` Allow us to call certain list of middleware for the route.
 
    .. code-block:: yaml
-      :linenos:
-      :emphasize-lines: 1
 
-      create_my_resource_entity:
+      extension_controller-action:
          path:         api/path/to/my/route/{entity}
          controller:   Vendor\Demo\Controller\DemoApiController::myActionName
          methods:      [GET, POST, PUT, DELETE]
          schemes:      [https, http]
+         format:       json
          defaults:
             data:
          requirements:
@@ -149,9 +150,6 @@ CRUD
                - auth
                - LMS\Routes\Middleware\Api\VerifyAdminBackendSession
                - Vendor\Demo\Middleware\Api\MyMiddleware
-
-  .. tip::
-        **controller** Action suffix must be skipped. So *myActionNameAction* is incorrect.
 
 .. toctree::
    :maxdepth: 5

@@ -39,35 +39,30 @@ Example
 ^^^^^^^^^^^^^
 
 .. code-block:: yaml
-      :linenos:
 
-      client_show:
-         path:       api/client/{client}
+      demo_clients-show:
+         path:       api/demo/clients/{client}
          controller: Vendor\Demo\Controller\ClientApiController::show
 
 .. code-block:: html
 
    {namespace route = LMS\Routes\ViewHelpers}
 
-   <a href="{route:makeSlug( for: 'client_show', with: {client: 2} )}">
+   <a href="{route:makeSlug( for: 'demo_clients-show', with: {client: 2} )}">
       Show
    </a>
 
    // or initialize a JS constant
    <script type="text/javascript">
-      const showClientUrl = "{route:makeSlug( for: 'client_show', with: {client: 2} )}";
+      const showClientUrl = "{route:makeSlug( for: 'demo_clients-show', with: {client: 2} )}";
    </script>
 
 Output: ::
 
-   api/client/2
+   api/demo/clients/2
 
 .. code-block:: javascript
-
-   ...
 
    readResource(showClientUrl).then(function (client) {
       console.log(client);
    });
-
-   ...

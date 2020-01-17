@@ -11,13 +11,15 @@ Installation
 
 #. Get the extension
 
-   #. **Use composer**: Use `composer require lms/routes`.
+`composer require lms/routes`.
 
-   .. warning::
-      1.Currently, extension works *only* in a composer mode!
+.. warning::
+
+    Currently, extension works *only* in a composer mode!
 
 Latest version from git
 -----------------------
+
 You can get the latest version from git by using the git command:
 
 .. code-block:: bash

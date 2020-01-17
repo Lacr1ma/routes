@@ -14,24 +14,33 @@ UPDATE
 #. Define appropriate route.
 
    .. code-block:: yaml
-      :linenos:
 
-      demo_update:
+      demo_photos-update:
          path:         api/demo/photos/{uid}
-         controller:   Vendor\Demo\Controller\DemoApiController::edit
+         controller:   Vendor\Demo\Controller\PhotoApiController::update
          methods:      PUT
+         format:       json
          requirements:
-            uid:        \d+
+            uid:       \d+
          defaults:
             data:
          options:
             middleware:
                - auth
 
+   .. warning::
+
+        If you extend :file:`\LMS\Facade\Controller\AbstractApiController`,
+
+        **uid** must be present and it's name should not be changed.
+
    .. tip::
-      **edit** action has been already implemented in our predefined controller.
+
+      **update** action has been already implemented in our predefined controller.
 
       **PUT** is not required, but as we follow the concept, we should always use it.
+
+      **json** is not required, but it gives a little bit of clarity.
 
       **requirements** has *uid* argument and tells us it must be of type integer.
 
@@ -43,13 +52,10 @@ UPDATE
 
    .. code-block:: javascript
 
-      ...
-
       updateResource('/api/demo/photos/1', {title: 'Title 1'}).then(function (isOk) {
          console.log(isOk);
       });
 
-      ...
-
    .. tip::
-         **updateResource** function has been already implemented in our predefined Routes.js.
+
+        **updateResource** function has been already implemented in our predefined Routes.js.

@@ -9,19 +9,22 @@
 Requirements
 ===================================
 
+If you have any route parameters, there's an option where you can limit the
+possible values for them. For instance, you can validate that :file:`{client}` must be
+of type integer.
+
 .. code-block:: yaml
    :linenos:
    :emphasize-lines: 5
 
-   demo:
-      path:         clients/{client}
-      controller:   LMS\Demo\Controller\DemoApiController::test
+   demo_clients-show:
+      path:         api/demo/clients/{uid}
+      controller:   LMS\Demo\Controller\ClientApiController::show
       requirements:
-         client:    \d+
+         uid:       \d+
 
 .. tip::
-   Route will be triggered only if *client* is of type integer
 
-   **Required**: No
+    **Required**: No
 
-   **Variants**:  Use symfony documentation to get more information about possible variants.
+    **Variants**:  Use symfony documentation to get more information about possible variants.

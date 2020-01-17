@@ -16,5 +16,6 @@ Tutorials
 	:maxdepth: 5
 	:titlesonly:
 
+	Minimum
 	Crud/Index
 	Requirement/Index
