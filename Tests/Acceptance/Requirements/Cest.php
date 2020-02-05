@@ -34,15 +34,18 @@ use LMS\Routes\Tests\Acceptance\Support\AcceptanceTester;
 class Cest
 {
     /**
+     * Since v10 it's probably should be deleted.
+     *
      * @param AcceptanceTester $I
      */
     public function custom_format_applied(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPOST('demo/custom/view');
+        $I->sendPOST('https://routes.ddev.site/api/demo/custom/view');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseContainsJson(['ok' => true]);
+//        $I->seeResponseContainsJson(['ok' => true]);
+        $I->seeResponseContainsJson(['success' => true]);
     }
 
     /**
@@ -74,7 +77,7 @@ class Cest
     public function params_default_values_applied(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPOST('demo/test/with_params');
+        $I->sendGET('https://routes.ddev.site/api/demo/test/with_params');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['title' => 'default-title', 'description' => 'default-description']);
@@ -97,7 +100,7 @@ class Cest
     public function requirement_integer_only_applied(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/photos/1');
+        $I->sendGET('https://routes.ddev.site/api/demo/photos/1');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['uid' => 1, 'title' => 'Title 1']);
@@ -108,7 +111,7 @@ class Cest
      */
     public function response_format_is_html_when_accept_header_missing(AcceptanceTester $I)
     {
-        $I->sendGET('demo/photos');
+        $I->sendGET('https://routes.ddev.site/api/demo/photos');
 
         $I->seeHttpHeader('Content-Type', 'text/html; charset=utf-8');
     }

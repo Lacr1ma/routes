@@ -39,7 +39,7 @@ class Cest
     public function index(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/photos');
+        $I->sendGET('https://routes.ddev.site/api/demo/photos');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContains('title');
@@ -51,7 +51,7 @@ class Cest
     public function show(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/photos/1');
+        $I->sendGET('https://routes.ddev.site/api/demo/photos/1');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContains('title');
@@ -63,7 +63,7 @@ class Cest
     public function store(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPOST('demo/photos', ['data' => ['title' => 'new']]);
+        $I->sendPOST('https://routes.ddev.site/api/demo/photos', ['data' => ['title' => 'new']]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -75,7 +75,7 @@ class Cest
     public function update(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPATCH('demo/photos/1?data[title]=Title 1');
+        $I->sendPATCH('https://routes.ddev.site/api/demo/photos/1?data[title]=Title 1');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -87,7 +87,7 @@ class Cest
     public function destroy(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendDELETE('demo/photos/999');
+        $I->sendDELETE('https://routes.ddev.site/api/demo/photos/999');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
