@@ -34,8 +34,8 @@ return [
         'lms/routes/extbase-route-resolver' => [
             'target' => ExtbaseRouteResolver::class,
             'description' => 'Attempts to resolve the Extbase Action endpoint by existing YAML configs',
-            'before' => [
-                'typo3/cms-frontend/page-resolver'
+            'after' => [
+                'typo3/cms-frontend/prepare-tsfe-rendering'
             ]
         ]
     ]
