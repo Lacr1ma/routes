@@ -3,8 +3,7 @@
 	"description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
 	"license": "MIT",
 	"repositories": [
-		{"type": "composer", "url": "https://composer.typo3.org/"},
-		{"type": "git", "url": "https://github.com/benjaminkott/site-introduction.git"}
+		{"type": "composer", "url": "https://composer.typo3.org/"}
 	],
 	"require": {
 		"typo3/minimal": "^9",
