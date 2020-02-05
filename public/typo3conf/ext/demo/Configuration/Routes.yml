@@ -1,6 +1,8 @@
 demo_middleware_auth:
   path:         api/demo/middleware/auth-required
   controller:   LMS\Demo\Controller\DemoApiController::test
+  defaults:
+    plugin:     DemoApi
   options:
     middleware:
       - auth
@@ -8,6 +10,8 @@ demo_middleware_auth:
 demo_middleware:
   path:         api/demo/middleware
   controller:   LMS\Demo\Controller\DemoApiController::test
+  defaults:
+    plugin:     DemoApi
   options:
     middleware:
       - auth
@@ -16,6 +20,8 @@ demo_middleware:
 demo_throttle:
   path:         api/demo/throttle
   controller:   LMS\Demo\Controller\DemoApiController::test
+  defaults:
+    plugin:     DemoApi
   options:
     middleware:
       - LMS\Routes\Middleware\Api\Throttle:3,1
@@ -27,6 +33,7 @@ demo_middleware_user_owner:
     user:       \d+
     title:      "[^/]+"
   defaults:
+    plugin:     DemoApi
     user:
     title:
   options:
@@ -41,6 +48,7 @@ demo_middleware_user_global_admin:
     user:       \d+
     title:      "[^/]+"
   defaults:
+    plugin:     DemoApi
     user:
     title:
   options:
@@ -51,6 +59,8 @@ demo_middleware_user_global_admin:
 demo_middleware_group_global_admin:
   path:         api/demo/middleware/in-group/admin
   controller:   LMS\Demo\Controller\DemoApiController::test
+  defaults:
+    plugin:     DemoApi
   options:
     middleware:
       - auth
@@ -59,6 +69,8 @@ demo_middleware_group_global_admin:
 demo_middleware_groups:
   path:         api/demo/middleware/in-group
   controller:   LMS\Demo\Controller\DemoApiController::test
+  defaults:
+    plugin:     DemoApi
   options:
     middleware:
       - auth
@@ -67,6 +79,8 @@ demo_middleware_groups:
 demo_middleware_groups_blocked:
   path:         api/demo/middleware/in-group-blocked
   controller:   LMS\Demo\Controller\DemoApiController::test
+  defaults:
+    plugin:     DemoApi
   options:
     middleware:
       - auth
@@ -76,30 +90,38 @@ demo_action_with_params:
   path:         api/demo/test/with_params
   controller:   LMS\Demo\Controller\DemoApiController::testWithParams
   defaults:
-    title:       default-title
+    plugin:     DemoApi
+    title:      default-title
     description: default-description
 
 https_only:
   path:         api/demo/https/only
   controller:   LMS\Demo\Controller\DemoApiController::test
   schemes:      https
+  defaults:
+    plugin:     DemoApi
 
 custom_format:
   path:         api/demo/custom/view
   controller:   LMS\Demo\Controller\DemoApiController::test
   format:       json
+  defaults:
+    plugin:     DemoApi
 
 
 demo_index:
   path:         api/demo/photos
   controller:   LMS\Demo\Controller\DemoApiController::index
   methods:      GET
+  defaults:
+    plugin:     DemoApi
 
 demo_show:
   path:         api/demo/photos/{uid}
   controller:   LMS\Demo\Controller\DemoApiController::show
   methods:      GET
   requirements:
+    plugin:     DemoApi
     # The name should be exactly like in controller, as we use Resource Controller, it will be <uid>
     uid:        \d+
 
@@ -108,6 +130,7 @@ demo_store:
   controller:   LMS\Demo\Controller\DemoApiController::store
   methods:      POST
   defaults:
+    plugin:     DemoApi
     # data here is required, otherwise we don't know which arguments to expect
     data:
 
@@ -119,6 +142,7 @@ demo_update:
     # The name should be exactly like in controller, as we use Resource Controller, it will be <uid>
     uid:      \d+
   defaults:
+    plugin:     DemoApi
     # data here is required, otherwise we don't know which arguments to expect
     # use query params here instead of form data
     data:
