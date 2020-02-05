@@ -145,12 +145,17 @@ class RouteHandler
     }
 
     /**
-     * {@inheritdoc}
+     * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
+     *
+     * @param array $config
      */
     private function run(array $config): void
     {
         /** @var \TYPO3\CMS\Extbase\Core\Bootstrap $bootstrap */
         $bootstrap = ObjectManageable::createObject(Bootstrap::class);
+
+        $GLOBALS['TSFE']->determineId();
+        $GLOBALS['TSFE']->getConfigArray();
 
         $this->output = $bootstrap->run('', $config);
     }

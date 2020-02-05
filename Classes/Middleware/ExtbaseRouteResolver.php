@@ -38,15 +38,6 @@ use Symfony\Component\Routing\Exception\{NoConfigurationException, ResourceNotFo
 class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
 {
     /**
-     * We need to initialize some of the TypoScriptFrontendController properties before working on a request
-     */
-    public function __construct()
-    {
-        $GLOBALS['TSFE']->determineId();
-        $GLOBALS['TSFE']->getConfigArray();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
