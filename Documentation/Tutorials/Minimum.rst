@@ -20,6 +20,8 @@ This is an example of the minimum layers that should exist.
       extension_demo-test:
          path:         api/demo/test
          controller:   Vendor\Demo\Controller\DemoApiController::test
+         defaults:
+            plugin:    DemoApi
 
 2. Register Plugin namespace (ext_localconf.php)
 

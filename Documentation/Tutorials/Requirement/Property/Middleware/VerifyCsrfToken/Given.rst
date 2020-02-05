@@ -17,7 +17,7 @@ We also have an intention to protect the route by **VerifyCsrfToken** middleware
 1. Define a route (Configuration/Routes.yml)
 
     .. code-block:: yaml
-       :emphasize-lines: 12
+       :emphasize-lines: 13
 
        demo_photos-show:
          path:         api/demo/photos/{photo}
@@ -27,6 +27,7 @@ We also have an intention to protect the route by **VerifyCsrfToken** middleware
          requirements:
            photo:      \d+
          defaults:
+           plugin:     PhotoApi
            photo:
          options:
            middleware:

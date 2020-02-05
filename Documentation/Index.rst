@@ -53,3 +53,4 @@ API Routes
 	DeveloperManual/Index
 	Tutorials/Index
 	Error/Index
+	Migration/Index

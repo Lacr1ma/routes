@@ -29,6 +29,8 @@ By default ( when not specified ) route applies *HTML* format.
       format:       html
       requirements:
          uid:       \d+
+      defaults:
+         plugin:    ClientApi
 
 .. toctree::
    :maxdepth: 5

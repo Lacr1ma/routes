@@ -18,6 +18,8 @@ Defines the Extbase Action, that must be executed when request is triggered.
    demo_photos-all:
       path:         api/demo/photos
       controller:   LMS\Demo\Controller\PhotoApiController::all
+      defaults:
+        plugin:     PhotoApi
 
 .. tip::
 

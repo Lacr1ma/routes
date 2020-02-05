@@ -18,7 +18,7 @@ We also have an intention to protect the route by **Throttle** middleware.
 1. Define a route (Configuration/Routes.yml)
 
     .. code-block:: yaml
-      :emphasize-lines: 13
+      :emphasize-lines: 14
 
       demo_photos-store:
         path:         api/demo/photos
@@ -28,6 +28,7 @@ We also have an intention to protect the route by **Throttle** middleware.
         requirements:
           url:
         defaults:
+          plugin:     PhotoApi
           url:
         options:
           middleware:

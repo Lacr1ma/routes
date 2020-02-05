@@ -20,6 +20,8 @@ DELETE
          controller:   Vendor\Demo\Controller\PhotoApiController::destroy
          methods:      DELETE
          format:       json
+         defaults:
+            plugin:    PhotoApi
          requirements:
             uid:       \d+
          options:

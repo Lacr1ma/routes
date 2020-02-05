@@ -22,6 +22,8 @@ of type integer.
       controller:   LMS\Demo\Controller\ClientApiController::show
       requirements:
          uid:       \d+
+      defaults:
+         plugin:    ClientApi
 
 .. tip::
 

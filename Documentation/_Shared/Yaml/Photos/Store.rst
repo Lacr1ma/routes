@@ -6,6 +6,7 @@
     methods:      POST
     format:       json
     defaults:
+      plugin:     PhotoApi
       data:
     options:
       middleware:

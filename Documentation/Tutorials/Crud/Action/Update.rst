@@ -23,6 +23,7 @@ UPDATE
          requirements:
             uid:       \d+
          defaults:
+            plugin:    PhotoApi
             data:
          options:
             middleware:

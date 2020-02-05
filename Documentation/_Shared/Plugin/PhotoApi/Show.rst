@@ -1,7 +1,7 @@
 .. code-block:: php
 
    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-       'LMS.' . $_EXTKEY,
+       'LMS.demo',
        'PhotoApi',
        [
            'PhotoApi' => 'show'

@@ -20,6 +20,8 @@ LIST
          controller:   Vendor\Demo\Controller\PhotoApiController::index
          methods:      GET
          format:       json
+         defaults:
+            plugin:    PhotoApi
          options:
             middleware:
                - auth

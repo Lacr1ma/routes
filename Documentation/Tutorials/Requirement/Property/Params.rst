@@ -21,6 +21,7 @@ in those cases when they aren't passed implicitly.
         controller:   LMS\Demo\Controller\ClientApiController::show
         defaults:
             title:    my-title
+            plugin:   ClientApi
         requirements:
             uid:      \d+
 

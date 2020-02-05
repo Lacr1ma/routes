@@ -21,6 +21,8 @@ By default ( when methods is not specified ) route accepts any request methods.
       path:         api/demo/clients/{uid}
       controller:   LMS\Demo\Controller\ClientApiController::destroy
       methods:      DELETE
+      defaults:
+         plugin:    ClientApi
       requirements:
          uid:       \d+
 
@@ -42,5 +44,7 @@ You can specify more than just one method for your route.
       path:         api/demo/clients/{uid}
       controller:   LMS\Demo\Controller\ClientApiController::destroy
       methods:      [DELETE, PUT]
+      defaults:
+         plugin:    ClientApi
       requirements:
          uid:       \d+

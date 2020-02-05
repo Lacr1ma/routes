@@ -6,23 +6,38 @@
 .. _property:
 
 ===================================
-Path
+Plugin
 ===================================
 
-It's basically the *URL* you want to define for your route.
+Contains the plugin name from **ext_localconf.php**.
+
+.. code-block:: php
+   :linenos:
+   :emphasize-lines: 3
+
+   \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+       'LMS.demo',
+       'Client',
+       [
+           'ClientApi' => 'index'
+       ],
+       [
+           'DemoApi' => 'index'
+       ]
+   );
 
 .. code-block:: yaml
    :linenos:
-   :emphasize-lines: 2
+   :emphasize-lines: 4,5
 
    demo_clients-index:
       path:         api/demo/clients
       controller:   LMS\Demo\Controller\ClientApiController::index
       defaults:
-        plugin:     ClientApi
+        plugin:     Client
 
 .. tip::
-   **Required**: Yes
+   Since v10 this property is **required**.
 
 Example request
 ^^^^^^^^^^^^^^^^

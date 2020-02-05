@@ -17,7 +17,7 @@ We also have an intention to protect the route by **VerifyUser** middleware.
 1. Define a route (Configuration/Routes.yml)
 
     .. code-block:: yaml
-       :emphasize-lines: 14
+       :emphasize-lines: 15
 
        demo_photos-show:
          path:         api/demo/photos/{photo}
@@ -28,6 +28,7 @@ We also have an intention to protect the route by **VerifyUser** middleware.
            user:       \d+
            photo:      \d+
          defaults:
+           plugin:     PhotoApi
            user:
            photo:
          options:

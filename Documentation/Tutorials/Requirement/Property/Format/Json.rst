@@ -17,6 +17,8 @@ JSON Format
       path:         api/demo/clients/test
       controller:   LMS\Demo\Controller\ClientApiController::test
       format:       json
+      defaults:
+        plugin:     ClientApi
 
 Direct Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

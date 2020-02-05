@@ -23,6 +23,8 @@ so both **http** and **https** will pass.
      schemes:      https
      requirements:
         uid:       \d+
+     defaults:
+        plugin:    ClientApi
 
 .. tip::
 
@@ -45,3 +47,5 @@ You can specify more than just one protocol
       schemes:      [http, https]
       requirements:
          uid:       \d+
+      defaults:
+         plugin:    ClientApi
