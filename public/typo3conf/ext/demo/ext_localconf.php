@@ -28,7 +28,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'LMS.' . $_EXTKEY,
+    'LMS.demo',
     'DemoApi',
     [
         'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner'

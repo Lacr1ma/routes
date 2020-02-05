@@ -3,21 +3,23 @@
 	"description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
 	"license": "MIT",
 	"repositories": [
-		{"type": "composer", "url": "https://composer.typo3.org/"},
-		{"type": "git", "url": "https://github.com/benjaminkott/site-introduction.git"}
+		{"type": "composer", "url": "https://composer.typo3.org/"}
 	],
 	"require": {
-		"bk2k/introduction-website": "dev-master",
+		"typo3/minimal": "^10",
+		"vlucas/phpdotenv": "^2.4",
 
-		"lms/facade": "dev-master",
-		"lms/routes": "dev-master"
+		"lms/routes": "v10.x-dev"
 	},
 	"require-dev": {
 		"vimeo/psalm": "^3",
-		"mockery/mockery": "^1",
-		"typo3/testing-framework": "^4",
-		"nimut/testing-framework": "^4",
-		"codeception/codeception": "^3.1.0"
+		"typo3/testing-framework": "^6",
+		"codeception/codeception": "^4.0.0",
+		"codeception/module-rest": "*",
+		"codeception/module-db": "*",
+		"codeception/module-asserts": "*",
+		"codeception/module-webdriver": "*",
+		"codeception/module-phpbrowser": "*"
 	},
 	"autoload": {
 		"psr-4": {
