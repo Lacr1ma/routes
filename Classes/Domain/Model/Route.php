@@ -48,6 +48,11 @@ class Route
     private $format;
 
     /**
+     * @var string
+     */
+    private $plugin;
+
+    /**
      * @param array $configuration
      */
     public function __construct(array $configuration)
@@ -55,6 +60,7 @@ class Route
         [$controllerFQCN, $this->action] = explode('::', $configuration['_controller']);
 
         $this->format = $configuration['_format'] ?: '';
+        $this->plugin = $configuration['plugin'] ?: '';
 
         $this->initializeController($controllerFQCN);
         $this->initializeArguments($configuration);
@@ -88,7 +94,7 @@ class Route
         $controller = $this->getController();
         $extensionKey = $this->getExtension();
 
-        return Plugin::getNameBasedOn($extensionKey, $controller, $this->action);
+        return $this->plugin ?: Plugin::getNameBasedOn($extensionKey, $controller, $this->action);
     }
 
     /**
