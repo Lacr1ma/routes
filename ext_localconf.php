@@ -30,3 +30,18 @@ if (!defined('TYPO3_MODE')) {
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'])) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'] = [];
 }
+
+(function (): void {
+    $GLOBALS['TYPO3_CONF_VARS'] = \array_replace_recursive(
+        $GLOBALS['TYPO3_CONF_VARS'],
+        [
+            'SYS' => [
+                'routing' => [
+                    'enhancers' => [
+                        'Routes' => \LMS\Routes\Routing\RestApiEnhancer::class
+                    ]
+                ]
+            ]
+        ]
+    );
+})();
