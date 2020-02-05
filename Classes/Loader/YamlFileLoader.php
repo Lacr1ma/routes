@@ -35,8 +35,9 @@ use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
 {
     /**
-     * @psalm-suppress InternalClass
      * {@inheritdoc}
+     * @psalm-suppress InternalClass
+     * @psalm-suppress MissingParamType
      */
     public function load($file, $type = null): RouteCollection
     {
