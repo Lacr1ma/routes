@@ -51,6 +51,8 @@ class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('routing', null);
+
         try {
             $extbaseRouteHandler = new RouteHandler($request);
         } catch (ResourceNotFoundException | NoConfigurationException $e) {
