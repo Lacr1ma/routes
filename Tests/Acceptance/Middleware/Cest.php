@@ -46,7 +46,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/in-group/admin');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group/admin');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -66,7 +66,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/user/admin?user=22&title=demo');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/user/admin?user=22&title=demo');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['user' => 22]);
@@ -85,7 +85,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/own?user=1&title=demo');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/own?user=1&title=demo');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['user' => 1]);
@@ -104,7 +104,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/own?user=999&title=demo');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/own?user=999&title=demo');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseCodeIs(403);
@@ -123,7 +123,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/in-group-blocked');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group-blocked');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseCodeIs(403);
@@ -142,7 +142,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/in-group');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -159,11 +159,11 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
 
         foreach (range(0, 1) as $step) {
-            $I->sendGET('demo/throttle');
+            $I->sendGET('https://routes.ddev.site/api/demo/throttle');
             $I->seeResponseContainsJson(['success' => true]);
         }
 
-        $I->sendGET('demo/throttle');
+        $I->sendGET('https://routes.ddev.site/api/demo/throttle');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseCodeIs(429);
@@ -179,7 +179,7 @@ class Cest
     public function auth_middleware_requires_user_to_be_logged_in(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/middleware/auth-required');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseCodeIs(401);
@@ -197,7 +197,7 @@ class Cest
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/auth-required');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseCodeIs(401);
@@ -215,7 +215,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware/auth-required');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -233,7 +233,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=ff83dfd81e20b34c27d3e97771a4525a');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseCodeIs(403);
@@ -252,7 +252,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=886526ce72b86870739cc41991144ec1');
         $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('demo/middleware');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
@@ -267,7 +267,7 @@ class Cest
      */
     public function auth_middleware_redirects_when_not_logged_in_and_not_json_request(AcceptanceTester $I)
     {
-        $I->sendGET('demo/middleware');
+        $I->sendGET('https://routes.ddev.site/api/demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'text/html; charset=utf-8');
         $I->seeResponseContains('<title>Auth</title>');
