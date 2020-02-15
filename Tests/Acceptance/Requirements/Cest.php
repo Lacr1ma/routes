@@ -71,6 +71,29 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
+    public function host_requirement_applied(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->sendGET('https://m.routes.ddev.site/api/demo/custom/host');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['success' => true]);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function host_requirement_required(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->sendGET('https://routes.ddev.site/api/demo/custom/host');
+
+        $I->seeResponseContains('Home');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
     public function params_default_values_applied(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
