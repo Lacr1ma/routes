@@ -20,5 +20,6 @@ Condition
    Property/Format/Index
    Property/Params
    Property/Schemes
+   Property/Host
    Property/Requirements
    Property/Middleware
