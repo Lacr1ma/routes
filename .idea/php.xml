@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="MessDetector">
-    <phpmd_settings>
-      <MessDetectorConfiguration tool_path="/usr/local/bin/phpmd" />
-    </phpmd_settings>
-  </component>
-  <component name="PhpCodeSniffer">
-    <phpcs_settings>
-      <PhpCSConfiguration standards="MySource;PEAR;PSR1;PSR2;Squiz;Zend" tool_path="/usr/local/bin/phpcs" />
-    </phpcs_settings>
-  </component>
   <component name="PhpIncludePathManager">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/algo26-matthias/idna-convert" />
@@ -120,14 +110,19 @@
       <path value="$PROJECT_DIR$/vendor/hoa/file" />
       <path value="$PROJECT_DIR$/vendor/psr/http-server-handler" />
       <path value="$PROJECT_DIR$/vendor/psr/cache" />
-      <path value="$PROJECT_DIR$/vendor/lms/facade" />
       <path value="$PROJECT_DIR$/vendor/hoa/console" />
       <path value="$PROJECT_DIR$/vendor/hoa/event" />
       <path value="$PROJECT_DIR$/vendor/hoa/exception" />
       <path value="$PROJECT_DIR$/vendor/hoa/ustring" />
       <path value="$PROJECT_DIR$/vendor/hoa/iterator" />
       <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/lms/facade" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
 </project>

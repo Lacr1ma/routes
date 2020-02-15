@@ -89,6 +89,11 @@ custom_format:
   controller:   LMS\Demo\Controller\DemoApiController::test
   format:       json
 
+custom_host:
+  path:         api/demo/custom/host
+  host:         m.routes.ddev.site
+  controller:   LMS\Demo\Controller\DemoApiController::test
+
 
 demo_index:
   path:         api/demo/photos
