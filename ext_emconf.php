@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['routes'] = [
     'title' => 'Extbase Yaml Routes',
     'description' => 'Provides an ability to bind a route slug to the certain Extbase Action endpoint.',
     'category' => 'fe',
@@ -8,7 +8,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'borulkosergey@icloud.com',
     'state' => 'beta',
     'clearCacheOnLoad' => true,
-    'version' => '1.8.5',
+    'version' => '1.8.6',
     'constraints' => [
         'depends' => [
             'typo3' => '9.5.0-9.5.99'
