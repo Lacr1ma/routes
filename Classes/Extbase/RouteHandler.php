@@ -84,6 +84,9 @@ class RouteHandler
      */
     private function processRoute(ServerRequestInterface $request, Route $route): void
     {
+        $GLOBALS['TSFE']->determineId();
+        $GLOBALS['TSFE']->getConfigArray();
+
         $this->processMiddleware(
             $request->withQueryParams($route->getArguments())
         );
@@ -153,9 +156,6 @@ class RouteHandler
     {
         /** @var \TYPO3\CMS\Extbase\Core\Bootstrap $bootstrap */
         $bootstrap = ObjectManageable::createObject(Bootstrap::class);
-
-        $GLOBALS['TSFE']->determineId();
-        $GLOBALS['TSFE']->getConfigArray();
 
         $this->output = $bootstrap->run('', $config);
     }
