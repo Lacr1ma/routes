@@ -65,9 +65,9 @@ class Cest
     public function https_protocol_requirement_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/https/only');
+        $I->sendGET('http://routes.ddev.site/api/demo/https/only');
 
-        $I->seeResponseCodeIs(404);
+        $I->seeResponseCodeIs(200);
     }
 
     /**
@@ -90,7 +90,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo/custom/host');
 
-        $I->seeResponseContains('Home');
+        $I->seeResponseCodeIs(404);
     }
 
     /**
@@ -111,7 +111,7 @@ class Cest
     public function requirement_integer_only_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('demo/photos/1a');
+        $I->sendGET('https://routes.ddev.site/api/demo/photos/1a');
 
         $I->seeResponseCodeIs(404);
     }
