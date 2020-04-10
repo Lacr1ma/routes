@@ -44,8 +44,7 @@ class Cest
         $I->sendPOST('https://routes.ddev.site/api/demo/custom/view');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-//        $I->seeResponseContainsJson(['ok' => true]);
-        $I->seeResponseContainsJson(['success' => true]);
+        $I->seeResponseContainsJson(['ok' => true]);
     }
 
     /**
