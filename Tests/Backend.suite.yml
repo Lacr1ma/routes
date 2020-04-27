@@ -25,7 +25,6 @@ extensions:
   enabled:
     - LMS\Routes\Tests\Acceptance\Support\Extension\BackendEnvironment
     - Codeception\Extension\RunFailed
-    - Codeception\Extension\Recorder
 
 env:
   ddev:
