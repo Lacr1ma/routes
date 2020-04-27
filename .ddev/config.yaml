@@ -1,17 +1,21 @@
-APIVersion: v1.13.0
+APIVersion: v1.14.0
 name: routes
 type: typo3
 docroot: public
-php_version: "7.3"
+php_version: "7.4"
 webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
 xdebug_enabled: true
-additional_hostnames: []
+additional_hostnames:
+  - m.routes
 additional_fqdns: []
 mariadb_version: "10.4"
 nfs_mount_enabled: false
 provider: default
-omit_containers:
-  - dba
-  - ddev-ssh-agent
+use_dns_when_possible: true
+timezone: "Europe/Berlin"
+omit_containers: ["dba", "ddev-ssh-agent"]
+hooks:
+  post-start:
+    - exec: "sudo chmod -R 777 /var/www/html/var"

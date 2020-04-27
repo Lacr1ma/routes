@@ -71,6 +71,7 @@ return [
             'unifiedPageTranslationHandling' => true,
         ],
         'sitename' => 'Web Content Management System',
+        'systemLocale' => 'de_DE.UTF-8',
         'systemMaintainers' => [
             1,
         ],
