@@ -9,9 +9,6 @@ suites:
             depends: PhpBrowser
             url: http://routes.ddev.site/api/
             part: Json
-extensions:
-  enabled:
-    - Codeception\Extension\Recorder
 
 params:
   - env
