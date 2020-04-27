@@ -68,18 +68,19 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('http://routes.ddev.site/api/demo/https/only');
 
-        $I->seeResponseCodeIs(200);
+        $I->seeResponseCodeIs(404);
     }
 
     /**
      * @param AcceptanceTester $I
      */
-    public function host_requirement_applied(AcceptanceTester $I)
+    public function host_requirement_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo/custom/host');
 
-        $I->seeResponseCodeIs(404);
+        $I->dontSeeResponseContains('success');
+        $I->seeResponseCodeIs(200);
     }
 
     /**
@@ -92,17 +93,6 @@ class Cest
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
-    }
-
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function host_requirement_required(AcceptanceTester $I)
-    {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('https://routes.ddev.site/api/demo/custom/host');
-
-        $I->seeResponseCodeIs(404);
     }
 
     /**
