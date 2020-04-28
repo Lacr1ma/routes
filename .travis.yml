@@ -47,4 +47,4 @@ script:
   - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
   - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/middleware.yml --env github
   - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
-  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
+  # - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
