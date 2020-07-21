@@ -1,4 +1,4 @@
-APIVersion: v1.14.0
+APIVersion: v1.15.0
 name: routes
 type: typo3
 docroot: public
@@ -10,7 +10,7 @@ xdebug_enabled: true
 additional_hostnames:
   - m.routes
 additional_fqdns: []
-mariadb_version: "10.4"
+mariadb_version: "10.5"
 nfs_mount_enabled: false
 provider: default
 use_dns_when_possible: true

@@ -5,10 +5,16 @@
 	"repositories": [
 		{"type": "composer", "url": "https://composer.typo3.org/"}
 	],
+	"config": {
+		"optimize-autoloader": true,
+		"classmap-authoritative": true,
+		"apcu-autoloader": true
+	},
 	"require": {
 		"typo3/minimal": "^10",
 		"vlucas/phpdotenv": "^2.4",
 		"ayesh/composer-preload": "0.0.8",
+		"phpdocumentor/reflection-docblock": "5.1.0",
 
 		"lms/routes": "v10.x-dev"
 	},
@@ -26,11 +32,6 @@
 		"psr-4": {
 			"LMS\\Demo\\": "public/typo3conf/ext/demo/Classes"
 		}
-	},
-	"config": {
-		"sort-packages": true,
-		"bin-dir": "bin",
-		"vendor-dir": "vendor"
 	},
 	"extra": {
 		"preload": {
