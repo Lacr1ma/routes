@@ -35,16 +35,16 @@ install:
 
 script:
   # Check code style
-  - ddev exec bin/psalm
+  - ddev exec psalm
 
   # Unit Tests
-  #- ddev exec bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/UnitTests.xml
+  #- ddev exec phpunit -c public/typo3conf/ext/routes/Tests/Build/UnitTests.xml
 
   # Functional Tests
-  #- ddev exec bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
+  #- ddev exec phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
 
   # Acceptance Tests
-  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
-  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/middleware.yml --env github
-  - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
-  # - ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
+  - ddev exec codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
+  - ddev exec codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/middleware.yml --env github
+  - ddev exec codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
+  # - ddev exec codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
