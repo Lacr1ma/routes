@@ -84,6 +84,32 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
+    public function updateWithParsedWhenEncodedBody(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $I->sendPUT('https://routes.ddev.site/api/demo/photos/parse-body-param/1', ['foo' => 'bar']);
+
+        $I->seeResponseContainsJson([
+            'foo' => 'bar'
+        ]);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function updateWithParsedBody(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'text/plain');
+        $I->sendPUT('https://routes.ddev.site/api/demo/photos/parse-body-param/1', ['foo' => 'bar']);
+
+        $I->seeResponseContainsJson([
+            'foo' => 'bar'
+        ]);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
     public function destroy(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
