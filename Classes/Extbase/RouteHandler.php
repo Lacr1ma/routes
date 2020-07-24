@@ -39,18 +39,17 @@ use LMS\Routes\{Domain\Model\Middleware, Domain\Model\Route, Service\RouteServic
 class RouteHandler
 {
     /**
-     * @var string
+     * Basically will contain the response text
+     * which is generated after execution of the extbase action.
      */
-    private $output;
+    private string $output = '';
 
     /**
-     * @var int
+     * Contains the response status code.
      */
-    private $status = 200;
+    private int $status = 200;
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
@@ -77,9 +76,6 @@ class RouteHandler
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \LMS\Routes\Domain\Model\Route           $route
-     *
      * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
      */
     private function processRoute(ServerRequestInterface $request, Route $route): void
@@ -101,9 +97,7 @@ class RouteHandler
     }
 
     /**
-     * Check if the specific route has any middleware and execute them
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * Check whether a route has any middleware and run them if any.
      *
      * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
      */
@@ -121,7 +115,8 @@ class RouteHandler
     }
 
     /**
-     * @param \LMS\Routes\Domain\Model\Route $route
+     * Mainly parse the current server request and bind existing request parameters
+     * as extbase action arguments.
      */
     private function createActionArgumentsFrom(Route $route): void
     {
@@ -146,7 +141,6 @@ class RouteHandler
      *
      * @psalm-suppress LessSpecificReturnStatement
      * @psalm-suppress MoreSpecificReturnType
-     * @return \LMS\Routes\Service\RouteService
      */
     private function getRouteService(): RouteService
     {
@@ -156,7 +150,7 @@ class RouteHandler
     /**
      * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
      *
-     * @param array $config
+     * @param array<string, string> $config
      */
     private function run(array $config): void
     {

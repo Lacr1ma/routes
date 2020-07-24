@@ -58,10 +58,7 @@ class ExtbaseRouteResolver implements \Psr\Http\Server\MiddlewareInterface
     }
 
     /**
-     * Write error message to log file
-     *
-     * @param string $error
-     * @param string $path
+     * Write the error message to the typo3 logs.
      */
     private function log(string $error, string $path): void
     {
