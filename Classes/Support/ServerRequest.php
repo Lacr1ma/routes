@@ -34,9 +34,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class ServerRequest
 {
     /**
-     * Retrieve the current Server Request
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
+     * Retrieve the current server request.
      */
     public static function getInstance(): ServerRequestInterface
     {
@@ -44,7 +42,7 @@ class ServerRequest
     }
 
     /**
-     * Add new parameter values to the Server Request
+     * Check whether the current server request encodes data using <urlencoded>.
      */
     public static function isUrlEncoded(): bool
     {
@@ -54,11 +52,9 @@ class ServerRequest
     }
 
     /**
-     * Add new parameter values to the Server Request
+     * Adds a new query parameter to the current request.
      *
-     * @param string $name
-     * @param mixed  $value
-     * @param string $namespace
+     * @param mixed $value
      */
     public static function withParameter(string $name, $value, string $namespace): void
     {
@@ -72,6 +68,8 @@ class ServerRequest
     /**
      * Retrieve the request data which was sent directly in body.
      * Typically used in PATCH and PUT request types.
+     *
+     * @return array<string, mixed>
      */
     public static function body(): array
     {
@@ -79,7 +77,10 @@ class ServerRequest
     }
 
     /**
-     * Retrieve the defined server request parameters for passed name
+     * Check whether a current server request has a query parameter with a given name
+     * and give it back.
+     *
+     * @return array<string, mixed>
      */
     private static function getParametersFor(string $name): array
     {
