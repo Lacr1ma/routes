@@ -139,6 +139,17 @@ demo_store:
     data:
     plugin:     DemoApi
 
+demo_update-though-raw-args:
+  path:         api/demo/photos/parse-body-param/{uid}
+  controller:   LMS\Demo\Controller\DemoApiController::updateRaw
+  format:       json
+  methods:      PUT
+  requirements:
+    # The name should be exactly like in controller, as we use Resource Controller, it will be <uid>
+    uid:        \d+
+  defaults:
+    plugin:     DemoApi
+
 demo_update:
   path:         api/demo/photos/{uid}
   controller:   LMS\Demo\Controller\DemoApiController::update

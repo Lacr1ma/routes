@@ -31,9 +31,9 @@ if (!defined('TYPO3_MODE')) {
     'LMS.demo',
     'DemoApi',
     [
-        'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner'
+        'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner,  updateRaw'
     ],
     [
-        'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner'
+        'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner,  updateRaw'
     ]
 );

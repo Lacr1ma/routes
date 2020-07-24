@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace LMS\Demo\Controller;
@@ -68,5 +69,19 @@ class DemoApiController extends Base\ApiResourceController
     public function testWithParamsAction(string $title, string $description): void
     {
         $this->view->assign('value', compact('title', 'description'));
+    }
+
+    /**
+     * @param int $uid
+     *
+     * @return string
+     */
+    public function updateRawAction(int $uid): string
+    {
+         // $GLOBALS['TYPO3_REQUEST']->getParsedBody() as alternative
+
+        return (string)json_encode(
+            $this->request->getArguments()
+        );
     }
 }
