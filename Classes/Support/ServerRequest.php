@@ -45,6 +45,16 @@ class ServerRequest
 
     /**
      * Add new parameter values to the Server Request
+     */
+    public static function isUrlEncoded(): bool
+    {
+        $type = ServerRequest::getInstance()->getHeaderLine('content-type');
+
+        return (bool)strpos($type, 'x-www-form-urlencoded');
+    }
+
+    /**
+     * Add new parameter values to the Server Request
      *
      * @param string $name
      * @param mixed  $value
