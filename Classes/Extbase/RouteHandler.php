@@ -133,10 +133,16 @@ class RouteHandler
         foreach ($route->getArguments() as $name => $value) {
             ServerRequest::withParameter($name, $value, $plugin);
         }
+
+        if (ServerRequest::isUrlEncoded()) {
+            foreach (ServerRequest::body() as $name => $value) {
+                ServerRequest::withParameter($name, (string)$value, $plugin);
+            }
+        }
     }
 
     /**
-     * Create the Route Service Instance
+     * Create the Route Service Instance.
      *
      * @psalm-suppress LessSpecificReturnStatement
      * @psalm-suppress MoreSpecificReturnType
