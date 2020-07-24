@@ -70,11 +70,16 @@ class ServerRequest
     }
 
     /**
+     * Retrieve the request data which was sent directly in body.
+     * Typically used in PATCH and PUT request types.
+     */
+    public static function body(): array
+    {
+        return (array)ServerRequest::getInstance()->getParsedBody();
+    }
+
+    /**
      * Retrieve the defined server request parameters for passed name
-     *
-     * @param string $name
-     *
-     * @return array
      */
     private static function getParametersFor(string $name): array
     {
