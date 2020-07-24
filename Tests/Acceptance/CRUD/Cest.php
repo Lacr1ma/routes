@@ -99,7 +99,6 @@ class Cest
      */
     public function updateWithParsedBody(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Content-Type', 'text/plain');
         $I->sendPUT('https://routes.ddev.site/api/demo/photos/parse-body-param/1', ['foo' => 'bar']);
 
         $I->seeResponseContainsJson([
