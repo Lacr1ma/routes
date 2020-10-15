@@ -127,6 +127,7 @@ class RouteHandler
     {
         $plugin = $route->getPluginNamespace();
 
+        ServerRequest::withParameter('controller', $route->getController(), $plugin);
         ServerRequest::withParameter('action', $route->getAction(), $plugin);
         ServerRequest::withParameter('format', $route->getFormat(), $plugin);
 
