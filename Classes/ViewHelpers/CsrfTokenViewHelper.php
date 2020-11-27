@@ -36,6 +36,6 @@ class CsrfTokenViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractView
      */
     public function render(): string
     {
-        return (string)$GLOBALS['TSFE']->fe_user->user['ses_id'];
+		return (string)$GLOBALS['TSFE']->fe_user->id;
     }
 }
