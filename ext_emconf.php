@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['routes'] = [
     'title' => 'Extbase Yaml Routes',
     'description' => 'Provides an ability to bind a route slug to the certain Extbase Action endpoint.',
     'category' => 'fe',
