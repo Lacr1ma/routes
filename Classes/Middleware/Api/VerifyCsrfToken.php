@@ -37,7 +37,7 @@ class VerifyCsrfToken extends AbstractRouteMiddleware
      */
     public function process(): void
     {
-        if ($this->getRequestToken() === $this->getSessionToken()) {
+        if (hash_equals($this->getRequestToken(), $this->getSessionToken())) {
             return;
         }
 
@@ -57,6 +57,8 @@ class VerifyCsrfToken extends AbstractRouteMiddleware
      */
     public function getSessionToken(): string
     {
-        return $this->getRequest()->getCookieParams()['fe_typo_user'];
+        $id = $this->getRequest()->getCookieParams()['fe_typo_user'];
+
+        return $this->sessionManager()->hash($id);
     }
 }
