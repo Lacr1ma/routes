@@ -31,7 +31,7 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'] = [];
 }
 
-(function (): void {
+(static function (): void {
     $GLOBALS['TYPO3_CONF_VARS'] = \array_replace_recursive(
         $GLOBALS['TYPO3_CONF_VARS'],
         [
