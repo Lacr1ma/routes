@@ -26,8 +26,11 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\ObjectManageable;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
 use LMS\Facade\Extbase\{User, ExtensionHelper, TypoScriptConfiguration};
 
 /**
@@ -128,5 +131,14 @@ abstract class AbstractRouteMiddleware
     protected function getSettings(string $extKey): array
     {
         return TypoScriptConfiguration::getSettings($extKey) ?: [];
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface
+     */
+    protected function sessionManager(): HashableSessionBackendInterface
+    {
+        return ObjectManageable::createObject(SessionManager::class)
+            ->getSessionBackend('FE');
     }
 }
