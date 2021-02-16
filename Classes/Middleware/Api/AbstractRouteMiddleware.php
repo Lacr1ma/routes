@@ -35,7 +35,8 @@ use LMS\Facade\Extbase\{User, ExtensionHelper, TypoScriptConfiguration};
  */
 abstract class AbstractRouteMiddleware
 {
-    use \LMS\Facade\Model\Property\User, ExtensionHelper;
+    use ExtensionHelper;
+    use \LMS\Facade\Model\Property\User;
 
     /**
      * @var \Psr\Http\Message\ServerRequestInterface $request

@@ -35,7 +35,8 @@ use LMS\Routes\Support\Route\Controller as DefinesController;
  */
 class Route
 {
-    use ContainsArguments, DefinesController;
+    use ContainsArguments;
+    use DefinesController;
 
     /**
      * @var string
