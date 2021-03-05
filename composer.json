@@ -24,5 +24,14 @@
 		"psr-4": {
 			"LMS\\Routes\\Tests\\": "Tests"
 		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "routes"
+		}
+	},
+	"replace": {
+		"lms/routes": "self.version",
+		"typo3-ter/routes": "self.version"
 	}
 }
