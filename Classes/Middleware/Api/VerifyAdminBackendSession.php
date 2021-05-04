@@ -53,7 +53,9 @@ class VerifyAdminBackendSession extends AbstractRouteMiddleware
      */
     private function getCookieSessionID(): string
     {
-        return $this->getRequest()->getCookieParams()['be_typo_user'] ?: '';
+        $id = $this->getRequest()->getCookieParams()['be_typo_user'] ?: '';
+
+        return $this->sessionManager()->hash($id);
     }
 
     /**
@@ -71,7 +73,7 @@ class VerifyAdminBackendSession extends AbstractRouteMiddleware
      */
     private function isAdmin(): bool
     {
-        return (bool)$this->backendUser()['admin'] ?: false;
+        return (bool)$this->backendUser()['admin'];
     }
 
     /**
