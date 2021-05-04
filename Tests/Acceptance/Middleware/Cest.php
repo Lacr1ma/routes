@@ -43,9 +43,8 @@ class Cest
      */
     public function group_middleware_can_pass_if_admin(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group/admin', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -63,9 +62,8 @@ class Cest
      */
     public function user_middleware_can_pass_if_admin(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/user/admin?user=22&title=demo', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -82,9 +80,8 @@ class Cest
      */
     public function user_middleware_can_pass(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/own?user=1&title=demo', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -101,9 +98,8 @@ class Cest
      */
     public function user_middleware_can_block(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/own?user=999&title=demo', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -120,9 +116,8 @@ class Cest
      */
     public function group_middleware_can_block(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group-blocked', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -139,9 +134,8 @@ class Cest
      */
     public function group_middleware_can_pass(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -179,6 +173,7 @@ class Cest
     public function auth_middleware_requires_user_to_be_logged_in(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -197,6 +192,7 @@ class Cest
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -212,9 +208,8 @@ class Cest
      */
     public function auth_middleware_can_pass(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -223,7 +218,7 @@ class Cest
 
     /**
      * The route requires ADMIN BE session. We have an active BE session
-     * ff83dfd81e20b34c27d3e97771a4525a , but it's only editor, not admin.
+     * 5084d498cc8e34241c7936f5ba3307bc66e2 , but it's only editor, not admin.
      * The request should be blocked
      *
      * @param AcceptanceTester $I
@@ -231,8 +226,8 @@ class Cest
     public function admin_backend_user_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=ff83dfd81e20b34c27d3e97771a4525a');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=262d502d4c53a48013865ac497bcab32');
+        $I->haveHttpHeader('X-CSRF-TOKEN', '5c96a1d483b93969a226b5c4a1d30acf');
         $I->sendGET('https://routes.ddev.site/api/demo/middleware', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -249,9 +244,8 @@ class Cest
      */
     public function active_backend_session_pass(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=886526ce72b86870739cc41991144ec1');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -271,5 +265,32 @@ class Cest
 
         $I->seeHttpHeader('Content-Type', 'text/html; charset=utf-8');
         $I->seeResponseContains('<title>Routes Demo: Auth</title>');
+    }
+
+    /**
+     * @param AcceptanceTester $session
+     * @return AcceptanceTester
+     */
+    private function setAccessHeadersFor(AcceptanceTester $session): AcceptanceTester
+    {
+        $session->haveHttpHeader('Accept', 'application/json');
+
+        return $this->authenticate($session);
+    }
+
+    /**
+     * @param AcceptanceTester $session
+     * @return AcceptanceTester
+     */
+    private function authenticate(AcceptanceTester $session): AcceptanceTester
+    {
+        $sessionID = '5c96a1d483b93969a226b5c4a1d30acf';
+        $encodedSessionID = '53574eb0bafe1c0a4d8a2cfc0cf726da';
+        $encodedBeSession = '5c745e2eef5a51357e7a5d3678c43023';
+
+        $session->haveHttpHeader('X-CSRF-TOKEN', $sessionID);
+        $session->haveHttpHeader('Cookie', 'fe_typo_user=' . $encodedSessionID . ';be_typo_user=' . $encodedBeSession . '');
+
+        return $session;
     }
 }
