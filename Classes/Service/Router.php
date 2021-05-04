@@ -43,7 +43,7 @@ trait Router
      *
      * @return \Symfony\Component\Routing\Router
      */
-    public function getRouter(string $fileName = 'Routes.yml'): SymfonyRouter
+    public function getRouter(string $fileName = 'Routes'): SymfonyRouter
     {
         return new SymfonyRouter($this->getLoader(), $fileName, $this->getRouteOptions(), $this->getRequestContext());
     }

@@ -38,8 +38,9 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
      * {@inheritdoc}
      * @psalm-suppress InternalClass
      * @psalm-suppress MissingParamType
+     * @psalm-suppress ParamNameMismatch
      */
-    public function load($file, $type = null): RouteCollection
+    public function load($file, string $type = null): RouteCollection
     {
         $collection = new RouteCollection();
 
@@ -58,7 +59,10 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
     private function getFoundPathList(string $file): array
     {
         try {
-            return (array)$this->locator->locate($file, null, false);
+            $yml = (array)$this->locator->locate($file . '.yml', null, false);
+            $yaml = (array)$this->locator->locate($file . '.yaml', null, false);
+
+            return array_merge($yaml, $yml);
         } catch (FileLocatorFileNotFoundException $e) {
             return [];
         }
