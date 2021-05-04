@@ -5,6 +5,8 @@ plugin.tx_routes {
     cacheDirectoryPath =
     # cat=plugin.tx_routes//b; type=string; label=This probably always should have the default value.
     suffix = /Configuration
+    # cat=plugin.tx_routes//b; type=string; label=Yaml file which contains the route definition.
+    routesFileName = Routes
 
     redirect {
       # cat=plugin.tx_routes//b; type=int; label=Login page id.

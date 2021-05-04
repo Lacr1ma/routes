@@ -39,13 +39,11 @@ trait Router
     use YamlFileLoader;
 
     /**
-     * @param  string $fileName
-     *
      * @return \Symfony\Component\Routing\Router
      */
-    public function getRouter(string $fileName = 'Routes'): SymfonyRouter
+    public function getRouter(): SymfonyRouter
     {
-        return new SymfonyRouter($this->getLoader(), $fileName, $this->getRouteOptions(), $this->getRequestContext());
+        return new SymfonyRouter($this->getLoader(), $this->getRootFileName(), $this->getRouteOptions(), $this->getRequestContext());
     }
 
     /**
@@ -56,6 +54,14 @@ trait Router
         $cacheDirectory = TS::getSettings('tx_routes')['cacheDirectoryPath'] ?: '';
 
         return $cacheDirectory ? ['cache_dir' => $cacheDirectory] : [];
+    }
+
+    /**
+     * @return string
+     */
+    private function getRootFileName(): string
+    {
+        return (string)TS::getSettings('tx_routes')['routesFileName'];
     }
 
     /**
