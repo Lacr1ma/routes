@@ -11,7 +11,7 @@ $EM_CONF['routes'] = [
     'version' => '2.1.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.14-10.4.99'
+            'typo3' => '10.4.15-10.4.99'
         ]
     ]
 ];
