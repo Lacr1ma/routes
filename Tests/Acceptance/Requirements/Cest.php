@@ -34,6 +34,44 @@ use LMS\Routes\Tests\Acceptance\Support\AcceptanceTester;
 class Cest
 {
     /**
+     * @param AcceptanceTester $I
+     */
+    public function ensure_content_type_is_correct_for_subsequent_request(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+
+        foreach (range(0, 2) as $step) {
+            $I->sendGET('https://routes.ddev.site/api/demo_tca_test');
+            $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+            $I->seeResponseContainsJson(['success' => true]);
+        }
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function custom_path_has_been_included(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->sendGET('https://routes.ddev.site/api/demo_tca_test');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['success' => true]);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function yaml_root_format_has_been_included(AcceptanceTester $I)
+    {
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->sendGET('https://routes.ddev.site/api/demo/yaml');
+
+        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+        $I->seeResponseContainsJson(['success' => true]);
+    }
+
+    /**
      * Since v10 it's probably should be deleted.
      *
      * @param AcceptanceTester $I
