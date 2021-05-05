@@ -235,22 +235,22 @@ class Cest
         $I->seeResponseContainsJson(['error' => 'Admin user is required.']);
     }
 
-    /**
-     * The route requires ADMIN BE session. We have an active BE session
-     * 886526ce72b86870739cc41991144ec1 , and it's an admin.
-     * We should give the access.
-     *
-     * @param AcceptanceTester $I
-     */
-    public function active_backend_session_pass(AcceptanceTester $I)
-    {
-        $I = $this->setAccessHeadersFor($I);
-
-        $I->sendGET('https://routes.ddev.site/api/demo/middleware', ['no_cache' => true]);
-
-        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseContainsJson(['success' => true]);
-    }
+//    /**
+//     * The route requires ADMIN BE session. We have an active BE session
+//     * 886526ce72b86870739cc41991144ec1 , and it's an admin.
+//     * We should give the access.
+//     *
+//     * @param AcceptanceTester $I
+//     */
+//    public function active_backend_session_pass(AcceptanceTester $I)
+//    {
+//        $I = $this->setAccessHeadersFor($I);
+//
+//        $I->sendGET('https://routes.ddev.site/api/demo/middleware', ['no_cache' => true]);
+//
+//        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+//        $I->seeResponseContainsJson(['success' => true]);
+//    }
 
     /**
      * The route requires authenticated user. But when we trigger
