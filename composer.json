@@ -11,10 +11,8 @@
 		"apcu-autoloader": true
 	},
 	"require": {
-		"typo3/minimal": "^10",
+		"typo3/minimal": "^10.4",
 		"vlucas/phpdotenv": "^2.4",
-		"ayesh/composer-preload": "0.0.8",
-		"phpdocumentor/reflection-docblock": "5.1.0",
 
 		"lms/routes": "v10.x-dev"
 	},
@@ -32,34 +30,5 @@
 		"psr-4": {
 			"LMS\\Demo\\": "public/typo3conf/ext/demo/Classes"
 		}
-	},
-	"extra": {
-		"preload": {
-			"paths": [
-				"public"
-			],
-			"exclude": [
-				"var",
-				"public/typo3temp",
-				"public/fileadmin",
-				"public/uploads",
-				"public/typo3conf/autoload",
-				"public/typo3conf/l10n",
-				"public/typo3conf/PackageStates.php",
-				"public/typo3conf/LocalConfiguration.php",
-				"public/typo3conf/AdditionalConfiguration.php"
-			],
-			"extensions": ["php"],
-			"exclude-regex": "/[A-Za-z0-9_]test\\.php$/i",
-			"no-status-check": false
-		}
-	},
-	"scripts": {
-		"post-update-cmd": [
-			"@composer preload"
-		],
-		"post-install-cmd": [
-			"@composer preload"
-		]
 	}
 }
