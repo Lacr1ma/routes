@@ -58,11 +58,22 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
      */
     private function getFoundPathList(string $file): array
     {
-        try {
-            $yml = (array)$this->locator->locate($file . '.yml', null, false);
-            $yaml = (array)$this->locator->locate($file . '.yaml', null, false);
+        $yml = $this->retrievePathFor($file . '.yml');
+        $yaml = $this->retrievePathFor($file . '.yaml');
+        $custom = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'];
 
-            return array_merge($yaml, $yml);
+        return array_merge($yml, $yaml, $custom);
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return array
+     */
+    private function retrievePathFor(string $file): array
+    {
+        try {
+            return (array)$this->locator->locate($file, null, false);
         } catch (FileLocatorFileNotFoundException $e) {
             return [];
         }

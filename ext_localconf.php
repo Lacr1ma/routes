@@ -45,3 +45,5 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
         ]
     );
 })();
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'] = 'Routes';

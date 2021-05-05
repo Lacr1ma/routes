@@ -2,7 +2,6 @@ plugin.tx_routes {
 
   settings {
     suffix = {$plugin.tx_routes.settings.suffix}
-    routesFileName = {$plugin.tx_routes.settings.routesFileName}
     cacheDirectoryPath = {$plugin.tx_routes.settings.cacheDirectoryPath}
 
     redirect {

@@ -43,7 +43,9 @@ trait Router
      */
     public function getRouter(): SymfonyRouter
     {
-        return new SymfonyRouter($this->getLoader(), $this->getRootFileName(), $this->getRouteOptions(), $this->getRequestContext());
+        $root = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'];
+
+        return new SymfonyRouter($this->getLoader(), $root, $this->getRouteOptions(), $this->getRequestContext());
     }
 
     /**
@@ -54,14 +56,6 @@ trait Router
         $cacheDirectory = TS::getSettings('tx_routes')['cacheDirectoryPath'] ?: '';
 
         return $cacheDirectory ? ['cache_dir' => $cacheDirectory] : [];
-    }
-
-    /**
-     * @return string
-     */
-    private function getRootFileName(): string
-    {
-        return (string)TS::getSettings('tx_routes')['routesFileName'];
     }
 
     /**
