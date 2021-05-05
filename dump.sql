@@ -122,8 +122,8 @@ LOCK TABLES `be_sessions` WRITE;
 
 INSERT INTO `be_sessions` (`ses_id`, `ses_iplock`, `ses_userid`, `ses_tstamp`, `ses_data`, `ses_backuserid`)
 VALUES
-	('886526ce72b86870739cc41991144ec1','[DISABLED]',1,1777777777,'',0),
-	('ff83dfd81e20b34c27d3e97771a4525a','[DISABLED]',2,1777777777,'',0);
+	('96f78e55f2848510a2f23f8e46300fbe','[DISABLED]',1,1777777777,'',0),
+	('d498cc8e34241c7936f5ba3307bc66e2','[DISABLED]',2,1777777777,'',0);
 
 /*!40000 ALTER TABLE `be_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -451,7 +451,7 @@ LOCK TABLES `fe_sessions` WRITE;
 
 INSERT INTO `fe_sessions` (`ses_id`, `ses_iplock`, `ses_userid`, `ses_tstamp`, `ses_data`, `ses_permanent`, `ses_anonymous`)
 VALUES
-	('53574eb0bafe1c0a4d8a2cfc0cf726da','[DISABLED]',1,1777777777,'',0,0);
+	('5c96a1d483b93969a226b5c4a1d30acf','[DISABLED]',1,1777777777,'',0,0);
 
 /*!40000 ALTER TABLE `fe_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1381,8 +1381,8 @@ LOCK TABLES `tx_demo_domain_model_entity` WRITE;
 
 INSERT INTO `tx_demo_domain_model_entity` (`uid`, `deleted`, `pid`, `crdate`, `title`)
 VALUES
-	(1,0,0,1575330251,'Title 1'),
-	(999,0,0,1575330251,'delete_me');
+	(1,0,1,1575330251,'Title 1'),
+	(999,0,1,1575330251,'delete_me');
 
 /*!40000 ALTER TABLE `tx_demo_domain_model_entity` ENABLE KEYS */;
 UNLOCK TABLES;

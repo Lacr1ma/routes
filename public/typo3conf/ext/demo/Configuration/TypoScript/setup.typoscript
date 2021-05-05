@@ -4,3 +4,10 @@ plugin.tx_demo.settings.middleware.admin {
     users = {$plugin.tx_demo.settings.middleware.admin.users}
     groups = {$plugin.tx_demo.settings.middleware.admin.groups}
 }
+
+plugin.tx_demo {
+  persistence {
+    storagePid = 1
+    recursive = 1
+  }
+}

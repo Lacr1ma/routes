@@ -37,3 +37,8 @@ if (!defined('TYPO3_MODE')) {
         'DemoApi' => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner,  updateRaw'
     ]
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'] = [
+  0 => '/var/www/html/public/typo3conf/ext/demo/Configuration/API/test.yaml',
+  1 => '/var/www/html/public/typo3conf/ext/demo/Configuration/API/test1.yaml'
+];

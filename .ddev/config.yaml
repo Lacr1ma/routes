@@ -1,4 +1,4 @@
-APIVersion: v1.15.1
+APIVersion: v1.17.2
 name: routes
 type: typo3
 docroot: public
