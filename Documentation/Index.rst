@@ -52,5 +52,6 @@ API Routes
 	AdministratorManual/Index
 	DeveloperManual/Index
 	Tutorials/Index
+	ChangeLog/Index
 	Error/Index
 	Migration/Index
