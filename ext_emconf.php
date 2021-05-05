@@ -8,10 +8,10 @@ $EM_CONF['routes'] = [
     'author_email' => 'borulkosergey@icloud.com',
     'state' => 'beta',
     'clearCacheOnLoad' => true,
-    'version' => '2.0.0',
+    'version' => '2.1.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.0.0-10.4.99'
+            'typo3' => '10.4.14-10.4.99'
         ]
     ]
 ];
