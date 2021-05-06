@@ -4,7 +4,7 @@ public/fileadmin/*
 public/index.php
 public/typo3/
 public/typo3conf/ENABLE_INSTALL_TOOL
-public/typo3conf/ext/
+public/typo3conf/ext/routes
 public/typo3temp/
 public/uploads/
 var/
