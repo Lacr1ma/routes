@@ -6,11 +6,22 @@
 		{"type": "composer", "url": "https://composer.typo3.org/"}
 	],
 	"config": {
+		"platform": {
+			"php": "7.4"
+		},
+		"apcu-autoloader": true,
 		"optimize-autoloader": true,
 		"classmap-authoritative": true,
-		"apcu-autoloader": true
+		"preferred-install": {
+			"*": "dist"
+		}
 	},
 	"require": {
+		"php": "^7.4",
+		"ext-json": "*",
+		"ext-ctype": "*",
+		"ext-iconv": "*",
+
 		"typo3/minimal": "^10.4",
 		"vlucas/phpdotenv": "^2.4",
 
