@@ -23,6 +23,8 @@
 		"ext-iconv": "*",
 
 		"typo3/minimal": "^10.4",
+		"typo3/cms-felogin" : "10.4.15",
+		"typo3/cms-fluid-styled-content": "10.4.15",
 		"vlucas/phpdotenv": "^2.4",
 
 		"lms/routes": "v10.x-dev"

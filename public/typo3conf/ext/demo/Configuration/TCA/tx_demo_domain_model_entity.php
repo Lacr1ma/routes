@@ -30,7 +30,7 @@ return [
         'label' => 'title',
         'crdate' => 'crdate',
         'delete' => 'deleted',
-        'iconfile' => '',
+        'iconfile' => 'EXT:demo/Resources/Public/Images/BackendLayouts/default.png',
         'searchFields' => 'title'
     ],
     'interface' => [

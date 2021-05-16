@@ -17,6 +17,12 @@ return [
         'fluid' => [
             'packagePath' => 'typo3/sysext/fluid/',
         ],
+        'frontend' => [
+            'packagePath' => 'typo3/sysext/frontend/',
+        ],
+        'fluid_styled_content' => [
+            'packagePath' => 'typo3/sysext/fluid_styled_content/',
+        ],
         'install' => [
             'packagePath' => 'typo3/sysext/install/',
         ],
@@ -29,11 +35,11 @@ return [
         'extensionmanager' => [
             'packagePath' => 'typo3/sysext/extensionmanager/',
         ],
+        'felogin' => [
+            'packagePath' => 'typo3/sysext/felogin/',
+        ],
         'filelist' => [
             'packagePath' => 'typo3/sysext/filelist/',
-        ],
-        'frontend' => [
-            'packagePath' => 'typo3/sysext/frontend/',
         ],
         'demo' => [
             'packagePath' => 'typo3conf/ext/demo/',

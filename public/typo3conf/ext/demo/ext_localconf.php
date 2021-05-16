@@ -42,3 +42,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'] = [
   0 => '/var/www/html/public/typo3conf/ext/demo/Configuration/API/test.yaml',
   1 => '/var/www/html/public/typo3conf/ext/demo/Configuration/API/test1.yaml'
 ];
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:demo/Configuration/TsConfig/Page/All.tsconfig">'
+);

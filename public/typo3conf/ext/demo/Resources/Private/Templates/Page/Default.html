@@ -1,0 +1,9 @@
+{namespace route = LMS\Routes\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="Main">
+    <f:variable name="csrf" value="{route:csrfToken()}" />
+
+    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
+</f:section>
