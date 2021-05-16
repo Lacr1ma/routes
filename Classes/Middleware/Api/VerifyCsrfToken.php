@@ -26,6 +26,8 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -37,28 +39,19 @@ class VerifyCsrfToken extends AbstractRouteMiddleware
      */
     public function process(): void
     {
-        if (hash_equals($this->getRequestToken(), $this->getSessionToken())) {
+        $user = (string)$this->user;
+        $csrf = $this->getRequestToken();
+
+        $protector = FormProtectionFactory::get();
+        if ($protector->validateToken($csrf, 'routes', 'api', $user)) {
             return;
         }
 
         $this->deny('CSRF token mismatch.', 401);
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestToken(): string
+    private function getRequestToken(): string
     {
         return $this->getRequest()->getHeaderLine('X-CSRF-TOKEN');
-    }
-
-    /**
-     * @return string
-     */
-    public function getSessionToken(): string
-    {
-        $id = $this->getRequest()->getCookieParams()['fe_typo_user'];
-
-        return $this->sessionManager()->hash($id);
     }
 }

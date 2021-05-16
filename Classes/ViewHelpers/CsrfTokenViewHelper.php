@@ -26,16 +26,19 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Extbase\User;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
  */
 class CsrfTokenViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-    /**
-     * @return string
-     */
     public function render(): string
     {
-        return (string)$GLOBALS['TSFE']->fe_user->user['ses_id'];
+        $user = (string)User::currentUid();
+        $protector = FormProtectionFactory::get();
+
+        return $protector->generateToken('routes', 'api', $user);
     }
 }
