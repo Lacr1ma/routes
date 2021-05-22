@@ -103,7 +103,7 @@ class RouteHandler
      */
     private function processMiddleware(ServerRequestInterface $request): void
     {
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware']) {
             return;
         }
 
