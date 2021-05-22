@@ -39,37 +39,15 @@ class VerifyAdminBackendSession extends AbstractRouteMiddleware
      */
     public function process(): void
     {
-        if (!$this->isAdmin()) {
-            $this->deny('Admin user is required.', 403);
+        if ($this->isAdmin()) {
+            return;
         }
 
-        if ($this->getActiveSessionID() !== $this->getCookieSessionID()) {
-            $this->deny('BE session mismatch.', 403);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    private function getCookieSessionID(): string
-    {
-        $id = $this->getRequest()->getCookieParams()['be_typo_user'] ?: '';
-
-        return $this->sessionManager()->hash($id);
-    }
-
-    /**
-     * @return string
-     */
-    private function getActiveSessionID(): string
-    {
-        return $this->backendUser()['ses_id'] ?: '';
+        $this->deny('Admin user is required.', 403);
     }
 
     /**
      * Tells us weather the associated with the current request BE User is an admin
-     *
-     * @return bool
      */
     private function isAdmin(): bool
     {
@@ -78,8 +56,6 @@ class VerifyAdminBackendSession extends AbstractRouteMiddleware
 
     /**
      * Retrieve the currently logged in BE User who is associated with the request
-     *
-     * @return array
      */
     private function backendUser(): array
     {
