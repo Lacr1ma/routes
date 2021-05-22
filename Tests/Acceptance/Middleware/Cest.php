@@ -36,7 +36,7 @@ class Cest
     /**
      * This route requires group of UID 5 for access,
      * or admin group (1 | 2)
-     * The user with session d108a7a49509ef42b5a54f94c6b6ea13 has group 1.
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has group 1.
      * So we should give the access
      *
      * @param AcceptanceTester $I
@@ -54,7 +54,7 @@ class Cest
     /**
      * This route requires user that makes a request is the same as in param for access,
      * or user from admin list can also perform the request
-     * The user with session d108a7a49509ef42b5a54f94c6b6ea13 has uid <1>
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has uid <1>
      * We pass <user> in params with <22>, but it's not an owner of the resource.
      * But our admin user has uid <1>, so we should give the access
      *
@@ -72,7 +72,7 @@ class Cest
 
     /**
      * This route requires user that makes a request is the same as in param for access.
-     * The user with session d108a7a49509ef42b5a54f94c6b6ea13 has uid <1>
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has uid <1>
      * We pass <user> in params with same identifier
      * So we should give the access
      *
@@ -90,7 +90,7 @@ class Cest
 
     /**
      * This route requires user that makes a request is the same as in param for access.
-     * The user with session d108a7a49509ef42b5a54f94c6b6ea13 has uid <1>
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has uid <1>
      * We pass <user> in params with identifier that equal <999>
      * So we should deny the request
      *
@@ -109,7 +109,7 @@ class Cest
 
     /**
      * This route requires group of UID 999 for access.
-     * The user with session d108a7a49509ef42b5a54f94c6b6ea13 has group 1.
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has group 1.
      * So we should deny the request
      *
      * @param AcceptanceTester $I
@@ -127,7 +127,7 @@ class Cest
 
     /**
      * This route requires group of UID 1 | 2 for access.
-     * The user with session d108a7a49509ef42b5a54f94c6b6ea13 has group 1.
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has group 1.
      * So we should give the access
      *
      * @param AcceptanceTester $I
@@ -191,7 +191,7 @@ class Cest
     public function auth_middleware_requires_proper_csrf_token(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=d108a7a49509ef42b5a54f94c6b6ea13');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=edeb126f7862e85884fd1bfa7bcefaf3');
 
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required', ['no_cache' => true]);
 
@@ -226,8 +226,8 @@ class Cest
     public function admin_backend_user_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=d108a7a49509ef42b5a54f94c6b6ea13;be_typo_user=262d502d4c53a48013865ac497bcab32');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '9505d6de2825a41fd97699d1671b9ef1d2ed78d2');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=edeb126f7862e85884fd1bfa7bcefaf3;be_typo_user=262d502d4c53a48013865ac497bcab32');
+        $I->haveHttpHeader('X-CSRF-TOKEN', 'a37000160e74311f2b3b12e777c09bd4802e7d4a');
         $I->sendGET('https://routes.ddev.site/api/demo/middleware', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -284,11 +284,11 @@ class Cest
      */
     private function authenticate(AcceptanceTester $session): AcceptanceTester
     {
-        $sessionID = '9505d6de2825a41fd97699d1671b9ef1d2ed78d2';
-        $encodedSessionID = 'd108a7a49509ef42b5a54f94c6b6ea13';
+        $csrf = 'a37000160e74311f2b3b12e777c09bd4802e7d4a'; // Token from VH
+        $encodedSessionID = 'edeb126f7862e85884fd1bfa7bcefaf3'; // From Browser
         $encodedBeSession = '5c745e2eef5a51357e7a5d3678c43023';
 
-        $session->haveHttpHeader('X-CSRF-TOKEN', $sessionID);
+        $session->haveHttpHeader('X-CSRF-TOKEN', $csrf);
         $session->haveHttpHeader('Cookie', 'fe_typo_user=' . $encodedSessionID . ';be_typo_user=' . $encodedBeSession . '');
 
         return $session;
