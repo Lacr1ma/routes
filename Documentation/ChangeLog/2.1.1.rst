@@ -1,0 +1,31 @@
+
+
+2.1.1
+------------------
+
+.. rst-class:: bignums-xxl
+
+#. Refine Csrf by leveraging FormProtectionFactory
+
+    Before we used just user session identifier as a CSRF token which
+    is considered as sensitive information disclosure.
+
+    So now we've changed it. No action is required from end user.
+    Csrf token gets regenerated for each page reload in :file:`Production mode`.
+
+#. Avoid middleware execution
+
+    I've had a community request to change it from :file:`debug` to something else as debug
+    key getting used for different reasons as well.
+    Those who use this feature in development mode,
+    please use :file:`disableRoutesMiddleware` instead.
+
+    .. code-block:: php
+
+        // Before
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = true;
+
+        // Now
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware'] = true;
+
+#. Simplify VerifyAdminBackendSession

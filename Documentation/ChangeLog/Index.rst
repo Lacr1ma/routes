@@ -19,3 +19,4 @@ List of versions
    :glob:
 
    2.1.0
+   2.1.1

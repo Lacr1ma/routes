@@ -27,7 +27,7 @@ All of these middleware are located in the :file:`Classes/Middleware/Api` direct
 
 .. tip::
 
-    $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = true;
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware'] = true;
 
     Allows you to disable all middleware checkers!
 
