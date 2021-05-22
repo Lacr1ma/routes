@@ -26,7 +26,10 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Assist\Str;
+use LMS\Facade\Extbase\Registry;
 use LMS\Facade\Extbase\User;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 
 /**
@@ -37,8 +40,20 @@ class CsrfTokenViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractView
     public function render(): string
     {
         $user = (string)User::currentUid();
-        $protector = FormProtectionFactory::get();
+        $action = $this->getActionBasedOnEnv();
 
-        return $protector->generateToken('routes', 'api', $user);
+        Registry::set('tx_routes', $user, $action);
+
+        return FormProtectionFactory::get()
+            ->generateToken('routes', $action, $user);
+    }
+
+    private function getActionBasedOnEnv(): string
+    {
+        if (Environment::getContext()->isProduction()) {
+            return Str::random();
+        }
+
+        return 'api';
     }
 }
