@@ -42,12 +42,12 @@ class RouteHandler
      * Basically will contain the response text
      * which is generated after execution of the extbase action.
      */
-    private string $output = '';
+    private $output = '';
 
     /**
      * Contains the response status code.
      */
-    private int $status = 200;
+    private $status = 200;
 
     /**
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
