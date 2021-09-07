@@ -32,4 +32,5 @@ namespace LMS\Demo\Domain\Repository;
  */
 class EntityRepository extends \LMS\Facade\Repository\AbstractRepository
 {
+
 }

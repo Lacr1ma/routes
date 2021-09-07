@@ -69,12 +69,14 @@ class DemoApiController extends Base\ApiResourceController
         return $this->jsonResponse();
     }
 
-    public function updateRawAction(int $uid): string
+    public function updateRawAction(int $uid): ResponseInterface
     {
          // $GLOBALS['TYPO3_REQUEST']->getParsedBody() as alternative
 
-        return (string)json_encode(
-            $this->request->getArguments()
+        return $this->jsonResponse(
+            (string)json_encode(
+                $this->request->getArguments()
+            )
         );
     }
 }

@@ -32,7 +32,7 @@ namespace LMS\Demo\Domain\Model;
  */
 class Entity extends \LMS\Facade\Model\AbstractModel
 {
-    protected string $title;
+    protected string $title = '';
 
     public function getTitle(): string
     {
