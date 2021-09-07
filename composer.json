@@ -12,7 +12,7 @@
 	"require": {
 		"php": "^7.4",
 		"typo3/cms-core": "^11.4.0",
-		"lms/facade": "^1"
+		"lms/facade": "v11.x-dev"
 	},
 	"autoload": {
 		"psr-4": {
