@@ -33,7 +33,7 @@ namespace LMS\Routes\Middleware\Api;
 class VerifyAdminBackendSession extends AbstractRouteMiddleware
 {
     /**
-     * Ensure an activate backend session exist and user is actually admin
+     * Ensure an active backend session exist and user is actually an admin
      *
      * {@inheritDoc}
      */

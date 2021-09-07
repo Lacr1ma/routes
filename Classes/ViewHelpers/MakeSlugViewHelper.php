@@ -36,7 +36,7 @@ class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
     use Router;
 
     /**
-     * We expect <for> to be initialized
+     * {@inheritDoc}
      */
     public function initializeArguments(): void
     {
@@ -44,9 +44,6 @@ class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
         $this->registerArgument('with', 'array', 'Optional route parameters', false, []);
     }
 
-    /**
-     * @return string
-     */
     public function render(): string
     {
         $name = $this->arguments['for'];

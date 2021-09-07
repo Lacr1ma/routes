@@ -36,8 +36,6 @@ trait Yaml
 {
     /**
      * Get the loader, which contains all the possible locations where we could find Routes.yml
-     *
-     * @return \LMS\Routes\Loader\YamlFileLoader
      */
     public function getLoader(): YamlFileLoader
     {
@@ -48,17 +46,16 @@ trait Yaml
 
     /**
      * Returns the array, that collects paths, of all custom extensions that have been installed.
-     * Also as need to search under custom extension suffix, each path will contains that suffix as well.
+     * Also, as need to search under custom extension suffix, each path will contain that suffix as well.
      *
      * Let's imagine that we have only 2 custom extensions (news, blog)  installed on a system, then the result will be:
      * [
      *    0 => 'typo3conf/ext/news/Configuration',
      *    1 => 'typo3conf/ext/blog/Configuration',
-     * }
+     * ]
      *
      * @psalm-suppress PossiblyNullIterator
      * @psalm-suppress PossiblyInvalidIterator
-     * @return array
      */
     private function getPossiblePaths(): array
     {

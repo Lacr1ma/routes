@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\Extbase;
@@ -42,12 +44,12 @@ class RouteHandler
      * Basically will contain the response text
      * which is generated after execution of the extbase action.
      */
-    private $output = '';
+    private string $output = '';
 
     /**
      * Contains the response status code.
      */
-    private $status = 200;
+    private int $status = 200;
 
     /**
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
@@ -67,8 +69,6 @@ class RouteHandler
 
     /**
      * Creates the PSR7 Response based on output that was retrieved from FrontendRequestHandler
-     *
-     * @return \Psr\Http\Message\ResponseInterface
      */
     public function generateResponse(): ResponseInterface
     {
@@ -103,7 +103,7 @@ class RouteHandler
      */
     private function processMiddleware(ServerRequestInterface $request): void
     {
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware']) {
             return;
         }
 
@@ -141,6 +141,7 @@ class RouteHandler
      *
      * @psalm-suppress LessSpecificReturnStatement
      * @psalm-suppress MoreSpecificReturnType
+     * @noinspection PhpIncompatibleReturnTypeInspection
      */
     private function getRouteService(): RouteService
     {
@@ -148,7 +149,7 @@ class RouteHandler
     }
 
     /**
-     * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
+     * Runs the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
      *
      * @param array<string, string> $config
      */

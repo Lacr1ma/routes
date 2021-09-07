@@ -26,12 +26,10 @@ before_install:
 install:
   - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
   - cd $TRAVIS_REPO_SLUG
-  - git checkout tests-v10
+  - git checkout tests-v11
   - ddev start
   - ddev import-db --src=./dump.sql
-  - ddev import-files --src=./assets
   - ddev composer install --prefer-dist
-  - ddev exec sudo chmod -R 777 /var/www/html/var/
 
 script:
   # Check code style

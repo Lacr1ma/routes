@@ -23,16 +23,22 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+defined('TYPO3') or die();
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
+    "@import 'EXT:routes/Configuration/TypoScript/constants.typoscript'"
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+    "@import 'EXT:routes/Configuration/TypoScript/setup.typoscript'"
+);
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'])) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'] = [];
 }
 
 (static function (): void {
-    $GLOBALS['TYPO3_CONF_VARS'] = \array_replace_recursive(
+    $GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
         $GLOBALS['TYPO3_CONF_VARS'],
         [
             'SYS' => [

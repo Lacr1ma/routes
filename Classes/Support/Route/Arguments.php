@@ -37,12 +37,10 @@ trait Arguments
     /**
      * @var array
      */
-    private $arguments = [];
+    private array $arguments = [];
 
     /**
      * Return the list of the arguments related to current Extbase request
-     *
-     * @return array
      */
     public function getArguments(): array
     {
@@ -51,8 +49,6 @@ trait Arguments
 
     /**
      * Set all the arguments from the coming route config. Or if the key is empty try to find in globals
-     *
-     * @param array $configuration
      */
     protected function initializeArguments(array $configuration): void
     {
@@ -70,17 +66,13 @@ trait Arguments
     {
         $bodyParameters = json_decode(ServerRequest::getInstance()->getBody()->__toString(), true);
 
-        if (\is_array($bodyParameters)) {
+        if (is_array($bodyParameters)) {
             $this->arguments = array_merge($this->arguments, $bodyParameters);
         }
     }
 
     /**
      * Remove all the keys that are not related to extbase argument
-     *
-     * @param array $configuration
-     *
-     * @return array
      */
     private function removeMetadataFrom(array $configuration): array
     {

@@ -43,7 +43,7 @@ class VerifyGroup extends AbstractRouteMiddleware
         $actual = $this->getUserGroupsUserBelongTo();
         $expected = $this->getRouteGroups();
 
-        if ((bool)array_intersect($actual, $expected)) {
+        if (array_intersect($actual, $expected)) {
             return;
         }
 
@@ -51,9 +51,7 @@ class VerifyGroup extends AbstractRouteMiddleware
     }
 
     /**
-     *  Fetch all the groups current user belong to
-     *
-     * @return array
+     * Fetch all the groups current user belong to
      */
     private function getUserGroupsUserBelongTo(): array
     {
@@ -63,9 +61,7 @@ class VerifyGroup extends AbstractRouteMiddleware
     }
 
     /**
-     *  Retrieve group that guards the route
-     *
-     * @return array
+     * Retrieve group that guards the route
      */
     private function getRouteGroups(): array
     {
@@ -80,8 +76,6 @@ class VerifyGroup extends AbstractRouteMiddleware
 
     /**
      * Find all admin users related to current request
-     *
-     * @return array
      */
     private function getAdminGroups(): array
     {

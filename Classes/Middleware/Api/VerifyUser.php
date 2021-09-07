@@ -53,8 +53,6 @@ class VerifyUser extends AbstractRouteMiddleware
 
     /**
      * Retrieves the value of the action parameter that contains <user identifier>
-     *
-     * @return int
      */
     private function getRequestUserID(): int
     {
@@ -63,8 +61,6 @@ class VerifyUser extends AbstractRouteMiddleware
 
     /**
      * Retrieve the name of the parameter that related to user field
-     *
-     * @return string
      */
     private function getUserPropertyName(): string
     {
@@ -73,8 +69,6 @@ class VerifyUser extends AbstractRouteMiddleware
 
     /**
      * Find all admin users related to current request
-     *
-     * @return array
      */
     private function getAdminUsers(): array
     {

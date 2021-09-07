@@ -33,40 +33,23 @@ use LMS\Facade\Extbase\Request;
  */
 trait Controller
 {
-    /**
-     * @var string
-     */
-    private $controllerFQCN;
+    private string $controllerFQCN;
 
-    /**
-     * Setup controller namespace
-     *
-     * @param string $controllerFQCN
-     */
     protected function initializeController(string $controllerFQCN): void
     {
         $this->controllerFQCN = $controllerFQCN;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getController(): string
     {
         return Request::getControllerNameBasedOn($this->controllerFQCN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtension(): string
     {
         return Request::getExtensionNameBasedOn($this->controllerFQCN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVendor(): string
     {
         return Request::getVendorNameBasedOn($this->controllerFQCN);

@@ -26,11 +26,8 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\ObjectManageable;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
-use TYPO3\CMS\Core\Session\SessionManager;
 use LMS\Facade\Extbase\{User, ExtensionHelper, TypoScriptConfiguration};
 
 /**
@@ -41,20 +38,9 @@ abstract class AbstractRouteMiddleware
     use ExtensionHelper;
     use \LMS\Facade\Model\Property\User;
 
-    /**
-     * @var \Psr\Http\Message\ServerRequestInterface $request
-     */
-    private $request;
+    private ServerRequestInterface $request;
+    private array $properties;
 
-    /**
-     * @var array
-     */
-    private $properties;
-
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param array                                    $properties
-     */
     public function __construct(ServerRequestInterface $request, array $properties)
     {
         $this->request = $request;
@@ -63,59 +49,40 @@ abstract class AbstractRouteMiddleware
         $this->setUser(User::currentUid());
     }
 
+
     /**
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
      */
     abstract public function process(): void;
 
     /**
-     * @param string $message
-     * @param int $status
-     *
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
      */
     protected function deny(string $message, int $status = 200): void
     {
         throw new MethodNotAllowedException([], $message, $status);
     }
 
-    /**
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
     protected function getRequest(): ServerRequestInterface
     {
         return $this->request;
     }
 
-    /**
-     * @return array
-     */
     protected function getProperties(): array
     {
         return $this->properties;
     }
 
-    /**
-     * @return array
-     */
     public function getOriginalParams(): array
     {
         return (array)$this->getRequest()->getAttributes()['_originalGetParameters'];
     }
 
-    /**
-     * @return array
-     */
     public function getQuery(): array
     {
-        return (array)$this->getRequest()->getQueryParams();
+        return $this->getRequest()->getQueryParams();
     }
 
-    /**
-     * Retrieve the name of the extension that is related to the endpoint
-     *
-     * @return string
-     */
     protected function getAdminExtensionName(): string
     {
         $extKey = (string)array_last($this->getProperties());
@@ -123,22 +90,8 @@ abstract class AbstractRouteMiddleware
         return $extKey ?: self::extensionTypoScriptKey();
     }
 
-    /**
-     * @param string $extKey
-     *
-     * @return array
-     */
     protected function getSettings(string $extKey): array
     {
         return TypoScriptConfiguration::getSettings($extKey) ?: [];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface
-     */
-    protected function sessionManager(): HashableSessionBackendInterface
-    {
-        return ObjectManageable::createObject(SessionManager::class)
-            ->getSessionBackend('FE');
     }
 }

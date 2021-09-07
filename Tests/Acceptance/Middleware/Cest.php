@@ -191,7 +191,7 @@ class Cest
     public function auth_middleware_requires_proper_csrf_token(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=edeb126f7862e85884fd1bfa7bcefaf3');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=4f6c6621798e513153930e1ce742d846');
 
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required', ['no_cache' => true]);
 
@@ -217,40 +217,19 @@ class Cest
     }
 
     /**
-     * The route requires ADMIN BE session. We have an active BE session
-     * 5084d498cc8e34241c7936f5ba3307bc66e2 , but it's only editor, not admin.
-     * The request should be blocked
-     *
      * @param AcceptanceTester $I
      */
     public function admin_backend_user_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=edeb126f7862e85884fd1bfa7bcefaf3;be_typo_user=262d502d4c53a48013865ac497bcab32');
-        $I->haveHttpHeader('X-CSRF-TOKEN', 'a37000160e74311f2b3b12e777c09bd4802e7d4a');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=4f6c6621798e513153930e1ce742d846;be_typo_user=xxx');
+        $I->haveHttpHeader('X-CSRF-TOKEN', 'adfcf3bb2bb477c5aec61ebf004c772f5f4d6c8a');
         $I->sendGET('https://routes.ddev.site/api/demo/middleware', ['no_cache' => true]);
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseCodeIs(403);
         $I->seeResponseContainsJson(['error' => 'Admin user is required.']);
     }
-
-//    /**
-//     * The route requires ADMIN BE session. We have an active BE session
-//     * 886526ce72b86870739cc41991144ec1 , and it's an admin.
-//     * We should give the access.
-//     *
-//     * @param AcceptanceTester $I
-//     */
-//    public function active_backend_session_pass(AcceptanceTester $I)
-//    {
-//        $I = $this->setAccessHeadersFor($I);
-//
-//        $I->sendGET('https://routes.ddev.site/api/demo/middleware', ['no_cache' => true]);
-//
-//        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-//        $I->seeResponseContainsJson(['success' => true]);
-//    }
 
     /**
      * The route requires authenticated user. But when we trigger
@@ -284,9 +263,9 @@ class Cest
      */
     private function authenticate(AcceptanceTester $session): AcceptanceTester
     {
-        $csrf = 'a37000160e74311f2b3b12e777c09bd4802e7d4a'; // Token from VH
-        $encodedSessionID = 'edeb126f7862e85884fd1bfa7bcefaf3'; // From Browser
-        $encodedBeSession = '5c745e2eef5a51357e7a5d3678c43023';
+        $csrf = 'adfcf3bb2bb477c5aec61ebf004c772f5f4d6c8a'; // Token from VH
+        $encodedSessionID = '4f6c6621798e513153930e1ce742d846'; // From Browser
+        $encodedBeSession = 'ba00890dd6f7efa64e40920ec31ff7f9';
 
         $session->haveHttpHeader('X-CSRF-TOKEN', $csrf);
         $session->haveHttpHeader('Cookie', 'fe_typo_user=' . $encodedSessionID . ';be_typo_user=' . $encodedBeSession . '');

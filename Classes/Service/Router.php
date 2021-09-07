@@ -38,9 +38,6 @@ trait Router
 {
     use YamlFileLoader;
 
-    /**
-     * @return \Symfony\Component\Routing\Router
-     */
     public function getRouter(): SymfonyRouter
     {
         $root = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'];
@@ -48,9 +45,6 @@ trait Router
         return new SymfonyRouter($this->getLoader(), $root, $this->getRouteOptions(), $this->getRequestContext());
     }
 
-    /**
-     * @return array
-     */
     private function getRouteOptions(): array
     {
         $cacheDirectory = TS::getSettings('tx_routes')['cacheDirectoryPath'] ?: '';
@@ -58,9 +52,6 @@ trait Router
         return $cacheDirectory ? ['cache_dir' => $cacheDirectory] : [];
     }
 
-    /**
-     * @return \Symfony\Component\Routing\RequestContext
-     */
     private function getRequestContext(): RequestContext
     {
         return (new RequestContext())->fromRequest(Request::createFromGlobals());

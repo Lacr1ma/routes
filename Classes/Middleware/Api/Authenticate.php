@@ -53,9 +53,6 @@ class Authenticate extends AbstractRouteMiddleware
         $this->deny('Authentication required.', 401);
     }
 
-    /**
-     * @return string
-     */
     private function loginPageUrl(): string
     {
         $pid = (int)$this->getSettings('tx_routes')['redirect.']['loginPage'];

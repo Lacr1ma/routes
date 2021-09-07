@@ -1,4 +1,7 @@
 <?php
+
+/** @noinspection PhpUnused */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\Controller;
@@ -47,12 +50,11 @@ class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     /**
      * @psalm-suppress UndefinedMethod
      * @psalm-suppress PossiblyNullReference
-     *
-     * @param string $name
      */
     public function showAction(string $name): void
     {
-        $host = str_replace('/typo3/', '', $this->request->getBaseUri());
+        $uri = $this->request->getUri();
+        $host = "{$uri->getScheme()}://{$uri->getHost()}";
 
         $this->view->assign('route', $this->getRouter()->getRouteCollection()->get($name)->setHost($host));
     }

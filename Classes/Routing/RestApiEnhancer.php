@@ -26,9 +26,6 @@ namespace LMS\Routes\Routing;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Assist\Str;
-use LMS\Facade\ObjectManageable;
-use LMS\Routes\Service\RouteService;
 use TYPO3\CMS\Core\Routing\{Route, RouteCollection};
 
 /**
@@ -46,31 +43,8 @@ class RestApiEnhancer extends \TYPO3\CMS\Core\Routing\Enhancer\PluginEnhancer
     {
         $defaultOptions = $collection->get('default')->getOptions();
 
-        foreach ($this->getRouteService()->getRouter()->getRouteCollection()->all() as $route) {
-            $typo3Route = new Route(
-                $route->getPath(),
-                $route->getDefaults(),
-                $route->getRequirements(),
-                array_merge($defaultOptions, $route->getOptions()),
-                $route->getHost(),
-                $route->getSchemes(),
-                $route->getMethods(),
-                $route->getCondition()
-            );
+        $apiRoute = new Route('/api/{any}', [], ['any' => '.*'], $defaultOptions);
 
-            $collection->add(Str::random(), $typo3Route);
-        }
-    }
-
-    /**
-     * Create the Route Service Instance
-     *
-     * @psalm-suppress LessSpecificReturnStatement
-     * @psalm-suppress MoreSpecificReturnType
-     * @return \LMS\Routes\Service\RouteService
-     */
-    private function getRouteService(): RouteService
-    {
-        return ObjectManageable::createObject(RouteService::class);
+        $collection->add('api', $apiRoute);
     }
 }

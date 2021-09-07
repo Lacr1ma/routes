@@ -23,17 +23,15 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+defined('TYPO3') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'LMS.Routes',
+    'Routes',
     'site',
     'routes',
     'bottom',
     [
-        'Management' => 'index, show'
+        \LMS\Routes\Controller\ManagementController::class => 'index, show'
     ],
     [
         'icon' => 'EXT:routes/ext_icon.svg',

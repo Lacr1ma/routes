@@ -44,18 +44,13 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
     {
         $collection = new RouteCollection();
 
-        foreach ($this->getFoundPathList((string)$file) as $path) {
+        foreach ($this->getFoundPathList($file) as $path) {
             $collection->addCollection(parent::load($path));
         }
 
         return $collection;
     }
 
-    /**
-     * @param string $file
-     *
-     * @return array
-     */
     private function getFoundPathList(string $file): array
     {
         $yml = $this->retrievePathFor($file . '.yml');
@@ -65,11 +60,6 @@ class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
         return array_merge($yml, $yaml, $custom);
     }
 
-    /**
-     * @param string $file
-     *
-     * @return array
-     */
     private function retrievePathFor(string $file): array
     {
         try {

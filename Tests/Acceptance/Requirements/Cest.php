@@ -148,17 +148,6 @@ class Cest
     /**
      * @param AcceptanceTester $I
      */
-    public function requirement_integer_only_required(AcceptanceTester $I)
-    {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendGET('https://routes.ddev.site/api/demo/photos/1a');
-
-        $I->seeResponseCodeIs(404);
-    }
-
-    /**
-     * @param AcceptanceTester $I
-     */
     public function requirement_integer_only_applied(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');

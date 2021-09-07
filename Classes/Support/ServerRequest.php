@@ -67,7 +67,7 @@ class ServerRequest
 
     /**
      * Retrieve the request data which was sent directly in body.
-     * Typically used in PATCH and PUT request types.
+     * Typically, used in PATCH and PUT request types.
      *
      * @return array<string, mixed>
      */

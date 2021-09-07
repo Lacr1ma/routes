@@ -35,19 +35,9 @@ use LMS\Routes\Middleware\Api\AbstractRouteMiddleware as RouteMiddleware;
  */
 class Middleware
 {
-    /**
-     * @var array
-     */
-    private $properties;
+    private array $properties;
+    private string $middlewareClassName;
 
-    /**
-     * @var string
-     */
-    private $middlewareClassName;
-
-    /**
-     * @param string $route
-     */
     public function __construct(string $route)
     {
         $this->properties = [];
@@ -58,10 +48,6 @@ class Middleware
 
     /**
      * @psalm-suppress InvalidStringClass
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
      */
     public function process(ServerRequestInterface $request): void
     {
@@ -71,9 +57,6 @@ class Middleware
         $routeMiddleware->process();
     }
 
-    /**
-     * @param string $route
-     */
     private function initializeProperties(string $route): void
     {
         if ($length = strpos($route, ':')) {
@@ -81,9 +64,6 @@ class Middleware
         }
     }
 
-    /**
-     * @param string $route
-     */
     private function initializeNamespace(string $route): void
     {
         if ($length = strpos($route, ':')) {

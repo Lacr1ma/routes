@@ -40,9 +40,6 @@ class RouteService
     /**
      * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
      *
-     * @param string $slug
-     *
-     * @return \LMS\Routes\Domain\Model\Route
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
@@ -58,10 +55,6 @@ class RouteService
      * Attempt to retrieve all associated middleware by query
      *
      * @psalm-suppress PossiblyNullReference
-     *
-     * @param string $slug
-     *
-     * @return array
      */
     public function findMiddlewareFor(string $slug): array
     {
@@ -75,25 +68,21 @@ class RouteService
 
     /**
      * Attempt to retrieve all associated middleware by query
-     *
-     * @param string $name
-     *
-     * @return array
      */
     private function getMiddlewareNamespaceByName(string $name): array
     {
+        if ($name === 'auth') {
+            return [
+                \LMS\Routes\Middleware\Api\Authenticate::class,
+                \LMS\Routes\Middleware\Api\VerifyCsrfToken::class
+            ];
+        }
+
         $namespaces = TypoScriptConfiguration::getSettings('tx_routes')['middleware.'];
 
         return array_values($namespaces["$name."] ?? []);
     }
 
-    /**
-     * Get Route settings by it's slug
-     *
-     * @param string $slug
-     *
-     * @return \Symfony\Component\Routing\Route|null
-     */
     private function getRouteFor(string $slug): ?SymfonyRoute
     {
         return $this->getRouter()->getRouteCollection()->get(

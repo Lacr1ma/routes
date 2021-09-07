@@ -33,13 +33,7 @@ use LMS\Facade\Extbase\Response;
  */
 class ErrorBuilder
 {
-    /**
-     * Build exception error message based on request type
-     *
-     * @param \Exception $exception
-     *
-     * @return string
-     */
+
     public static function messageFor(\Exception $exception): string
     {
         $message = $exception->getMessage();
@@ -51,11 +45,6 @@ class ErrorBuilder
         return self::buildErrorWith($message);
     }
 
-    /**
-     * @param string $message
-     *
-     * @return string
-     */
     private static function buildErrorWith(string $message): string
     {
         if (Response::isJson()) {

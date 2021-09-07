@@ -38,24 +38,10 @@ class Route
     use ContainsArguments;
     use DefinesController;
 
-    /**
-     * @var string
-     */
-    private $action;
+    private string $action;
+    private string $format;
+    private string $plugin;
 
-    /**
-     * @var string
-     */
-    private $format;
-
-    /**
-     * @var string
-     */
-    private $plugin;
-
-    /**
-     * @param array $configuration
-     */
     public function __construct(array $configuration)
     {
         [$controllerFQCN, $this->action] = explode('::', $configuration['_controller']);
@@ -67,29 +53,16 @@ class Route
         $this->initializeArguments($configuration);
     }
 
-    /**
-     * Get the Extbase <Action> name
-     *
-     * @return string
-     */
     public function getAction(): string
     {
         return $this->action;
     }
 
-    /**
-     * Get Request Format
-     *
-     * @return string
-     */
     public function getFormat(): string
     {
         return $this->format;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPlugin(): string
     {
         $controller = $this->getController();
@@ -98,9 +71,6 @@ class Route
         return $this->plugin ?: Plugin::getNameBasedOn($extensionKey, $controller, $this->action);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPluginNamespace(): string
     {
         return Plugin::getNamespaceBasedOn($this->getExtension(), $this->getPlugin());
