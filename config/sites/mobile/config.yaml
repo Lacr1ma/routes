@@ -1,0 +1,25 @@
+base: 'https://m.routes.ddev.site/'
+baseVariants: {  }
+languages:
+  -
+    languageId: '0'
+    title: English
+    navigationTitle: English
+    base: /
+    locale: en_US.UTF8
+    iso-639-1: en
+    hreflang: en-US
+    direction: ltr
+    typo3Language: default
+    flag: us
+    enabled: true
+rootPageId: 4
+routeEnhancers:
+  ApplyRoutesCollection:
+    type: Routes
+routes:
+  -
+    route: robots.txt
+    type: staticText
+    content: "User-agent: *\r\nDisallow: /typo3/\r\nDisallow: /typo3_src/"
+websiteTitle: 'Routes Demo'

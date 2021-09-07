@@ -1,0 +1,48 @@
+{
+	"name": "test/routes",
+	"description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
+	"license": "MIT",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"repositories": [
+		{"type": "composer", "url": "https://composer.typo3.org/"}
+	],
+	"config": {
+		"platform": {
+			"php": "7.4"
+		},
+		"apcu-autoloader": true,
+		"optimize-autoloader": true,
+		"classmap-authoritative": true,
+		"preferred-install": {
+			"*": "dist"
+		}
+	},
+	"require": {
+		"php": "^7.4",
+		"ext-json": "*",
+		"ext-ctype": "*",
+		"ext-iconv": "*",
+
+		"typo3/minimal": "11.4.0",
+		"typo3/cms-felogin" : "11.4.0",
+		"typo3/cms-fluid-styled-content": "11.4.0",
+
+		"lms/routes": "v11.x-dev"
+	},
+	"require-dev": {
+		"vimeo/psalm": "^4.10",
+		"typo3/testing-framework": "^6.10.1",
+		"codeception/codeception": "^4.0.0",
+		"codeception/module-rest": "*",
+		"codeception/module-db": "*",
+		"codeception/module-asserts": "*",
+		"codeception/module-webdriver": "*",
+		"codeception/module-phpbrowser": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"LMS\\Demo\\": "public/typo3conf/ext/demo/Classes"
+		}
+	}
+}

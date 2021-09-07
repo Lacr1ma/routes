@@ -1,0 +1,5 @@
+demo_tca_test:
+  path:         api/demo_tca_test
+  controller:   LMS\Demo\Controller\DemoApiController::test
+  defaults:
+    plugin: DemoApi
