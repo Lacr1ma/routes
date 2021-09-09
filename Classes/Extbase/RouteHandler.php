@@ -80,7 +80,7 @@ class RouteHandler
      */
     private function processRoute(ServerRequestInterface $request, Route $route): void
     {
-        $GLOBALS['TSFE']->determineId();
+        $GLOBALS['TSFE']->determineId($request);
         $GLOBALS['TSFE']->getConfigArray();
 
         $this->processMiddleware(
