@@ -80,6 +80,7 @@ class RouteHandler
      */
     private function processRoute(ServerRequestInterface $request, Route $route): void
     {
+        $GLOBALS['TSFE']->set_no_cache();
         $GLOBALS['TSFE']->determineId($request);
         $GLOBALS['TSFE']->getConfigArray();
 
