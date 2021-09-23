@@ -26,7 +26,9 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Assist\Str;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use LMS\Routes\Middleware\Api\AbstractRouteMiddleware as RouteMiddleware;
 
@@ -38,7 +40,7 @@ class Middleware
     private array $properties;
     private string $middlewareClassName;
 
-    public function __construct(string $route)
+    public function setRoute(string $route)
     {
         $this->properties = [];
 
@@ -47,12 +49,16 @@ class Middleware
     }
 
     /**
-     * @psalm-suppress InvalidStringClass
+     * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     public function process(ServerRequestInterface $request): void
     {
         /** @var RouteMiddleware $routeMiddleware */
-        $routeMiddleware = new $this->middlewareClassName($request, $this->properties);
+        $routeMiddleware = GeneralUtility::makeInstance($this->middlewareClassName);
+
+        $routeMiddleware->setRequest($request);
+        $routeMiddleware->setProperties($this->properties);
 
         $routeMiddleware->process();
     }
@@ -60,7 +66,7 @@ class Middleware
     private function initializeProperties(string $route): void
     {
         if ($length = strpos($route, ':')) {
-            $this->properties = explode(',', Str::substr($route, ++$length));
+            $this->properties = explode(',', substr($route, ++$length));
         }
     }
 

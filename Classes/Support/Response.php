@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace LMS\Routes\ViewHelpers;
+namespace LMS\Routes\Support;
 
 /* * *************************************************************
  *
@@ -26,35 +27,28 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Service\Router;
-use Symfony\Component\Routing\Router as SymfonyRouter;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
+use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class Response
 {
-    private SymfonyRouter $router;
-
-    public function injectRouterService(Router $service): void
+    public function createWith(string $content, int $status = 200): ResponseInterface
     {
-        $this->router = $service->getRouter();
+        if ($this->isJson()) {
+            return new JsonResponse(json_decode($content, true), $status);
+        }
+
+        return new HtmlResponse($content, $status);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function initializeArguments(): void
+    public function isJson(): bool
     {
-        $this->registerArgument('for', 'string', 'The name of the route', true);
-        $this->registerArgument('with', 'array', 'Optional route parameters', false, []);
-    }
+        $acceptHeaders = Request::createFromGlobals()->getAcceptableContentTypes();
 
-    public function render(): string
-    {
-        $name = $this->arguments['for'];
-        $arguments = $this->arguments['with'];
-
-        return $this->router->generate($name, $arguments);
+        return in_array('application/json', $acceptHeaders);
     }
 }

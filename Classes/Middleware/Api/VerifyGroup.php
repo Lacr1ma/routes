@@ -26,7 +26,6 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Assist\Str;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,7 +54,7 @@ class VerifyGroup extends AbstractRouteMiddleware
      */
     private function getUserGroupsUserBelongTo(): array
     {
-        $userGroups = $this->fetchUserProperty('usergroup');
+        $userGroups = $this->user->fetchUserProperty('usergroup');
 
         return GeneralUtility::intExplode(',', $userGroups, true);
     }
@@ -65,7 +64,7 @@ class VerifyGroup extends AbstractRouteMiddleware
      */
     private function getRouteGroups(): array
     {
-        if (Str::start(array_last($this->getProperties()), 'tx_')) {
+        if ($this->strStart(array_last($this->getProperties()), 'tx_')) {
             $accessGroups = array_slice($this->getProperties(), 0, -1);
 
             return array_merge($accessGroups, $this->getAdminGroups());
@@ -84,5 +83,12 @@ class VerifyGroup extends AbstractRouteMiddleware
         $adminGroups = $this->getSettings($ext)['middleware.']['admin.']['groups'];
 
         return GeneralUtility::intExplode(',', $adminGroups, true);
+    }
+
+    private function strStart(string $value, string $prefix): string
+    {
+        $quoted = preg_quote($prefix, '/');
+
+        return $prefix.preg_replace('/^(?:'.$quoted.')+/u', '', $value);
     }
 }

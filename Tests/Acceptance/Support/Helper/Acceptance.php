@@ -1,7 +1,10 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
+
 declare(strict_types = 1);
 
-namespace LMS\Routes\ViewHelpers;
+namespace LMS\Routes\Tests\Acceptance\Support\Helper;
 
 /* * *************************************************************
  *
@@ -26,35 +29,27 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Service\Router;
-use Symfony\Component\Routing\Router as SymfonyRouter;
+use Codeception\Module;
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class Acceptance extends Module
 {
-    private SymfonyRouter $router;
-
-    public function injectRouterService(Router $service): void
+    public function verifyRedirect(string $from, string $to): void
     {
-        $this->router = $service->getRouter();
-    }
+        $phpBrowser = $this->getModule('PhpBrowser');
+        $guzzle = $phpBrowser->client;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function initializeArguments(): void
-    {
-        $this->registerArgument('for', 'string', 'The name of the route', true);
-        $this->registerArgument('with', 'array', 'Optional route parameters', false, []);
-    }
+        // Disable the following of redirects
+        $guzzle->followRedirects(false);
 
-    public function render(): string
-    {
-        $name = $this->arguments['for'];
-        $arguments = $this->arguments['with'];
+        $phpBrowser->_loadPage('GET', $from);
+        $response = $guzzle->getInternalResponse();
+        $locationHeader = $response->getHeader('Location');
 
-        return $this->router->generate($name, $arguments);
+        $this->assertEquals($to, $locationHeader);
+
+        $guzzle->followRedirects(true);
     }
 }

@@ -26,9 +26,6 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Traits\Throttler;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  * @author         Sergey Borulko <borulkosergey@icloud.com>
@@ -40,18 +37,21 @@ class Throttle extends AbstractRouteMiddleware
      */
     public function process(): void
     {
-        $this->throttler()->incrementAttempts();
+        $this->initThrottler();
 
-        if ($this->throttler()->hasTooManyAttempts()) {
+        $this->throttler->incrementAttempts();
+
+        if ($this->throttler->hasTooManyAttempts()) {
             $this->deny('Too Many Attempts.', 429);
         }
     }
 
-    protected function throttler(): Throttler
+    private function initThrottler(): void
     {
         $max = (int)$this->getProperties()[0];
         $decay = (int)$this->getProperties()[1];
 
-        return GeneralUtility::makeInstance(Throttler::class, $max, $decay);
+        $this->throttler->setDecay($decay);
+        $this->throttler->setAttempts($max);
     }
 }

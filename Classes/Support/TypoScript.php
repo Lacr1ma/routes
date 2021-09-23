@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUnusedParameterInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\Support;
@@ -26,35 +28,42 @@ namespace LMS\Routes\Support;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as Configuration;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class ErrorBuilder
+class TypoScript
 {
-    private Response $response;
+    private ConfigurationManager $manager;
 
-    public function __construct(Response $response)
+    public function __construct(ConfigurationManager $manager)
     {
-        $this->response = $response;
+        $this->manager = $manager;
     }
 
-    public function messageFor(\Exception $exception): string
+    public function getSettings($extKey = 'tx_routes'): array
     {
-        $message = $exception->getMessage();
+        $ts = $this->retrieveFullTypoScriptConfigurationFor($extKey);
 
-        if ($message === '') {
-            $message = basename(str_replace('\\', '/', get_class($exception)));
-        }
-
-        return $this->buildErrorWith($message);
+        return (array)$ts['settings.'];
     }
 
-    private function buildErrorWith(string $message): string
+    /**
+     * Get all TypoScript definition for the requested extension (tx_extKey)
+     */
+    private function retrieveFullTypoScriptConfigurationFor(string $extKey): array
     {
-        if ($this->response->isJson()) {
-            return (string)json_encode(['error' => $message]);
+        try {
+            $ts = $this->manager->getConfiguration(
+                Configuration::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+            );
+        } catch (InvalidConfigurationTypeException $e) {
+            return [];
         }
 
-        return $message;
+        return $ts['plugin.'][$extKey . '.'] ?: [];
     }
 }

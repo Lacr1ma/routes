@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Routes\ViewHelpers;
+namespace LMS\Routes\Support;
 
 /* * *************************************************************
  *
@@ -26,35 +26,41 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Service\Router;
-use Symfony\Component\Routing\Router as SymfonyRouter;
+use TYPO3\CMS\Extbase\Mvc\Request as ExtbaseRequest;
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class Request
 {
-    private SymfonyRouter $router;
+    private ExtbaseRequest $request;
 
-    public function injectRouterService(Router $service): void
+    public function __construct(ExtbaseRequest $request)
     {
-        $this->router = $service->getRouter();
+        $this->request = $request;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function initializeArguments(): void
+    private function initialize(string $controllerFQCN): ExtbaseRequest
     {
-        $this->registerArgument('for', 'string', 'The name of the route', true);
-        $this->registerArgument('with', 'array', 'Optional route parameters', false, []);
+        $request = $this->request;
+
+        $request->setControllerObjectName($controllerFQCN);
+
+        return $request;
     }
 
-    public function render(): string
+    public function getControllerNameBasedOn(string $controllerFQCN): string
     {
-        $name = $this->arguments['for'];
-        $arguments = $this->arguments['with'];
+        return $this->initialize($controllerFQCN)->getControllerName();
+    }
 
-        return $this->router->generate($name, $arguments);
+    public function getExtensionNameBasedOn(string $controllerFQCN): string
+    {
+        return $this->initialize($controllerFQCN)->getControllerExtensionName();
+    }
+
+    public function getVendorNameBasedOn(string $controllerFQCN): string
+    {
+        return explode('\\', $controllerFQCN)[0];
     }
 }

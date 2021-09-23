@@ -26,7 +26,6 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\User;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -40,11 +39,13 @@ class VerifyUser extends AbstractRouteMiddleware
      */
     public function process(): void
     {
-        if ($this->getUser() === $this->getRequestUserID()) {
+        $currentUser = $this->user->getUser();
+
+        if ($currentUser === $this->getRequestUserID()) {
             return;
         }
 
-        if (in_array(User::currentUid(), $this->getAdminUsers(), true)) {
+        if (in_array($currentUser, $this->getAdminUsers(), true)) {
             return;
         }
 

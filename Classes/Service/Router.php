@@ -27,33 +27,29 @@ namespace LMS\Routes\Service;
  * ************************************************************* */
 
 use LMS\Routes\Loader\Yaml as YamlFileLoader;
-use LMS\Facade\Extbase\TypoScriptConfiguration as TS;
 use Symfony\Component\Routing\Router as SymfonyRouter;
 use Symfony\Component\{HttpFoundation\Request, Routing\RequestContext};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Router
+class Router
 {
-    use YamlFileLoader;
+    private YamlFileLoader $loader;
+    private RequestContext $context;
+
+    public function __construct(YamlFileLoader $loader)
+    {
+        $this->loader = $loader;
+
+        $this->context = (new RequestContext())
+            ->fromRequest(Request::createFromGlobals());
+    }
 
     public function getRouter(): SymfonyRouter
     {
         $root = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'];
 
-        return new SymfonyRouter($this->getLoader(), $root, $this->getRouteOptions(), $this->getRequestContext());
-    }
-
-    private function getRouteOptions(): array
-    {
-        $cacheDirectory = TS::getSettings('tx_routes')['cacheDirectoryPath'] ?: '';
-
-        return $cacheDirectory ? ['cache_dir' => $cacheDirectory] : [];
-    }
-
-    private function getRequestContext(): RequestContext
-    {
-        return (new RequestContext())->fromRequest(Request::createFromGlobals());
+        return new SymfonyRouter($this->loader->getLoader(), $root, [], $this->context);
     }
 }

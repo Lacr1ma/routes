@@ -10,15 +10,13 @@ suites:
             dsn: 'mysql:host=db;dbname=db'
             user: 'root'
             password: 'root'
-        - Asserts
         - WebDriver:
-            url: http://%TESTING_DOMAIN%/
+            url: https://routes.ddev.site/
             host: selenium__standalone-chrome
             browser: chrome
         - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
         - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
             sessions:
-              editor: ff83dfd81e20b34c27d3e97771a4525a
               admin: 886526ce72b86870739cc41991144ec1
 
 extensions:
@@ -27,18 +25,11 @@ extensions:
     - Codeception\Extension\RunFailed
 
 env:
-  ddev:
-    modules:
-      config:
-        WebDriver:
-          url: https://routes.ddev.site
-          host: ddev-routes-chrome
-
   github:
     modules:
       config:
         WebDriver:
-          url: http://routes.ddev.site
+          url: https://routes.ddev.site
           host: ddev-routes-chrome
 
 paths:

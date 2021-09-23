@@ -26,17 +26,14 @@ namespace LMS\Routes\Tests\Acceptance\Requirements;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Tests\Acceptance\Support\AcceptanceTester;
+use LMS\Routes\Tests\Acceptance\Support\AcceptanceTester as Tester;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class Cest
 {
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function ensure_content_type_is_correct_for_subsequent_request(AcceptanceTester $I)
+    public function ensure_content_type_is_correct_for_subsequent_request(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
 
@@ -47,10 +44,7 @@ class Cest
         }
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function custom_path_has_been_included(AcceptanceTester $I)
+    public function custom_path_has_been_included(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo_tca_test');
@@ -59,10 +53,7 @@ class Cest
         $I->seeResponseContainsJson(['success' => true]);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function yaml_root_format_has_been_included(AcceptanceTester $I)
+    public function yaml_root_format_has_been_included(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo/yaml');
@@ -73,10 +64,8 @@ class Cest
 
     /**
      * Since v10 it's probably should be deleted.
-     *
-     * @param AcceptanceTester $I
      */
-    public function custom_format_applied(AcceptanceTester $I)
+    public function custom_format_applied(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendPOST('https://routes.ddev.site/api/demo/custom/view');
@@ -86,10 +75,7 @@ class Cest
         $I->seeResponseContainsJson(['success' => true]);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function https_protocol_requirement_applied(AcceptanceTester $I)
+    public function https_protocol_requirement_applied(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo/https/only');
@@ -98,10 +84,7 @@ class Cest
         $I->seeResponseContainsJson(['success' => true]);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function https_protocol_requirement_required(AcceptanceTester $I)
+    public function https_protocol_requirement_required(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('http://routes.ddev.site/api/demo/https/only');
@@ -109,10 +92,7 @@ class Cest
         $I->seeResponseCodeIs(404);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function host_requirement_required(AcceptanceTester $I)
+    public function host_requirement_required(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo/custom/host');
@@ -121,10 +101,7 @@ class Cest
         $I->seeResponseCodeIs(200);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function proper_host_requirement_applied(AcceptanceTester $I)
+    public function proper_host_requirement_applied(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://m.routes.ddev.site/api/demo/custom/host');
@@ -133,10 +110,7 @@ class Cest
         $I->seeResponseContainsJson(['success' => true]);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function params_default_values_applied(AcceptanceTester $I)
+    public function params_default_values_applied(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo/test/with_params');
@@ -145,10 +119,7 @@ class Cest
         $I->seeResponseContainsJson(['title' => 'default-title', 'description' => 'default-description']);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function requirement_integer_only_applied(AcceptanceTester $I)
+    public function requirement_integer_only_applied(Tester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('https://routes.ddev.site/api/demo/photos/1');
@@ -157,10 +128,7 @@ class Cest
         $I->seeResponseContainsJson(['uid' => 1, 'title' => 'Title 1']);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function response_format_is_html_when_accept_header_missing(AcceptanceTester $I)
+    public function response_format_is_html_when_accept_header_missing(Tester $I)
     {
         $I->sendGET('https://routes.ddev.site/api/demo/photos');
 

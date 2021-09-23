@@ -7,18 +7,13 @@ suites:
       enabled:
         - REST:
             depends: PhpBrowser
-            url: http://routes.ddev.site/api/
+            url: https://routes.ddev.site/api/
             part: Json
 
 params:
   - env
 
 env:
-  ddev:
-    modules:
-      config:
-        REST:
-
   github:
     modules:
       config:

@@ -26,7 +26,6 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\Registry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 
@@ -41,8 +40,8 @@ class VerifyCsrfToken extends AbstractRouteMiddleware
      */
     public function process(): void
     {
-        $user = (string)$this->user;
         $csrf = $this->getRequestToken();
+        $user = (string)$this->user->getUser();
         $action = $this->getActionBasedOnEnv();
 
         $protector = FormProtectionFactory::get();
@@ -60,8 +59,10 @@ class VerifyCsrfToken extends AbstractRouteMiddleware
 
     private function getActionBasedOnEnv(): string
     {
+        $user = (string)$this->user->getUser();
+
         if (Environment::getContext()->isProduction()) {
-            return Registry::get('tx_routes', (string)$this->user);
+            return $this->registry->get('tx_routes', $user);
         }
 
         return 'api';

@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\Middleware\Api;
@@ -26,32 +28,59 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Routes\Support\Throttler;
+use TYPO3\CMS\Core\Registry;
+use LMS\Routes\Support\User;
+use LMS\Routes\Support\Redirect;
+use LMS\Routes\Support\Response;
+use LMS\Routes\Support\TypoScript;
+use TYPO3\CMS\Core\Context\Context;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use LMS\Facade\Extbase\{User, ExtensionHelper, TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 abstract class AbstractRouteMiddleware
 {
-    use ExtensionHelper;
-    use \LMS\Facade\Model\Property\User;
+    protected User $user;
+    protected TypoScript $ts;
+    protected array $properties;
+    protected Response $response;
+    protected Registry $registry;
+    protected Redirect $redirect;
+    protected Throttler $throttler;
+    protected ServerRequestInterface $request;
 
-    private ServerRequestInterface $request;
-    private array $properties;
-
-    public function __construct(ServerRequestInterface $request, array $properties)
+    public function __construct(Context $ctx, Registry $registry, User $user, Response $response, Redirect $redirect, TypoScript $ts, Throttler $throttler)
     {
-        $this->request = $request;
-        $this->properties = $properties;
+        $this->ts = $ts;
+        $this->user = $user;
+        $this->registry = $registry;
+        $this->response = $response;
+        $this->redirect = $redirect;
+        $this->throttler = $throttler;
 
-        $this->setUser(User::currentUid());
+        $authUid = (int)$ctx
+            ->getPropertyFromAspect('frontend.user', 'id');
+
+        $this->user->setUser($authUid);
     }
 
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
+    public function setProperties(array $properties): void
+    {
+        $this->properties = $properties;
+    }
 
     /**
      * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     abstract public function process(): void;
 
@@ -87,11 +116,11 @@ abstract class AbstractRouteMiddleware
     {
         $extKey = (string)array_last($this->getProperties());
 
-        return $extKey ?: self::extensionTypoScriptKey();
+        return $extKey ?: 'tx_routes';
     }
 
     protected function getSettings(string $extKey): array
     {
-        return TypoScriptConfiguration::getSettings($extKey) ?: [];
+        return $this->ts->getSettings($extKey);
     }
 }

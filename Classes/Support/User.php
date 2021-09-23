@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Routes\ViewHelpers;
+namespace LMS\Routes\Support;
 
 /* * *************************************************************
  *
@@ -26,35 +26,51 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Service\Router;
-use Symfony\Component\Routing\Router as SymfonyRouter;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class User
 {
-    private SymfonyRouter $router;
+    private int $user = 0;
+    private QueryBuilder $builder;
 
-    public function injectRouterService(Router $service): void
+    public function __construct(ConnectionPool $connection)
     {
-        $this->router = $service->getRouter();
+        $this->builder = $connection->getQueryBuilderForTable('fe_users');;
+    }
+
+    public function getUser(): int
+    {
+        return $this->user;
+    }
+
+    public function setUser(int $user): void
+    {
+        $this->user = $user;
+    }
+
+    public function fetchRawUser(): array
+    {
+        $constraints = [
+            $this->builder->expr()->eq('uid', $this->getUser()),
+        ];
+
+        return $this->builder
+            ->select('*')
+            ->from('fe_users')
+            ->where(...$constraints)
+            ->execute()
+            ->fetch();
     }
 
     /**
-     * {@inheritDoc}
+     * @return mixed
      */
-    public function initializeArguments(): void
+    public function fetchUserProperty(string $property)
     {
-        $this->registerArgument('for', 'string', 'The name of the route', true);
-        $this->registerArgument('with', 'array', 'Optional route parameters', false, []);
-    }
-
-    public function render(): string
-    {
-        $name = $this->arguments['for'];
-        $arguments = $this->arguments['with'];
-
-        return $this->router->generate($name, $arguments);
+        return $this->fetchRawUser()[$property];
     }
 }

@@ -26,8 +26,7 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use LMS\Facade\Extbase\{Response, User\StateContext};
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -42,21 +41,21 @@ class Authenticate extends AbstractRouteMiddleware
      */
     public function process(): void
     {
-        if (StateContext::isLoggedIn()) {
+        if ($this->user->getUser()) {
             return;
         }
 
-        if (!Response::isJson()) {
-            HttpUtility::redirect($this->loginPageUrl());
+        if (!$this->response->isJson()) {
+            throw new PropagateResponseException(
+                $this->redirect->toPage($this->loginPage())
+            );
         }
 
         $this->deny('Authentication required.', 401);
     }
 
-    private function loginPageUrl(): string
+    private function loginPage(): int
     {
-        $pid = (int)$this->getSettings('tx_routes')['redirect.']['loginPage'];
-
-        return "/index.php?id={$pid}";
+        return (int)$this->getSettings('tx_routes')['redirect.']['loginPage'];
     }
 }

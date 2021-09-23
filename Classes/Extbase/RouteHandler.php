@@ -28,8 +28,10 @@ namespace LMS\Routes\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Routes\Support\Response;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
-use LMS\Facade\{Extbase\Response, ObjectManageable};
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use LMS\Routes\Support\{ErrorBuilder, ServerRequest};
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Psr\Http\{Message\ResponseInterface, Message\ServerRequestInterface};
@@ -40,6 +42,11 @@ use LMS\Routes\{Domain\Model\Middleware, Domain\Model\Route, Service\RouteServic
  */
 class RouteHandler
 {
+    private Response $response;
+    private ErrorBuilder $error;
+    private Bootstrap $bootstrap;
+    private RouteService $routeService;
+
     /**
      * Basically will contain the response text
      * which is generated after execution of the extbase action.
@@ -51,18 +58,27 @@ class RouteHandler
      */
     private int $status = 200;
 
+    public function __construct(RouteService $service, Bootstrap $bootstrap, Response $response, ErrorBuilder $error)
+    {
+        $this->error = $error;
+        $this->response = $response;
+        $this->bootstrap = $bootstrap;
+        $this->routeService = $service;
+    }
+
     /**
      * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @throws PropagateResponseException
      */
-    public function __construct(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request)
     {
         $slug = $request->getUri()->getPath();
 
         try {
-            $this->processRoute($request, $this->getRouteService()->findRouteFor($slug));
+            $this->processRoute($request, $this->routeService->findRouteFor($slug));
         } catch (MethodNotAllowedException $exception) {
-            $this->output = ErrorBuilder::messageFor($exception);
+            $this->output = $this->error->messageFor($exception);
             $this->status = (int)$exception->getCode() ?: 200;
         }
     }
@@ -72,11 +88,12 @@ class RouteHandler
      */
     public function generateResponse(): ResponseInterface
     {
-        return Response::createWith($this->output, $this->status);
+        return $this->response->createWith($this->output, $this->status);
     }
 
     /**
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     private function processRoute(ServerRequestInterface $request, Route $route): void
     {
@@ -90,17 +107,18 @@ class RouteHandler
 
         $this->createActionArgumentsFrom($route);
 
-        $this->run([
-            'vendorName' => $route->getVendor(),
+        $this->bootstrap([
             'pluginName' => $route->getPlugin(),
-            'extensionName' => $route->getExtension()
+            'vendorName' => $route->getController()->getVendor(),
+            'extensionName' => $route->getController()->getExtension()
         ]);
     }
 
     /**
      * Check whether a route has any middleware and run them if any.
      *
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     private function processMiddleware(ServerRequestInterface $request): void
     {
@@ -110,8 +128,11 @@ class RouteHandler
 
         $slug = $request->getUri()->getPath();
 
-        foreach ($this->getRouteService()->findMiddlewareFor($slug) as $middlewareRoute) {
-            (new Middleware($middlewareRoute))->process($request);
+        foreach ($this->routeService->findMiddlewareFor($slug) as $middlewareRoute) {
+            $middleware = GeneralUtility::makeInstance(Middleware::class);
+            $middleware->setRoute($middlewareRoute);
+
+            $middleware->process($request);
         }
     }
 
@@ -138,27 +159,12 @@ class RouteHandler
     }
 
     /**
-     * Create the Route Service Instance.
-     *
-     * @psalm-suppress LessSpecificReturnStatement
-     * @psalm-suppress MoreSpecificReturnType
-     * @noinspection PhpIncompatibleReturnTypeInspection
-     */
-    private function getRouteService(): RouteService
-    {
-        return ObjectManageable::createObject(RouteService::class);
-    }
-
-    /**
      * Runs the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
      *
      * @param array<string, string> $config
      */
-    private function run(array $config): void
+    private function bootstrap(array $config): void
     {
-        /** @var \TYPO3\CMS\Extbase\Core\Bootstrap $bootstrap */
-        $bootstrap = ObjectManageable::createObject(Bootstrap::class);
-
-        $this->output = $bootstrap->run('', $config);
+        $this->output = $this->bootstrap->run('', $config);
     }
 }

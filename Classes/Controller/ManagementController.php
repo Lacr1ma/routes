@@ -1,5 +1,4 @@
 <?php
-
 /** @noinspection PhpUnused */
 
 declare(strict_types = 1);
@@ -30,21 +29,30 @@ namespace LMS\Routes\Controller;
  * ************************************************************* */
 
 use LMS\Routes\Service\Router;
+use Symfony\Component\Routing\Router as SymfonyRouter;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
-class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ManagementController extends ActionController
 {
-    use Router;
+    private SymfonyRouter $router;
+
+    public function injectRouter(Router $router): void
+    {
+        $this->router = $router->getRouter();
+    }
 
     /**
      * Render existing routes
      */
     public function indexAction(): void
     {
-        $this->view->assign('routes', $this->getRouter()->getRouteCollection());
+        $routes = $this->router->getRouteCollection();
+
+        $this->view->assign('routes', $routes);
     }
 
     /**
@@ -56,6 +64,8 @@ class ManagementController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $uri = $this->request->getUri();
         $host = "{$uri->getScheme()}://{$uri->getHost()}";
 
-        $this->view->assign('route', $this->getRouter()->getRouteCollection()->get($name)->setHost($host));
+        $route = $this->router->getRouteCollection()->get($name);
+
+        $this->view->assign('route', $route->setHost($host));
     }
 }

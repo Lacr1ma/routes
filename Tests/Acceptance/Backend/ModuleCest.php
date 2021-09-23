@@ -33,9 +33,6 @@ use LMS\Routes\Tests\Acceptance\Support\BackendTester;
  */
 class ModuleCest
 {
-    /**
-     * @param BackendTester $I
-     */
     public function _before(BackendTester $I)
     {
         $I->useExistingSession('admin');
@@ -45,9 +42,6 @@ class ModuleCest
         $I->switchToContentFrame();
     }
 
-    /**
-     * @param BackendTester $I
-     */
     public function list_view_visible(BackendTester $I)
     {
         $I->wantTo('I want to have a look at existing routes');
@@ -55,9 +49,6 @@ class ModuleCest
         $I->waitForElement('#routes', 5);
     }
 
-    /**
-     * @param BackendTester $I
-     */
     public function detail_view_visible(BackendTester $I)
     {
         $I->wantTo('I want to select an existing route and see its details.');

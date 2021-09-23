@@ -26,9 +26,9 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\Plugin;
+use LMS\Routes\Support\Plugin;
+use LMS\Routes\Support\Route\Controller;
 use LMS\Routes\Support\Route\Arguments as ContainsArguments;
-use LMS\Routes\Support\Route\Controller as DefinesController;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -36,21 +36,28 @@ use LMS\Routes\Support\Route\Controller as DefinesController;
 class Route
 {
     use ContainsArguments;
-    use DefinesController;
 
     private string $action;
     private string $format;
     private string $plugin;
+    private Plugin $pluginService;
+    private Controller $controller;
 
-    public function __construct(array $configuration)
+    public function __construct(Plugin $service, Controller $controller)
     {
-        [$controllerFQCN, $this->action] = explode('::', $configuration['_controller']);
+        $this->controller = $controller;
+        $this->pluginService = $service;
+    }
 
-        $this->format = $configuration['_format'] ?: '';
-        $this->plugin = $configuration['plugin'] ?: '';
+    public function setConfiguration(array $config): void
+    {
+        [$controllerFQCN, $this->action] = explode('::', $config['_controller']);
 
-        $this->initializeController($controllerFQCN);
-        $this->initializeArguments($configuration);
+        $this->format = $config['_format'] ?: '';
+        $this->plugin = $config['plugin'] ?: '';
+
+        $this->controller->initializeController($controllerFQCN);
+        $this->initializeArguments($config);
     }
 
     public function getAction(): string
@@ -65,14 +72,20 @@ class Route
 
     public function getPlugin(): string
     {
-        $controller = $this->getController();
-        $extensionKey = $this->getExtension();
+        $controller = $this->controller->getController();
+        $extensionKey = $this->controller->getExtension();
 
-        return $this->plugin ?: Plugin::getNameBasedOn($extensionKey, $controller, $this->action);
+        return $this->plugin ?: $this->pluginService->getNameBasedOn($extensionKey, $controller, $this->action);
     }
 
     public function getPluginNamespace(): string
     {
-        return Plugin::getNamespaceBasedOn($this->getExtension(), $this->getPlugin());
+        return $this->pluginService
+            ->getNamespaceBasedOn($this->controller->getExtension(), $this->getPlugin());
+    }
+
+    public function getController(): Controller
+    {
+        return $this->controller;
     }
 }

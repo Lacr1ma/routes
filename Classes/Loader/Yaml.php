@@ -26,13 +26,12 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\TypoScriptConfiguration;
 use TYPO3\CMS\Core\{Core\Environment, Utility\GeneralUtility};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Yaml
+class Yaml
 {
     /**
      * Get the loader, which contains all the possible locations where we could find Routes.yml
@@ -59,8 +58,8 @@ trait Yaml
      */
     private function getPossiblePaths(): array
     {
+        $yamlFolderPath = '/Configuration';
         $customExtensionsFolderPath = Environment::getPublicPath() . '/typo3conf/ext/';
-        $yamlFolderPath = TypoScriptConfiguration::getSettings('tx_routes')['suffix'] ?: '/Configuration';
 
         $paths = [];
         foreach (GeneralUtility::get_dirs($customExtensionsFolderPath) as $extensionKey) {

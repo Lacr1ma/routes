@@ -1,7 +1,9 @@
 <?php
+/** @noinspection PhpUnusedLocalVariableInspection */
+
 declare(strict_types = 1);
 
-namespace LMS\Routes\ViewHelpers;
+namespace LMS\Routes\Support;
 
 /* * *************************************************************
  *
@@ -26,35 +28,32 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Service\Router;
-use Symfony\Component\Routing\Router as SymfonyRouter;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class Plugin
 {
-    private SymfonyRouter $router;
+    private ExtensionService $extension;
 
-    public function injectRouterService(Router $service): void
+    public function __construct(ExtensionService $extension)
     {
-        $this->router = $service->getRouter();
+        $this->extension = $extension;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function initializeArguments(): void
+    public function getNamespaceBasedOn(string $extName, string $pluginTitle): string
     {
-        $this->registerArgument('for', 'string', 'The name of the route', true);
-        $this->registerArgument('with', 'array', 'Optional route parameters', false, []);
+        return $this->extension->getPluginNamespace($extName, $pluginTitle);
     }
 
-    public function render(): string
+    public function getNameBasedOn(string $extName, string $controller, string $action): string
     {
-        $name = $this->arguments['for'];
-        $arguments = $this->arguments['with'];
-
-        return $this->router->generate($name, $arguments);
+        try {
+            return (string)$this->extension->getPluginNameByAction($extName, $controller, $action);
+        } catch (Exception $e) {
+            return '';
+        }
     }
 }
