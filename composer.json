@@ -29,7 +29,6 @@
 		}
 	},
 	"replace": {
-		"lms/routes": "self.version",
-		"typo3-ter/routes": "self.version"
+		"lms/routes": "self.version"
 	}
 }
