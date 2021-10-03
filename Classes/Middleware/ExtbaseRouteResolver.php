@@ -61,7 +61,7 @@ class ExtbaseRouteResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $this->disableCache($request);
+        $request = $this->disableRouting($request);
 
         try {
             $this->apiHandler->handle($request);
@@ -89,12 +89,9 @@ class ExtbaseRouteResolver implements MiddlewareInterface
      * We try to avoid the request to be cached.
      * It's still not enough in some cases.
      */
-    private function disableCache(ServerRequestInterface $request): ServerRequestInterface
+    private function disableRouting(ServerRequestInterface $request): ServerRequestInterface
     {
-        $request = $request
-            ->withAttribute('noCache', true)
-            ->withAttribute('routing', null)
-            ->withQueryParams(['no_cache' => 1]);
+        $request = $request->withoutAttribute('routing');
 
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
