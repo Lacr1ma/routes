@@ -16,6 +16,9 @@ services:
     arguments:
       - '@cache.routes'
 
+  LMS\Routes\Support\User:
+    public: true
+
   LMS\Routes\Domain\Model\Route:
     public: true
 
