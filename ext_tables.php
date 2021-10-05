@@ -36,7 +36,7 @@ defined('TYPO3') or die();
         \LMS\Routes\Controller\ManagementController::class => 'index, show'
     ],
     [
-        'icon' => 'EXT:routes/ext_icon.svg',
+        'icon' => 'typo3conf/ext/routes/ext_icon.svg',
         'access' => 'admin',
         'labels' => 'LLL:EXT:routes/Resources/Private/Language/locallang_mod.xlf'
     ]
