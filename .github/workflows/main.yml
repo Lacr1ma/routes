@@ -1,0 +1,41 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - v11
+
+jobs:
+  testsuite:
+    name: Testsuit
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: tests-v11
+
+      - name: Start DDEV
+        uses: jonaseberle/github-action-setup-ddev@v1
+
+      - name: Import database
+        run: ddev import-db --src=./dump.sql
+
+      - name: Install composer packages
+        run: ddev composer install
+
+      - name: Psalm
+        run: ddev exec bin/psalm
+
+      - name: Functional test suit
+        run: ddev exec vendor/bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
+
+      - name: Acceptance [CRUD]
+        run: ddev exec vendor/bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
+
+      - name: Acceptance [API]
+        run: ddev exec vendor/bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
+
+      - name: Acceptance [Backend]
+        run: ddev exec vendor/bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
+        if: ${{ false }}
