@@ -26,7 +26,6 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Assist\Str;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -43,7 +42,7 @@ class VerifyGroup extends AbstractRouteMiddleware
         $actual = $this->getUserGroupsUserBelongTo();
         $expected = $this->getRouteGroups();
 
-        if ((bool)array_intersect($actual, $expected)) {
+        if (array_intersect($actual, $expected)) {
             return;
         }
 
@@ -51,25 +50,26 @@ class VerifyGroup extends AbstractRouteMiddleware
     }
 
     /**
-     *  Fetch all the groups current user belong to
-     *
-     * @return array
+     * Fetch all the groups current user belong to
      */
     private function getUserGroupsUserBelongTo(): array
     {
-        $userGroups = $this->fetchUserProperty('usergroup');
+        $userGroups = $this->user->fetchUserProperty('usergroup');
 
         return GeneralUtility::intExplode(',', $userGroups, true);
     }
 
     /**
-     *  Retrieve group that guards the route
-     *
-     * @return array
+     * Retrieve group that guards the route
+     * Example definition: LMS\Routes\Middleware\Api\VerifyGroup:5,tx_demo
      */
     private function getRouteGroups(): array
     {
-        if (Str::start(array_last($this->getProperties()), 'tx_')) {
+        // Gives as <tx_demo> from example above
+        $extName = $this->getAdminExtensionName(); // tx_demo
+
+        if (str_starts_with($extName, 'tx_')) {
+            // Gives as <5> from example above
             $accessGroups = array_slice($this->getProperties(), 0, -1);
 
             return array_merge($accessGroups, $this->getAdminGroups());
@@ -81,7 +81,7 @@ class VerifyGroup extends AbstractRouteMiddleware
     /**
      * Find all admin users related to current request
      *
-     * @return array
+     * plugin.tx_myExt.settings.middleware.admin
      */
     private function getAdminGroups(): array
     {

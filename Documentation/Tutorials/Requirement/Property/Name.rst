@@ -18,6 +18,8 @@ We highly recommend to keep up the following naming convention if possible: **ex
    demo_clients-index:
       path:         api/demo/clients
       controller:   LMS\Demo\Controller\ClientApiController::index
+      defaults:
+        plugin:     ClientApi
 
 .. tip::
    **Required**: Yes

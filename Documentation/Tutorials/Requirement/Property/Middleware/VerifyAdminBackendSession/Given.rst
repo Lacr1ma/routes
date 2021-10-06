@@ -18,7 +18,7 @@ We also have an intention to protect the route by **VerifyAdminBackendSession** 
 
     .. code-block:: yaml
        :linenos:
-       :emphasize-lines: 12
+       :emphasize-lines: 13
 
        demo_photos-show:
          path:         api/demo/photos/{photo}
@@ -28,6 +28,7 @@ We also have an intention to protect the route by **VerifyAdminBackendSession** 
          requirements:
            photo:      \d+
          defaults:
+           plugin:     PhotoApi
            photo:
          options:
            middleware:
@@ -38,13 +39,13 @@ We also have an intention to protect the route by **VerifyAdminBackendSession** 
     .. code-block:: php
 
        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-           'LMS.' . $_EXTKEY,
-           'DemoApi',
+           'LMS.demo',
+           'PhotoApi',
            [
-               'DemoApi' => 'show'
+               'PhotoApi' => 'show'
            ],
            [
-               'DemoApi' => 'show'
+               'PhotoApi' => 'show'
            ]
        );
 

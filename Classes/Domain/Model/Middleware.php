@@ -26,8 +26,10 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Assist\Str;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use LMS\Routes\Middleware\Api\AbstractRouteMiddleware as RouteMiddleware;
 
 /**
@@ -35,20 +37,10 @@ use LMS\Routes\Middleware\Api\AbstractRouteMiddleware as RouteMiddleware;
  */
 class Middleware
 {
-    /**
-     * @var array
-     */
-    private $properties;
+    private array $properties;
+    private string $middlewareClassName;
 
-    /**
-     * @var string
-     */
-    private $middlewareClassName;
-
-    /**
-     * @param string $route
-     */
-    public function __construct(string $route)
+    public function setRoute(string $route)
     {
         $this->properties = [];
 
@@ -57,33 +49,27 @@ class Middleware
     }
 
     /**
-     * @psalm-suppress InvalidStringClass
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     public function process(ServerRequestInterface $request): void
     {
         /** @var RouteMiddleware $routeMiddleware */
-        $routeMiddleware = new $this->middlewareClassName($request, $this->properties);
+        $routeMiddleware = GeneralUtility::makeInstance($this->middlewareClassName);
+
+        $routeMiddleware->setRequest($request);
+        $routeMiddleware->setProperties($this->properties);
 
         $routeMiddleware->process();
     }
 
-    /**
-     * @param string $route
-     */
     private function initializeProperties(string $route): void
     {
         if ($length = strpos($route, ':')) {
-            $this->properties = explode(',', Str::substr($route, ++$length));
+            $this->properties = explode(',', substr($route, ++$length));
         }
     }
 
-    /**
-     * @param string $route
-     */
     private function initializeNamespace(string $route): void
     {
         if ($length = strpos($route, ':')) {

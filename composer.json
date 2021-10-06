@@ -10,19 +10,11 @@
 		}
 	],
 	"require": {
-		"typo3/cms-core": "^9.5",
-		"symfony/config": "*",
-		"symfony/http-foundation": "*",
-		"lms/facade": "^1"
+		"typo3/cms-core": "^11.5.0"
 	},
 	"autoload": {
 		"psr-4": {
 			"LMS\\Routes\\": "Classes"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"LMS\\Routes\\Tests\\": "Tests"
 		}
 	},
 	"extra": {
@@ -31,7 +23,6 @@
 		}
 	},
 	"replace": {
-		"lms/routes": "self.version",
-		"typo3-ter/routes": "self.version"
+		"lms/routes": "self.version"
 	}
 }

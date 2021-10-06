@@ -26,18 +26,15 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\TypoScriptConfiguration;
 use TYPO3\CMS\Core\{Core\Environment, Utility\GeneralUtility};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Yaml
+class Yaml
 {
     /**
      * Get the loader, which contains all the possible locations where we could find Routes.yml
-     *
-     * @return \LMS\Routes\Loader\YamlFileLoader
      */
     public function getLoader(): YamlFileLoader
     {
@@ -48,22 +45,21 @@ trait Yaml
 
     /**
      * Returns the array, that collects paths, of all custom extensions that have been installed.
-     * Also as need to search under custom extension suffix, each path will contains that suffix as well.
+     * Also, as need to search under custom extension suffix, each path will contain that suffix as well.
      *
      * Let's imagine that we have only 2 custom extensions (news, blog)  installed on a system, then the result will be:
      * [
      *    0 => 'typo3conf/ext/news/Configuration',
      *    1 => 'typo3conf/ext/blog/Configuration',
-     * }
+     * ]
      *
      * @psalm-suppress PossiblyNullIterator
      * @psalm-suppress PossiblyInvalidIterator
-     * @return array
      */
     private function getPossiblePaths(): array
     {
+        $yamlFolderPath = '/Configuration';
         $customExtensionsFolderPath = Environment::getPublicPath() . '/typo3conf/ext/';
-        $yamlFolderPath = TypoScriptConfiguration::getSettings('tx_routes')['suffix'] ?: '/Configuration';
 
         $paths = [];
         foreach (GeneralUtility::get_dirs($customExtensionsFolderPath) as $extensionKey) {

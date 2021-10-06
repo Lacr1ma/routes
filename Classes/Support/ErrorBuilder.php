@@ -26,21 +26,21 @@ namespace LMS\Routes\Support;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\Response;
+use Exception;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class ErrorBuilder
 {
-    /**
-     * Build exception error message based on request type
-     *
-     * @param \Exception $exception
-     *
-     * @return string
-     */
-    public static function messageFor(\Exception $exception): string
+    private Response $response;
+
+    public function __construct(Response $response)
+    {
+        $this->response = $response;
+    }
+
+    public function messageFor(Exception $exception): string
     {
         $message = $exception->getMessage();
 
@@ -48,17 +48,12 @@ class ErrorBuilder
             $message = basename(str_replace('\\', '/', get_class($exception)));
         }
 
-        return self::buildErrorWith($message);
+        return $this->buildErrorWith($message);
     }
 
-    /**
-     * @param string $message
-     *
-     * @return string
-     */
-    private static function buildErrorWith(string $message): string
+    private function buildErrorWith(string $message): string
     {
-        if (Response::isJson()) {
+        if ($this->response->isJson()) {
             return (string)json_encode(['error' => $message]);
         }
 

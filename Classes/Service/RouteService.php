@@ -27,77 +27,100 @@ namespace LMS\Routes\Service;
  * ************************************************************* */
 
 use LMS\Routes\Domain\Model\Route;
-use LMS\Facade\Extbase\TypoScriptConfiguration;
+use LMS\Routes\Support\TypoScript;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Symfony\Component\Routing\Route as SymfonyRoute;
+use Symfony\Component\Routing\Router as SymfonyRouter;
+use Symfony\Component\Routing\Exception\NoConfigurationException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class RouteService
 {
-    use Router;
+    private array $ts;
+    private SymfonyRouter $router;
+
+    public function __construct(TypoScript $ts, Router $router)
+    {
+        $this->ts = $ts->getSettings();
+        $this->router = $router->getRouter();
+    }
 
     /**
      * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
      *
-     * @param string $slug
-     *
-     * @return \LMS\Routes\Domain\Model\Route
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
-     * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
+     * @throws ResourceNotFoundException
+     * @throws MethodNotAllowedException
+     * @throws NoConfigurationException
      */
     public function findRouteFor(string $slug): Route
     {
-        $routeSettings = $this->getRouter()->match($slug);
+        $routeSettings = $this->router->match($slug);
 
-        return new Route($routeSettings);
+        $route = GeneralUtility::makeInstance(Route::class);
+        $route->setConfiguration($routeSettings);
+
+        return $route;
     }
 
     /**
      * Attempt to retrieve all associated middleware by query
      *
      * @psalm-suppress PossiblyNullReference
-     *
-     * @param string $slug
-     *
-     * @return array
      */
     public function findMiddlewareFor(string $slug): array
     {
-        return collect($this->getRouteFor($slug)->getOptions()['middleware'])
-            ->map(function (string $middleware) {
-                return $this->getMiddlewareNamespaceByName($middleware) ?: $middleware;
-            })
-            ->flatten()
-            ->all();
+        $middleware = $this->getRouteFor($slug)->getOptions()['middleware'];
+        if (!is_array($middleware)) {
+            return [];
+        }
+
+        foreach ($middleware as $key => $mwName) {
+            $middleware[$key] = $this->getMiddlewareNamespaceByName($mwName) ?: $mwName;
+        }
+
+        return $this->array_flatten($middleware);
     }
 
     /**
      * Attempt to retrieve all associated middleware by query
-     *
-     * @param string $name
-     *
-     * @return array
      */
     private function getMiddlewareNamespaceByName(string $name): array
     {
-        $namespaces = TypoScriptConfiguration::getSettings('tx_routes')['middleware.'];
+        if ($name === 'auth') {
+            return [
+                \LMS\Routes\Middleware\Api\Authenticate::class,
+                \LMS\Routes\Middleware\Api\VerifyCsrfToken::class
+            ];
+        }
+
+        $namespaces = $this->ts['middleware.'];
 
         return array_values($namespaces["$name."] ?? []);
     }
 
-    /**
-     * Get Route settings by it's slug
-     *
-     * @param string $slug
-     *
-     * @return \Symfony\Component\Routing\Route|null
-     */
     private function getRouteFor(string $slug): ?SymfonyRoute
     {
-        return $this->getRouter()->getRouteCollection()->get(
-            $this->getRouter()->match($slug)['_route']
+        return $this->router->getRouteCollection()->get(
+            $this->router->match($slug)['_route']
         );
+    }
+
+    private function array_flatten(array $array): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, $this->array_flatten($value));
+            } else {
+                $result = array_merge($result, array($key => $value));
+            }
+        }
+
+        return $result;
     }
 }

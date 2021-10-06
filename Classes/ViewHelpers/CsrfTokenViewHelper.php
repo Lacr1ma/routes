@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\ViewHelpers;
@@ -26,16 +28,45 @@ namespace LMS\Routes\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
  */
-class CsrfTokenViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class CsrfTokenViewHelper extends AbstractViewHelper
 {
-    /**
-     * @return string
-     */
+    private string $user;
+    private Registry $registry;
+
+    public function __construct(Registry $registry, Context $ctx)
+    {
+        $this->user = (string)$ctx->getPropertyFromAspect('frontend.user', 'id');
+        $this->registry = $registry;
+    }
+
     public function render(): string
     {
-        return (string)$GLOBALS['TSFE']->fe_user->user['ses_id'];
+        $action = $this->getActionBasedOnEnv();
+
+        $this->registry->set('tx_routes', $this->user, $action);
+
+        return FormProtectionFactory::get()
+            ->generateToken('routes', $action, $this->user);
+    }
+
+    /**
+     * @noinspection PhpUnhandledExceptionInspection
+     */
+    private function getActionBasedOnEnv(): string
+    {
+        if (Environment::getContext()->isProduction()) {
+            return random_bytes(64);
+        }
+
+        return 'api';
     }
 }

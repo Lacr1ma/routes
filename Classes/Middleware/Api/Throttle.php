@@ -26,45 +26,32 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Traits\Throttler;
-
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
 class Throttle extends AbstractRouteMiddleware
 {
-    use Throttler;
-
     /**
      * {@inheritDoc}
      */
     public function process(): void
     {
-        $this->incrementAttempts();
+        $this->initThrottler();
 
-        if ($this->hasTooManyAttempts()) {
+        $this->throttler->incrementAttempts();
+
+        if ($this->throttler->hasTooManyAttempts()) {
             $this->deny('Too Many Attempts.', 429);
         }
     }
 
-    /**
-     * First parameter in the route is maxAttempts count
-     *
-     * {@inheritDoc}
-     */
-    public function maxAttempts(): int
+    private function initThrottler(): void
     {
-        return (int)$this->getProperties()[0];
-    }
+        $max = (int)$this->getProperties()[0];
+        $decay = (int)$this->getProperties()[1];
 
-    /**
-     * Second parameter is blocking time
-     *
-     * {@inheritDoc}
-     */
-    protected function decayMinutes(): int
-    {
-        return (int)$this->getProperties()[1];
+        $this->throttler->setDecay($decay);
+        $this->throttler->setAttempts($max);
     }
 }

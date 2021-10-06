@@ -26,49 +26,38 @@ namespace LMS\Routes\Support\Route;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\Request;
+use LMS\Routes\Support\Request;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Controller
+class Controller
 {
-    /**
-     * @var string
-     */
-    private $controllerFQCN;
+    private Request $request;
+    private string $controllerFQCN;
 
-    /**
-     * Setup controller namespace
-     *
-     * @param string $controllerFQCN
-     */
-    protected function initializeController(string $controllerFQCN): void
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
+    public function initializeController(string $controllerFQCN): void
     {
         $this->controllerFQCN = $controllerFQCN;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getController(): string
     {
-        return Request::getControllerNameBasedOn($this->controllerFQCN);
+        return $this->request->getControllerNameBasedOn($this->controllerFQCN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtension(): string
     {
-        return Request::getExtensionNameBasedOn($this->controllerFQCN);
+        return $this->request->getExtensionNameBasedOn($this->controllerFQCN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVendor(): string
     {
-        return Request::getVendorNameBasedOn($this->controllerFQCN);
+        return $this->request->getVendorNameBasedOn($this->controllerFQCN);
     }
 }

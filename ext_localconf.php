@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /* * *************************************************************
  *
@@ -23,16 +24,24 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+defined('TYPO3') or die();
 
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'])) {
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
+    "@import 'EXT:routes/Configuration/TypoScript/constants.typoscript'"
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+    "@import 'EXT:routes/Configuration/TypoScript/setup.typoscript'"
+);
+
+$cache = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+
+if (!array_key_exists('tx_routes', $cache)) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'] = [];
 }
 
-(function (): void {
-    $GLOBALS['TYPO3_CONF_VARS'] = \array_replace_recursive(
+(static function (): void {
+    $GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
         $GLOBALS['TYPO3_CONF_VARS'],
         [
             'SYS' => [
@@ -45,3 +54,6 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
         ]
     );
 })();
+
+$GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] = false;
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'] = 'Routes';

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <fe_users>
+        <uid>1</uid>
+        <pid>5</pid>
+        <tstamp>1571485756</tstamp>
+        <crdate>1571485756</crdate>
+        <username>user</username>
+        <password>$argon2i$v=19$m=65536,t=16,p=1$ZnJsWTI4WlZmbGFwbk9YNA$NRjnf5FLe2P7wCePxlZ3wKkrUaJCoAYWjgsmaDl5LFw</password> <!-- password -->
+        <disable>0</disable>
+        <deleted>0</deleted>
+        <starttime>0</starttime>
+        <endtime>0</endtime>
+        <cruser_id>1</cruser_id>
+        <usergroup>1</usergroup>
+        <first_name>Serhii</first_name>
+        <last_name>Borulko</last_name>
+        <email>user@example.com</email>
+    </fe_users>
+</dataset>

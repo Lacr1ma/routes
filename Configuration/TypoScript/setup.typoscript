@@ -1,24 +1,15 @@
 plugin.tx_routes {
 
   settings {
-    suffix = {$plugin.tx_routes.settings.suffix}
-    cacheDirectoryPath = {$plugin.tx_routes.settings.cacheDirectoryPath}
-
     redirect {
       loginPage = {$plugin.tx_routes.settings.redirect.loginPage}
     }
 
     middleware {
-      auth {
-        10 = LMS\Routes\Middleware\Api\Authenticate
-        20 = LMS\Routes\Middleware\Api\VerifyCsrfToken
-      }
-
       admin {
         users = {$plugin.tx_routes.settings.middleware.admin.users}
         groups = {$plugin.tx_routes.settings.middleware.admin.groups}
       }
-
     }
 
   }
@@ -47,7 +38,7 @@ module.tx_routes {
 }
 
 csrf_token = TEXT
-csrf_token.data = TSFE : fe_user|user|ses_id
+csrf_token.stdWrap.preUserFunc = LMS\Routes\ViewHelpers\CsrfTokenViewHelper->render
 
 page.meta.X-CSRF-TOKEN < csrf_token
 

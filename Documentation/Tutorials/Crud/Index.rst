@@ -129,6 +129,7 @@ CRUD
    #. :yaml:`schemes` Which protocol should be used during the request.
    #. :yaml:`format` Indicates which view format we deal with. By default Extbase will trigger MyView.html, if it is set to json, the result will be MyView.json
    #. :yaml:`defaults` This is a container that may contain predefined values for your action, so-called arguments.
+   #. :yaml:`plugin` Since v10 is required and represents the plugin name of the needed extension::action itself.
    #. :yaml:`data` Required when we pass any data using POST or PUT methods. Just keep it empty for those methods.
    #. :yaml:`requirements` Allow us to control the variable type for dynamic variable in the route.
    #. :yaml:`middleware` Allow us to call certain list of middleware for the route.
@@ -142,6 +143,7 @@ CRUD
          schemes:      [https, http]
          format:       json
          defaults:
+            plugin:    Pi1
             data:
          requirements:
             entity:    \d+

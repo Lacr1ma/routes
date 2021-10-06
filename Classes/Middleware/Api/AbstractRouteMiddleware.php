@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\Middleware\Api;
@@ -26,106 +28,101 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Registry;
+use LMS\Routes\Support\User;
+use LMS\Routes\Support\Redirect;
+use LMS\Routes\Support\Response;
+use LMS\Routes\Support\Throttler;
+use LMS\Routes\Support\TypoScript;
+use TYPO3\CMS\Core\Context\Context;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use LMS\Facade\Extbase\{User, ExtensionHelper, TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 abstract class AbstractRouteMiddleware
 {
-    use \LMS\Facade\Model\Property\User, ExtensionHelper;
+    protected User $user;
+    protected TypoScript $ts;
+    protected array $properties;
+    protected Response $response;
+    protected Registry $registry;
+    protected Redirect $redirect;
+    protected Throttler $throttler;
+    protected ServerRequestInterface $request;
 
-    /**
-     * @var \Psr\Http\Message\ServerRequestInterface $request
-     */
-    private $request;
+    public function __construct(Context $ctx, Registry $registry, User $user, Response $response, Redirect $redirect, TypoScript $ts, Throttler $throttler)
+    {
+        $this->ts = $ts;
+        $this->user = $user;
+        $this->registry = $registry;
+        $this->response = $response;
+        $this->redirect = $redirect;
+        $this->throttler = $throttler;
 
-    /**
-     * @var array
-     */
-    private $properties;
+        $authUid = (int)$ctx
+            ->getPropertyFromAspect('frontend.user', 'id');
 
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param array                                    $properties
-     */
-    public function __construct(ServerRequestInterface $request, array $properties)
+        $this->user->setUser($authUid);
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
-        $this->properties = $properties;
+    }
 
-        $this->setUser(User::currentUid());
+    public function setProperties(array $properties): void
+    {
+        $this->properties = $properties;
     }
 
     /**
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     abstract public function process(): void;
 
     /**
-     * @param string $message
-     * @param int $status
-     *
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
      */
     protected function deny(string $message, int $status = 200): void
     {
         throw new MethodNotAllowedException([], $message, $status);
     }
 
-    /**
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
     protected function getRequest(): ServerRequestInterface
     {
         return $this->request;
     }
 
-    /**
-     * @return array
-     */
     protected function getProperties(): array
     {
         return $this->properties;
     }
 
-    /**
-     * @return array
-     */
     public function getOriginalParams(): array
     {
         return (array)$this->getRequest()->getAttributes()['_originalGetParameters'];
     }
 
-    /**
-     * @return array
-     */
     public function getQuery(): array
     {
-        return (array)$this->getRequest()->getQueryParams();
+        return $this->getRequest()->getQueryParams();
     }
 
-    /**
-     * Retrieve the name of the extension that is related to the endpoint
-     *
-     * @return string
-     */
     protected function getAdminExtensionName(): string
     {
-        $extKey = (string)array_last($this->getProperties());
+        $props = $this->getProperties();
 
-        return $extKey ?: self::extensionTypoScriptKey();
+        $extKey = (string)array_pop($props);
+
+        return $extKey ?: 'tx_routes';
     }
 
-    /**
-     * @param string $extKey
-     *
-     * @return array
-     */
     protected function getSettings(string $extKey): array
     {
-        return TypoScriptConfiguration::getSettings($extKey) ?: [];
+        return $this->ts->getSettings($extKey);
     }
 }

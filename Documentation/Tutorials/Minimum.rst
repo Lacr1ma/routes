@@ -11,6 +11,8 @@ Bare Minimum
 
 This is an example of the minimum layers that should exist.
 
+Please read :ref:`this <migration>` as well.
+
 .. rst-class:: bignums-xxl
 
 1. Define a route (Configuration/Routes.yml)
@@ -20,6 +22,8 @@ This is an example of the minimum layers that should exist.
       extension_demo-test:
          path:         api/demo/test
          controller:   Vendor\Demo\Controller\DemoApiController::test
+         defaults:
+            plugin:    DemoApi
 
 2. Register Plugin namespace (ext_localconf.php)
 

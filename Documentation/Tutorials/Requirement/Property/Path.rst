@@ -18,6 +18,8 @@ It's basically the *URL* you want to define for your route.
    demo_clients-index:
       path:         api/demo/clients
       controller:   LMS\Demo\Controller\ClientApiController::index
+      defaults:
+        plugin:     ClientApi
 
 .. tip::
    **Required**: Yes

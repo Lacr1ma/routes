@@ -14,7 +14,7 @@ Sometimes there's a need to restrict the api calls by specific domain related lo
 For this situations it's possible to create your own middleware.
 
 .. code-block:: yaml
-   :emphasize-lines: 12
+   :emphasize-lines: 13
 
    demo_photos-show:
      path:         api/demo/photos/{photo}
@@ -24,6 +24,7 @@ For this situations it's possible to create your own middleware.
      requirements:
        photo:      \d+
      defaults:
+       plugin:     PhotoApi
        photo:
      options:
        middleware:

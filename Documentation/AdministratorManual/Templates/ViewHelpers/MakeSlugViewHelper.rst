@@ -43,6 +43,8 @@ Example
       demo_clients-show:
          path:       api/demo/clients/{client}
          controller: Vendor\Demo\Controller\ClientApiController::show
+         defaults:
+           plugin:   ClientApi
 
 .. code-block:: html
 

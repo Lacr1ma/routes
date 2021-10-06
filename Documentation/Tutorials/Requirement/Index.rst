@@ -16,10 +16,10 @@ Condition
    Property/Name
    Property/Path
    Property/Controller
+   Property/Plugin
    Property/Methods
    Property/Format/Index
    Property/Params
    Property/Schemes
-   Property/Host
    Property/Requirements
    Property/Middleware

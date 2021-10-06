@@ -27,35 +27,41 @@ namespace LMS\Routes\Loader;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Routing\RouteCollection;
+use Symfony\Component\Routing\Loader\YamlFileLoader as SymfonyLoader;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
+class YamlFileLoader extends SymfonyLoader
 {
     /**
      * {@inheritdoc}
      * @psalm-suppress InternalClass
      * @psalm-suppress MissingParamType
+     * @psalm-suppress ParamNameMismatch
      */
-    public function load($file, $type = null): RouteCollection
+    public function load($file, string $type = null): RouteCollection
     {
         $collection = new RouteCollection();
 
-        foreach ($this->getFoundPathList((string)$file) as $path) {
+        foreach ($this->getFoundPathList($file) as $path) {
             $collection->addCollection(parent::load($path));
         }
 
         return $collection;
     }
 
-    /**
-     * @param string $file
-     *
-     * @return array
-     */
     private function getFoundPathList(string $file): array
+    {
+        $yml = $this->retrievePathFor($file . '.yml');
+        $yaml = $this->retrievePathFor($file . '.yaml');
+        $custom = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'];
+
+        return array_merge($yml, $yaml, $custom);
+    }
+
+    private function retrievePathFor(string $file): array
     {
         try {
             return (array)$this->locator->locate($file, null, false);

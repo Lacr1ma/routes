@@ -5,23 +5,16 @@ suites:
     path: .
     modules:
       enabled:
+        - \LMS\Routes\Tests\Acceptance\Support\Helper\Acceptance
         - REST:
             depends: PhpBrowser
-            url: http://routes.ddev.site/api/
+            url: https://routes.ddev.site/api/
             part: Json
-extensions:
-  enabled:
-    - Codeception\Extension\Recorder
 
 params:
   - env
 
 env:
-  ddev:
-    modules:
-      config:
-        REST:
-
   github:
     modules:
       config:

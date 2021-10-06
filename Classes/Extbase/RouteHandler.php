@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\Extbase;
@@ -26,10 +28,14 @@ namespace LMS\Routes\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Routes\Support\Response;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
-use LMS\Facade\{Extbase\Response, ObjectManageable};
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use LMS\Routes\Support\{ErrorBuilder, ServerRequest};
+use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Psr\Http\{Message\ResponseInterface, Message\ServerRequestInterface};
 use LMS\Routes\{Domain\Model\Middleware, Domain\Model\Route, Service\RouteService};
 
@@ -38,53 +44,63 @@ use LMS\Routes\{Domain\Model\Middleware, Domain\Model\Route, Service\RouteServic
  */
 class RouteHandler
 {
-    /**
-     * @var string
-     */
-    private $output;
+    private Response $response;
+    private ErrorBuilder $error;
+    private Bootstrap $bootstrap;
+    private RouteService $routeService;
 
     /**
-     * @var int
+     * Basically will contain the response text
+     * which is generated after execution of the extbase action.
      */
-    private $status = 200;
+    private string $output = '';
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * Contains the response status code.
      */
-    public function __construct(ServerRequestInterface $request)
+    private int $status = 200;
+
+    public function __construct(RouteService $service, Bootstrap $bootstrap, Response $response, ErrorBuilder $error)
+    {
+        $this->error = $error;
+        $this->response = $response;
+        $this->bootstrap = $bootstrap;
+        $this->routeService = $service;
+    }
+
+    /**
+     * @throws NoConfigurationException
+     * @throws ResourceNotFoundException
+     * @throws PropagateResponseException
+     */
+    public function handle(ServerRequestInterface $request)
     {
         $slug = $request->getUri()->getPath();
 
         try {
-            $this->processRoute($request, $this->getRouteService()->findRouteFor($slug));
+            $this->processRoute($request, $this->routeService->findRouteFor($slug));
         } catch (MethodNotAllowedException $exception) {
-            $this->output = ErrorBuilder::messageFor($exception);
+            $this->output = $this->error->messageFor($exception);
             $this->status = (int)$exception->getCode() ?: 200;
         }
     }
 
     /**
      * Creates the PSR7 Response based on output that was retrieved from FrontendRequestHandler
-     *
-     * @return \Psr\Http\Message\ResponseInterface
      */
     public function generateResponse(): ResponseInterface
     {
-        return Response::createWith($this->output, $this->status);
+        return $this->response->createWith($this->output, $this->status);
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \LMS\Routes\Domain\Model\Route           $route
-     *
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     private function processRoute(ServerRequestInterface $request, Route $route): void
     {
-        $GLOBALS['TSFE']->determineId();
+        $GLOBALS['TSFE']->set_no_cache();
+        $GLOBALS['TSFE']->determineId($request);
         $GLOBALS['TSFE']->getConfigArray();
 
         $this->processMiddleware(
@@ -93,71 +109,64 @@ class RouteHandler
 
         $this->createActionArgumentsFrom($route);
 
-        $this->run([
-            'vendorName' => $route->getVendor(),
+        $this->bootstrap([
             'pluginName' => $route->getPlugin(),
-            'extensionName' => $route->getExtension()
+            'vendorName' => $route->getController()->getVendor(),
+            'extensionName' => $route->getController()->getExtension()
         ]);
     }
 
     /**
-     * Check if the specific route has any middleware and execute them
+     * Check whether a route has any middleware and run them if any.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
+     * @throws PropagateResponseException
      */
     private function processMiddleware(ServerRequestInterface $request): void
     {
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware']) {
             return;
         }
 
         $slug = $request->getUri()->getPath();
 
-        foreach ($this->getRouteService()->findMiddlewareFor($slug) as $middlewareRoute) {
-            (new Middleware($middlewareRoute))->process($request);
+        foreach ($this->routeService->findMiddlewareFor($slug) as $middlewareRoute) {
+            $middleware = GeneralUtility::makeInstance(Middleware::class);
+            $middleware->setRoute($middlewareRoute);
+
+            $middleware->process($request);
         }
     }
 
     /**
-     * @param \LMS\Routes\Domain\Model\Route $route
+     * Mainly parse the current server request and bind existing request parameters
+     * as extbase action arguments.
      */
     private function createActionArgumentsFrom(Route $route): void
     {
         $plugin = $route->getPluginNamespace();
 
-        ServerRequest::withParameter('controller', $route->getController(), $plugin);
         ServerRequest::withParameter('action', $route->getAction(), $plugin);
         ServerRequest::withParameter('format', $route->getFormat(), $plugin);
 
         foreach ($route->getArguments() as $name => $value) {
             ServerRequest::withParameter($name, $value, $plugin);
         }
+
+        if (ServerRequest::isFormSubmit()) {
+            foreach (ServerRequest::formBody() as $name => $value) {
+                ServerRequest::withParameter($name, (string)$value, $plugin);
+            }
+        }
     }
 
     /**
-     * Create the Route Service Instance
+     * Runs the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
      *
-     * @psalm-suppress LessSpecificReturnStatement
-     * @psalm-suppress MoreSpecificReturnType
-     * @return \LMS\Routes\Service\RouteService
+     * @param array<string, string> $config
      */
-    private function getRouteService(): RouteService
+    private function bootstrap(array $config): void
     {
-        return ObjectManageable::createObject(RouteService::class);
-    }
-
-    /**
-     * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
-     *
-     * @param array $config
-     */
-    private function run(array $config): void
-    {
-        /** @var \TYPO3\CMS\Extbase\Core\Bootstrap $bootstrap */
-        $bootstrap = ObjectManageable::createObject(Bootstrap::class);
-
-        $this->output = $bootstrap->run('', $config);
+        $this->output = $this->bootstrap->run('', $config);
     }
 }

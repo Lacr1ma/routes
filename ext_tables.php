@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /* * *************************************************************
  *
  *  Copyright notice
@@ -23,20 +25,18 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+defined('TYPO3') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'LMS.Routes',
+    'Routes',
     'site',
     'routes',
     'bottom',
     [
-        'Management' => 'index, show'
+        \LMS\Routes\Controller\ManagementController::class => 'index, show'
     ],
     [
-        'icon' => 'EXT:routes/ext_icon.svg',
+        'icon' => 'typo3conf/ext/routes/ext_icon.svg',
         'access' => 'admin',
         'labels' => 'LLL:EXT:routes/Resources/Private/Language/locallang_mod.xlf'
     ]

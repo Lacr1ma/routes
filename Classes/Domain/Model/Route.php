@@ -26,82 +26,66 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\Plugin;
+use LMS\Routes\Support\Plugin;
+use LMS\Routes\Support\Route\Controller;
 use LMS\Routes\Support\Route\Arguments as ContainsArguments;
-use LMS\Routes\Support\Route\Controller as DefinesController;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class Route
 {
-    use ContainsArguments, DefinesController;
+    use ContainsArguments;
 
-    /**
-     * @var string
-     */
-    private $action;
+    private string $action;
+    private string $format;
+    private string $plugin;
+    private Plugin $pluginService;
+    private Controller $controller;
 
-    /**
-     * @var string
-     */
-    private $format;
-
-    /**
-     * @var string
-     */
-    private $plugin;
-
-    /**
-     * @param array $configuration
-     */
-    public function __construct(array $configuration)
+    public function __construct(Plugin $service, Controller $controller)
     {
-        [$controllerFQCN, $this->action] = explode('::', $configuration['_controller']);
-
-        $this->format = $configuration['_format'] ?: '';
-        $this->plugin = $configuration['plugin'] ?: '';
-
-        $this->initializeController($controllerFQCN);
-        $this->initializeArguments($configuration);
+        $this->controller = $controller;
+        $this->pluginService = $service;
     }
 
-    /**
-     * Get the Extbase <Action> name
-     *
-     * @return string
-     */
+    public function setConfiguration(array $config): void
+    {
+        [$controllerFQCN, $this->action] = explode('::', $config['_controller']);
+
+        $this->plugin = $config['plugin'] ?: '';
+        $this->format = $config['_format'] ?: '';
+
+        $this->controller->initializeController($controllerFQCN);
+        $this->initializeArguments($config);
+    }
+
     public function getAction(): string
     {
         return $this->action;
     }
 
-    /**
-     * Get Request Format
-     *
-     * @return string
-     */
     public function getFormat(): string
     {
         return $this->format;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPlugin(): string
     {
-        $controller = $this->getController();
-        $extensionKey = $this->getExtension();
+        $controller = $this->controller->getController();
+        $extensionKey = $this->controller->getExtension();
 
-        return $this->plugin ?: Plugin::getNameBasedOn($extensionKey, $controller, $this->action);
+        return $this->plugin ?: $this->pluginService->getNameBasedOn($extensionKey, $controller, $this->action);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPluginNamespace(): string
     {
-        return Plugin::getNamespaceBasedOn($this->getExtension(), $this->getPlugin());
+        return $this->pluginService
+            ->getNamespaceBasedOn($this->controller->getExtension(), $this->getPlugin());
+    }
+
+    public function getController(): Controller
+    {
+        return $this->controller;
     }
 }

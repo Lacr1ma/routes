@@ -1,0 +1,60 @@
+
+
+2.1.0
+------------------
+
+.. rst-class:: bignums-xxl
+
+#. Respect .yaml format for root file
+
+    In previous versions of the extension it was possible to use only **yml** file extension for your Routes root file.
+    From now on it's possible to use both :file:`Routes.yml` and :file:`Routes.yaml` as well.
+
+#. Restore session middleware
+
+    Starting from TYPO3 10.4.10 sessions hashing has been changed and due to this :file:`VerifyCsrfToken` and :file:`VerifyAdminBackendSession`
+    middleware were broken.
+    We fixed that problem and now should work as before.
+
+#. Custom name for root file
+
+    Some of you have asked about having an option to use custom name for root Routes file.
+    As a default we still keep :file:`Routes`
+    But now you also have an option to change it.
+
+    .. code-block:: php
+
+        // Default
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'] = 'Routes';
+
+        // You can change to any name...
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'] = 'ApiRoutes';
+
+#. Custom paths
+
+    For example, you have an extension **blog** and wanna use api routes.
+    Now it's possible to put your routes file anywhere you want inside your extension,
+    but you need to add that custom path.
+
+    .. code-block:: php
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'] = [
+            999 => '/var/www/html/public/typo3conf/ext/blog/Configuration/API/Endpoints.yaml'
+        ];
+
+#. Plugin with multiple controllers
+
+    Thanks to **Devid Messner** now you guys are able to user one plugin with more than
+    one controller inside. Might by handy.
+
+    `Details <https://github.com/Lacr1ma/routes/issues/7>`__
+
+#. Add extra information to composer.json
+
+    Thanks to **p2 media GmbH & Co. KG** we follow latest community guidelines.
+
+    `Details <https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ExtensionArchitecture/ComposerJson/Index.html>`__
+
+#. Minimum version of the TYPO3 core was raised to :file:`10.4.15`
+
+#. Axios raised to :file:`0.21.1`

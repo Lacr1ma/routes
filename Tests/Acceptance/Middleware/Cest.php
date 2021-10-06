@@ -36,16 +36,13 @@ class Cest
     /**
      * This route requires group of UID 5 for access,
      * or admin group (1 | 2)
-     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has group 1.
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has group 1.
      * So we should give the access
-     *
-     * @param AcceptanceTester $I
      */
     public function group_middleware_can_pass_if_admin(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group/admin');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -55,17 +52,14 @@ class Cest
     /**
      * This route requires user that makes a request is the same as in param for access,
      * or user from admin list can also perform the request
-     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has uid <1>
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has uid <1>
      * We pass <user> in params with <22>, but it's not an owner of the resource.
      * But our admin user has uid <1>, so we should give the access
-     *
-     * @param AcceptanceTester $I
      */
     public function user_middleware_can_pass_if_admin(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/user/admin?user=22&title=demo');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -74,17 +68,14 @@ class Cest
 
     /**
      * This route requires user that makes a request is the same as in param for access.
-     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has uid <1>
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has uid <1>
      * We pass <user> in params with same identifier
      * So we should give the access
-     *
-     * @param AcceptanceTester $I
      */
     public function user_middleware_can_pass(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/own?user=1&title=demo');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -93,17 +84,14 @@ class Cest
 
     /**
      * This route requires user that makes a request is the same as in param for access.
-     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has uid <1>
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has uid <1>
      * We pass <user> in params with identifier that equal <999>
      * So we should deny the request
-     *
-     * @param AcceptanceTester $I
      */
     public function user_middleware_can_block(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/own?user=999&title=demo');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -113,16 +101,13 @@ class Cest
 
     /**
      * This route requires group of UID 999 for access.
-     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has group 1.
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has group 1.
      * So we should deny the request
-     *
-     * @param AcceptanceTester $I
      */
     public function group_middleware_can_block(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group-blocked');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -132,16 +117,13 @@ class Cest
 
     /**
      * This route requires group of UID 1 | 2 for access.
-     * The user with session 53574eb0bafe1c0a4d8a2cfc0cf726da has group 1.
+     * The user with session edeb126f7862e85884fd1bfa7bcefaf3 has group 1.
      * So we should give the access
-     *
-     * @param AcceptanceTester $I
      */
     public function group_middleware_can_pass(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/in-group');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -151,8 +133,6 @@ class Cest
     /**
      * User can be tapped only 2 times.
      * On the third tap we should block the request
-     *
-     * @param AcceptanceTester $I
      */
     public function throttle_middleware_blocks_dos(AcceptanceTester $I)
     {
@@ -173,12 +153,11 @@ class Cest
     /**
      * Route requires authenticated user, but the current session is anonymous.
      * The request should be blocked
-     *
-     * @param AcceptanceTester $I
      */
     public function auth_middleware_requires_user_to_be_logged_in(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -190,13 +169,12 @@ class Cest
      * Route requires authenticated user and we have one.
      * But user does not have a proper CSRF token
      * The request should be blocked
-     *
-     * @param AcceptanceTester $I
      */
     public function auth_middleware_requires_proper_csrf_token(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('Cookie', $this->getCookieValue());
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
@@ -207,69 +185,63 @@ class Cest
     /**
      * Route requires authenticated user and we have one, csrf token is also correct.
      * So we should give the access
-     *
-     * @param AcceptanceTester $I
      */
     public function auth_middleware_can_pass(AcceptanceTester $I)
     {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I = $this->setAccessHeadersFor($I);
+
         $I->sendGET('https://routes.ddev.site/api/demo/middleware/auth-required');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
     }
 
-    /**
-     * The route requires ADMIN BE session. We have an active BE session
-     * ff83dfd81e20b34c27d3e97771a4525a , but it's only editor, not admin.
-     * The request should be blocked
-     *
-     * @param AcceptanceTester $I
-     */
     public function admin_backend_user_required(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=ff83dfd81e20b34c27d3e97771a4525a');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
+        $I->haveHttpHeader('Cookie', 'fe_typo_user=9f752511cb182cd1865a67cd72d7af2a;be_typo_user=xxx');
+        $I->haveHttpHeader('X-CSRF-TOKEN', $this->getCsrfValue());
         $I->sendGET('https://routes.ddev.site/api/demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseCodeIs(403);
-        $I->seeResponseContainsJson(['error' => 'Admin user is required.']);
-    }
-
-    /**
-     * The route requires ADMIN BE session. We have an active BE session
-     * 886526ce72b86870739cc41991144ec1 , and it's an admin.
-     * We should give the access.
-     *
-     * @param AcceptanceTester $I
-     */
-    public function active_backend_session_pass(AcceptanceTester $I)
-    {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->haveHttpHeader('Cookie', 'fe_typo_user=53574eb0bafe1c0a4d8a2cfc0cf726da;be_typo_user=886526ce72b86870739cc41991144ec1');
-        $I->haveHttpHeader('X-CSRF-TOKEN', '53574eb0bafe1c0a4d8a2cfc0cf726da');
-        $I->sendGET('https://routes.ddev.site/api/demo/middleware');
-
-        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseContainsJson(['success' => true]);
+        $I->dontSeeResponseCodeIs(200);
     }
 
     /**
      * The route requires authenticated user. But when we trigger
      * the route, we use HTML type, not JSON.
      * In this case we should redirect user to login page.
-     *
-     * @param AcceptanceTester $I
      */
     public function auth_middleware_redirects_when_not_logged_in_and_not_json_request(AcceptanceTester $I)
     {
-        $I->sendGET('https://routes.ddev.site/api/demo/middleware');
+        $I->verifyRedirect('https://routes.ddev.site/api/demo/middleware', '/login');
+    }
 
-        $I->seeHttpHeader('Content-Type', 'text/html; charset=utf-8');
-        $I->seeResponseContains('<title>Auth</title>');
+    private function setAccessHeadersFor(AcceptanceTester $session): AcceptanceTester
+    {
+        $session->haveHttpHeader('Accept', 'application/json');
+
+        return $this->authenticate($session);
+    }
+
+    private function authenticate(AcceptanceTester $session): AcceptanceTester
+    {
+        $session->haveHttpHeader('Cookie', $this->getCookieValue());
+        $session->haveHttpHeader('X-CSRF-TOKEN', $this->getCsrfValue());
+
+        return $session;
+    }
+
+    private function getCookieValue(): string
+    {
+        $FE = '67174c7c2403012f09475d25ad738300'; // From Browser
+        $BE = '0b312e169ced8fc66f48a0e354793dec'; // From Browser
+
+        return 'fe_typo_user=' . $FE . ';be_typo_user=' . $BE . '';
+    }
+
+    private function getCsrfValue(): string
+    {
+        return '828bc61287eaa44efba758f43f91cc217e36d334'; // From Browser
     }
 }

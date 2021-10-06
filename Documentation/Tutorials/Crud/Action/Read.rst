@@ -20,6 +20,8 @@ READ
          controller:   Vendor\Demo\Controller\PhotoApiController::show
          methods:      GET
          format:       json
+         defaults:
+            plugin:    PhotoApi
          requirements:
             uid:       \d+
          options:

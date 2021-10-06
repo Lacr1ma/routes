@@ -18,7 +18,7 @@ We have an intention to protect the route by **Authenticate** middleware.
 1. Define a route (Configuration/Routes.yml)
 
     .. code-block:: yaml
-      :emphasize-lines: 12
+      :emphasize-lines: 13
 
       demo_photos-show:
         path:         api/demo/photos/{photo}
@@ -28,6 +28,7 @@ We have an intention to protect the route by **Authenticate** middleware.
         requirements:
           photo:      \d+
         defaults:
+          plugin:     PhotoApi
           photo:
         options:
           middleware:

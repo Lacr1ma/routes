@@ -1,0 +1,44 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  LMS\Routes\:
+    resource: '../Classes/*'
+
+  cache.routes:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['tx_routes']
+
+  LMS\Routes\Support\RateLimiter:
+    arguments:
+      - '@cache.routes'
+
+  LMS\Routes\Support\User:
+    public: true
+
+  LMS\Routes\Domain\Model\Route:
+    public: true
+
+  LMS\Routes\Domain\Model\Middleware:
+    public: true
+
+  LMS\Routes\Middleware\Api\Authenticate:
+    public: true
+
+  LMS\Routes\Middleware\Api\VerifyCsrfToken:
+    public: true
+
+  LMS\Routes\Middleware\Api\Throttle:
+    public: true
+
+  LMS\Routes\Middleware\Api\VerifyAdminBackendSession:
+    public: true
+
+  LMS\Routes\Middleware\Api\VerifyGroup:
+    public: true
+
+  LMS\Routes\Middleware\Api\VerifyUser:
+    public: true
