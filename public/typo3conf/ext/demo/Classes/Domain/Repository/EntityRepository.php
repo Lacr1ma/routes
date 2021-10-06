@@ -26,11 +26,13 @@ namespace LMS\Demo\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Repository\AbstractUnrespectableRepository;
+
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
-class EntityRepository extends \LMS\Facade\Repository\AbstractRepository
+class EntityRepository extends AbstractUnrespectableRepository
 {
 
 }
