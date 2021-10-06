@@ -204,8 +204,7 @@ class Cest
         $I->sendGET('https://routes.ddev.site/api/demo/middleware');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseCodeIs(403);
-        $I->seeResponseContainsJson(['error' => 'Admin user is required.']);
+        $I->dontSeeResponseCodeIs(200);
     }
 
     /**
@@ -235,14 +234,14 @@ class Cest
 
     private function getCookieValue(): string
     {
-        $FE = '9f752511cb182cd1865a67cd72d7af2a'; // From Browser
-        $BE = '5c1ea1dd288614f3c60618cb238cbf0f'; // From Browser
+        $FE = '67174c7c2403012f09475d25ad738300'; // From Browser
+        $BE = '0b312e169ced8fc66f48a0e354793dec'; // From Browser
 
         return 'fe_typo_user=' . $FE . ';be_typo_user=' . $BE . '';
     }
 
     private function getCsrfValue(): string
     {
-        return 'c52e7b6cc16420c0b607a12b6333d730f55e74bd'; // From Browser
+        return '828bc61287eaa44efba758f43f91cc217e36d334'; // From Browser
     }
 }

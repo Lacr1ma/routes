@@ -34,7 +34,9 @@ defined('TYPO3') or die();
     "@import 'EXT:routes/Configuration/TypoScript/setup.typoscript'"
 );
 
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'])) {
+$cache = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+
+if (!array_key_exists('tx_routes', $cache)) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_routes'] = [];
 }
 
