@@ -1,2 +1,3 @@
 /Tests/Acceptance/_output/
+/Tests/Build/.phpunit.result.cache
 .idea/

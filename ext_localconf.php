@@ -57,3 +57,14 @@ if (!array_key_exists('tx_routes', $cache)) {
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] = false;
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['routesFileName'] = 'Routes';
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'Routes',
+    'RoutesApi',
+    [
+        \LMS\Routes\Controller\ManagementController::class => 'ping'
+    ],
+    [
+        \LMS\Routes\Controller\ManagementController::class => 'ping'
+    ]
+);

@@ -37,6 +37,16 @@ class ApiTest extends BaseTest
     /**
      * @test
      */
+    public function ping(): void
+    {
+        $response = $this->callEndpoint('ping');
+
+        $this->assertStringContainsString('{"status":"pong"}', (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     */
     public function auth_middleware_can_pass(): void
     {
         $response = $this->callEndpoint('demo/middleware/auth-required');

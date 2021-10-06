@@ -54,6 +54,9 @@ class User
         $this->user = $user;
     }
 
+    /**
+     * @psalm-suppress PossiblyInvalidMethodCall, PossiblyUndefinedMethod
+     */
     public function fetchRawUser(): array
     {
         $constraints = [

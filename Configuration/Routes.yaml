@@ -1,0 +1,5 @@
+routes_ping:
+  path:         api/ping
+  controller:   LMS\Routes\Controller\ManagementController::ping
+  defaults:
+    plugin: RoutesApi #ext_localconf.php: see configurePlugin

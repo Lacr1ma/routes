@@ -49,6 +49,20 @@ class ManagementController extends ActionController
     /**
      * Render existing routes
      */
+    public function pingAction(): ResponseInterface
+    {
+        $json = (string)json_encode(
+            [
+                'status' => 'pong'
+            ]
+        );
+
+        return $this->jsonResponse($json);
+    }
+
+    /**
+     * Render existing routes
+     */
     public function indexAction(): ResponseInterface
     {
         $routes = $this->router->getRouteCollection();
