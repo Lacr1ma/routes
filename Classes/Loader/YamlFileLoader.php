@@ -27,12 +27,13 @@ namespace LMS\Routes\Loader;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Routing\RouteCollection;
+use Symfony\Component\Routing\Loader\YamlFileLoader as SymfonyLoader;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class YamlFileLoader extends \Symfony\Component\Routing\Loader\YamlFileLoader
+class YamlFileLoader extends SymfonyLoader
 {
     /**
      * {@inheritdoc}

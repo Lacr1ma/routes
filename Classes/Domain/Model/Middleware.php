@@ -26,10 +26,10 @@ namespace LMS\Routes\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use LMS\Routes\Middleware\Api\AbstractRouteMiddleware as RouteMiddleware;
 
 /**

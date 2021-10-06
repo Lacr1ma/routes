@@ -29,6 +29,7 @@ namespace LMS\Routes\Controller;
  * ************************************************************* */
 
 use LMS\Routes\Service\Router;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Routing\Router as SymfonyRouter;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -48,18 +49,20 @@ class ManagementController extends ActionController
     /**
      * Render existing routes
      */
-    public function indexAction(): void
+    public function indexAction(): ResponseInterface
     {
         $routes = $this->router->getRouteCollection();
 
         $this->view->assign('routes', $routes);
+
+        return $this->htmlResponse();
     }
 
     /**
      * @psalm-suppress UndefinedMethod
      * @psalm-suppress PossiblyNullReference
      */
-    public function showAction(string $name): void
+    public function showAction(string $name): ResponseInterface
     {
         $uri = $this->request->getUri();
         $host = "{$uri->getScheme()}://{$uri->getHost()}";
@@ -67,5 +70,7 @@ class ManagementController extends ActionController
         $route = $this->router->getRouteCollection()->get($name);
 
         $this->view->assign('route', $route->setHost($host));
+
+        return $this->htmlResponse();
     }
 }

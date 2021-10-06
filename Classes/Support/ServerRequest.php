@@ -44,7 +44,7 @@ class ServerRequest
     /**
      * Check whether the current server request encodes data using <urlencoded>.
      */
-    public static function isUrlEncoded(): bool
+    public static function isFormSubmit(): bool
     {
         $type = ServerRequest::getInstance()->getHeaderLine('content-type');
 
@@ -71,7 +71,7 @@ class ServerRequest
      *
      * @return array<string, mixed>
      */
-    public static function body(): array
+    public static function formBody(): array
     {
         return (array)ServerRequest::getInstance()->getParsedBody();
     }

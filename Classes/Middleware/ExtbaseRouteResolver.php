@@ -26,6 +26,7 @@ namespace LMS\Routes\Middleware;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Exception;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use LMS\Routes\Extbase\RouteHandler;
@@ -70,9 +71,9 @@ class ExtbaseRouteResolver implements MiddlewareInterface
             // Like `/api/bla`
             return $handler->handle($request);
         } catch (PropagateResponseException $e) {
-            // Might be thrown from user defied middleware
+            // Might be thrown from custom user middlewares for redirects
             return $e->getResponse();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Route is found, but something wrong while execution.
             // For example missing argument, or missing plugin name, or anything else
             $path = $request->getUri()->getPath();
@@ -86,8 +87,7 @@ class ExtbaseRouteResolver implements MiddlewareInterface
     }
 
     /**
-     * We try to avoid the request to be cached.
-     * It's still not enough in some cases.
+     * We unset routing attribute to prevent it from next middleware redirects/resolves
      */
     private function disableRouting(ServerRequestInterface $request): ServerRequestInterface
     {

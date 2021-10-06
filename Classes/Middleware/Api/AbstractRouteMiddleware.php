@@ -28,11 +28,11 @@ namespace LMS\Routes\Middleware\Api;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Routes\Support\Throttler;
 use TYPO3\CMS\Core\Registry;
 use LMS\Routes\Support\User;
 use LMS\Routes\Support\Redirect;
 use LMS\Routes\Support\Response;
+use LMS\Routes\Support\Throttler;
 use LMS\Routes\Support\TypoScript;
 use TYPO3\CMS\Core\Context\Context;
 use Psr\Http\Message\ServerRequestInterface;
@@ -114,7 +114,9 @@ abstract class AbstractRouteMiddleware
 
     protected function getAdminExtensionName(): string
     {
-        $extKey = (string)array_last($this->getProperties());
+        $props = $this->getProperties();
+
+        $extKey = (string)array_pop($props);
 
         return $extKey ?: 'tx_routes';
     }

@@ -28,11 +28,12 @@ namespace LMS\Routes\ViewHelpers;
 
 use LMS\Routes\Service\Router;
 use Symfony\Component\Routing\Router as SymfonyRouter;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
  */
-class MakeSlugViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class MakeSlugViewHelper extends AbstractViewHelper
 {
     private SymfonyRouter $router;
 

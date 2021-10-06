@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\Support;
@@ -58,12 +60,12 @@ class User
             $this->builder->expr()->eq('uid', $this->getUser()),
         ];
 
-        return $this->builder
+        return (array)$this->builder
             ->select('*')
             ->from('fe_users')
             ->where(...$constraints)
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**

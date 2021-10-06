@@ -53,8 +53,8 @@ class Route
     {
         [$controllerFQCN, $this->action] = explode('::', $config['_controller']);
 
-        $this->format = $config['_format'] ?: '';
         $this->plugin = $config['plugin'] ?: '';
+        $this->format = $config['_format'] ?: '';
 
         $this->controller->initializeController($controllerFQCN);
         $this->initializeArguments($config);

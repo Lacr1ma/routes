@@ -26,6 +26,8 @@ namespace LMS\Routes\Support;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Exception;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
@@ -38,7 +40,7 @@ class ErrorBuilder
         $this->response = $response;
     }
 
-    public function messageFor(\Exception $exception): string
+    public function messageFor(Exception $exception): string
     {
         $message = $exception->getMessage();
 

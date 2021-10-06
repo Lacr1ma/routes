@@ -31,6 +31,9 @@ use LMS\Routes\Support\TypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\Router as SymfonyRouter;
+use Symfony\Component\Routing\Exception\NoConfigurationException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -49,9 +52,9 @@ class RouteService
     /**
      * Attempt to retrieve the corresponding <YAML Configuration> for the current request path
      *
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
-     * @throws \Symfony\Component\Routing\Exception\MethodNotAllowedException
-     * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
+     * @throws ResourceNotFoundException
+     * @throws MethodNotAllowedException
+     * @throws NoConfigurationException
      */
     public function findRouteFor(string $slug): Route
     {

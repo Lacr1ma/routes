@@ -61,10 +61,15 @@ class VerifyGroup extends AbstractRouteMiddleware
 
     /**
      * Retrieve group that guards the route
+     * Example definition: LMS\Routes\Middleware\Api\VerifyGroup:5,tx_demo
      */
     private function getRouteGroups(): array
     {
-        if ($this->strStart(array_last($this->getProperties()), 'tx_')) {
+        // Gives as <tx_demo> from example above
+        $extName = $this->getAdminExtensionName(); // tx_demo
+
+        if (str_starts_with($extName, 'tx_')) {
+            // Gives as <5> from example above
             $accessGroups = array_slice($this->getProperties(), 0, -1);
 
             return array_merge($accessGroups, $this->getAdminGroups());
@@ -75,6 +80,8 @@ class VerifyGroup extends AbstractRouteMiddleware
 
     /**
      * Find all admin users related to current request
+     *
+     * plugin.tx_myExt.settings.middleware.admin
      */
     private function getAdminGroups(): array
     {
@@ -83,12 +90,5 @@ class VerifyGroup extends AbstractRouteMiddleware
         $adminGroups = $this->getSettings($ext)['middleware.']['admin.']['groups'];
 
         return GeneralUtility::intExplode(',', $adminGroups, true);
-    }
-
-    private function strStart(string $value, string $prefix): string
-    {
-        $quoted = preg_quote($prefix, '/');
-
-        return $prefix.preg_replace('/^(?:'.$quoted.')+/u', '', $value);
     }
 }

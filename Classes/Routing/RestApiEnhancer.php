@@ -26,13 +26,14 @@ namespace LMS\Routes\Routing;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Routing\Enhancer\PluginEnhancer;
 use TYPO3\CMS\Core\Routing\{Route, RouteCollection};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class RestApiEnhancer extends \TYPO3\CMS\Core\Routing\Enhancer\PluginEnhancer
+class RestApiEnhancer extends PluginEnhancer
 {
     /**
      * {@inheritdoc}

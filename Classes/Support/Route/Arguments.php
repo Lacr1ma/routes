@@ -34,9 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 trait Arguments
 {
-    /**
-     * @var array
-     */
     private array $arguments = [];
 
     /**

@@ -1,5 +1,6 @@
 <?php
 /** @noinspection PhpUnhandledExceptionInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Routes\ViewHelpers;
@@ -30,12 +31,13 @@ namespace LMS\Routes\ViewHelpers;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
  */
-class CsrfTokenViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+class CsrfTokenViewHelper extends AbstractViewHelper
 {
     private string $user;
     private Registry $registry;

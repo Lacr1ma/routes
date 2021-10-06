@@ -33,7 +33,9 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use LMS\Routes\Support\{ErrorBuilder, ServerRequest};
+use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Psr\Http\{Message\ResponseInterface, Message\ServerRequestInterface};
 use LMS\Routes\{Domain\Model\Middleware, Domain\Model\Route, Service\RouteService};
 
@@ -67,8 +69,8 @@ class RouteHandler
     }
 
     /**
-     * @throws \Symfony\Component\Routing\Exception\NoConfigurationException
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @throws NoConfigurationException
+     * @throws ResourceNotFoundException
      * @throws PropagateResponseException
      */
     public function handle(ServerRequestInterface $request)
@@ -151,8 +153,8 @@ class RouteHandler
             ServerRequest::withParameter($name, $value, $plugin);
         }
 
-        if (ServerRequest::isUrlEncoded()) {
-            foreach (ServerRequest::body() as $name => $value) {
+        if (ServerRequest::isFormSubmit()) {
+            foreach (ServerRequest::formBody() as $name => $value) {
                 ServerRequest::withParameter($name, (string)$value, $plugin);
             }
         }
