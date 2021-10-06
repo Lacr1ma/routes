@@ -29,7 +29,7 @@ namespace LMS\Demo\Mvc\View;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class JsonView extends \LMS\Facade\Mvc\View\JsonView
+class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
 {
     /**
      * @var array

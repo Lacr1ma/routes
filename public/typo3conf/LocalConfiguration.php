@@ -13,7 +13,11 @@ return [
         'Connections' => [
             'Default' => [
                 'charset' => 'utf8',
+                'dbname' => 'db',
                 'driver' => 'mysqli',
+                'host' => 'db',
+                'password' => 'root',
+                'user' => 'root',
             ],
         ],
     ],
@@ -34,7 +38,7 @@ return [
     ],
     'FE' => [
         'debug' => true,
-        'disableNoCacheParameter' => true,
+        'disableNoCacheParameter' => false,
         'passwordHashing' => [
             'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
             'options' => [],

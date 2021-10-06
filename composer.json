@@ -24,15 +24,16 @@
 		"ext-ctype": "*",
 		"ext-iconv": "*",
 
-		"typo3/minimal": "11.4.0",
-		"typo3/cms-felogin" : "11.4.0",
-		"typo3/cms-fluid-styled-content": "11.4.0",
+		"typo3/minimal": "11.5.0",
+		"typo3/cms-felogin" : "11.5.0",
+		"typo3/cms-fluid-styled-content": "11.5.0",
 
-		"lms/routes": "v11.x-dev"
+		"lms/routes": "v11.x-dev",
+		"lms/facade": "v11.x-dev"
 	},
 	"require-dev": {
 		"vimeo/psalm": "^4.10",
-		"typo3/testing-framework": "^6.10.1",
+		"typo3/testing-framework": "^6.11.2",
 		"codeception/codeception": "^4.0.0",
 		"codeception/module-rest": "*",
 		"codeception/module-db": "*",
@@ -42,7 +43,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"LMS\\Demo\\": "public/typo3conf/ext/demo/Classes"
+			"LMS\\Demo\\": "public/typo3conf/ext/demo/Classes",
+			"LMS\\Routes\\Tests\\": "public/typo3conf/ext/routes/Tests"
 		}
 	}
 }
