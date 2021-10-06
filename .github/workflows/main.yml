@@ -25,7 +25,7 @@ jobs:
         run: ddev composer install
 
       - name: Psalm
-        run: ddev exec bin/psalm
+        run: ddev exec vendor/bin/psalm
 
       - name: Functional test suit
         run: ddev exec vendor/bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
