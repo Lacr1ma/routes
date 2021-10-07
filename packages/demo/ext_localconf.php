@@ -27,6 +27,8 @@ declare(strict_types = 1);
 
 defined('TYPO3') or die();
 
+use LMS\Demo\Controller\DemoApiController;
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
     "@import 'EXT:demo/Configuration/TypoScript/constants.typoscript'"
 );
@@ -39,10 +41,10 @@ defined('TYPO3') or die();
     'Demo',
     'DemoApi',
     [
-        \LMS\Demo\Controller\DemoApiController::class => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner,  updateRaw'
+        DemoApiController::class => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner, updateRaw'
     ],
     [
-        \LMS\Demo\Controller\DemoApiController::class => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner,  updateRaw'
+        DemoApiController::class => 'show, index, store, update, destroy, fail, test, testWithParams, checkOwner, updateRaw'
     ]
 );
 

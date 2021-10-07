@@ -2,7 +2,7 @@
 	"name": "lms/demo",
 	"type": "typo3-cms-extension",
 	"description": "Demo",
-	"license": "MIT",
+	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "Serhii Borulko",
@@ -10,11 +10,16 @@
 		}
 	],
 	"require": {
-		"typo3/cms-core": "^11"
+		"typo3/cms-core": "^11.5.0"
 	},
 	"autoload": {
 		"psr-4": {
 			"LMS\\Demo\\": "Classes"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "demo"
 		}
 	}
 }

@@ -46,6 +46,7 @@
 	},
 	"autoload": {
 		"psr-4": {
+			"LMS\\Demo\\": "public/typo3conf/ext/demo/Classes",
 			"LMS\\Routes\\Tests\\": "public/typo3conf/ext/routes/Tests"
 		}
 	}
