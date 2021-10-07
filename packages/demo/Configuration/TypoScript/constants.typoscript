@@ -1,0 +1,3 @@
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/constants.typoscript">
+
+plugin.tx_demo.view.templateRootPath = EXT:demo/Resources/Private/Templates/
