@@ -1,5 +1,0 @@
-demo_yaml:
-  path:         api/demo/yaml
-  controller:   LMS\Demo\Controller\DemoApiController::test
-  defaults:
-    plugin: DemoApi
