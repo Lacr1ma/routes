@@ -5,7 +5,7 @@
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"repositories": [
-		{"type": "path", "url": "packages/*"},
+		{"type": "path", "url": "./packages/*"},
 		{"type": "composer", "url": "https://composer.typo3.org/"}
 	],
 	"config": {
@@ -31,6 +31,7 @@
 		"typo3/cms-felogin" : "11.5.0",
 		"typo3/cms-fluid-styled-content": "11.5.0",
 
+		"lms/demo": "@dev",
 		"lms/routes": "v11.x-dev",
 		"lms/facade": "v11.x-dev"
 	},
@@ -46,7 +47,6 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"LMS\\Demo\\": "public/typo3conf/ext/demo/Classes",
 			"LMS\\Routes\\Tests\\": "public/typo3conf/ext/routes/Tests"
 		}
 	}
