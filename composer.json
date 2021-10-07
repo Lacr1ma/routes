@@ -1,8 +1,8 @@
 {
 	"name": "lms/routes",
 	"type": "typo3-cms-extension",
-	"description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
-	"license": "MIT",
+	"description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint",
+	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "Serhii Borulko",
@@ -23,6 +23,6 @@
 		}
 	},
 	"replace": {
-		"lms/routes": "self.version"
+		"typo3-ter/routes": "self.version"
 	}
 }

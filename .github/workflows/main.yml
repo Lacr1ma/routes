@@ -25,17 +25,17 @@ jobs:
         run: ddev composer install
 
       - name: Psalm
-        run: ddev exec vendor/bin/psalm
+        run: ddev exec bin/psalm
 
       - name: Functional test suit
-        run: ddev exec vendor/bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
+        run: ddev exec bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
 
-      - name: Acceptance [CRUD]
-        run: ddev exec vendor/bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
+      - name: Acceptance [Requirements]
+        run: ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
 
-      - name: Acceptance [API]
-        run: ddev exec vendor/bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
+      - name: Acceptance [Crud]
+        run: ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
 
       - name: Acceptance [Backend]
-        run: ddev exec vendor/bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
+        run: ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
         if: ${{ false }}
