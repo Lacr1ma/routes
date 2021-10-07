@@ -1337,8 +1337,23 @@ CREATE TABLE `tx_extensionmanager_domain_model_extension` (
   KEY `index_extrepo` (`extension_key`,`remote`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `cache_tx_facade` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(250) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `expires` int(10) unsigned NOT NULL DEFAULT 0,
+  `content` longblob DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cache_id` (`identifier`(180),`expires`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
+CREATE TABLE `cache_tx_facade_tags` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(250) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `tag` varchar(250) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `cache_id` (`identifier`(191)),
+  KEY `cache_tag` (`tag`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

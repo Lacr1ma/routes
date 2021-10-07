@@ -1,6 +1,6 @@
 {
 	"name": "test/routes",
-	"description": "Provides an ability to bind a route slug to the certain Extbase Action endpoint.",
+	"description": "Testing sandbox for <routes> extension",
 	"license": "GPL-2.0-or-later",
 	"minimum-stability": "dev",
 	"prefer-stable": true,
@@ -12,11 +12,13 @@
 		"platform": {
 			"php": "7.4"
 		},
+		"bin-dir": "bin",
+		"vendor-dir": "vendor",
 		"apcu-autoloader": true,
 		"optimize-autoloader": true,
 		"classmap-authoritative": true,
 		"preferred-install": {
-			"*": "dist"
+			"*": "source"
 		}
 	},
 	"require": {
