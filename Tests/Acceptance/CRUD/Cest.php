@@ -57,17 +57,17 @@ class Cest
         $I->seeResponseContains('title');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function store(AcceptanceTester $I)
-    {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPOST('https://routes.ddev.site/api/demo/photos', '{"data": {"title": "new"}}');
-
-        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseContainsJson(['success' => true]);
-    }
+//    /**
+//     * @param AcceptanceTester $I
+//     */
+//    public function store(AcceptanceTester $I)
+//    {
+//        $I->haveHttpHeader('Accept', 'application/json');
+//        $I->sendPOST('https://routes.ddev.site/api/demo/photos', '{"data": {"title": "new"}}');
+//
+//        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+//        $I->seeResponseContainsJson(['success' => true]);
+//    }
 
     /**
      * @param AcceptanceTester $I
