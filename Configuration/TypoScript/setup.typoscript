@@ -41,8 +41,3 @@ csrf_token = TEXT
 csrf_token.stdWrap.preUserFunc = LMS\Routes\ViewHelpers\CsrfTokenViewHelper->render
 
 page.meta.X-CSRF-TOKEN < csrf_token
-
-page.includeJSFooterlibs {
-  axios = EXT:routes/Resources/Public/JavaScript/Vendor/axios.min.js
-  routes = EXT:routes/Resources/Public/JavaScript/Routes.js
-}
