@@ -10,7 +10,7 @@
 	],
 	"config": {
 		"platform": {
-			"php": "7.4"
+			"php": "8.0"
 		},
 		"bin-dir": "bin",
 		"vendor-dir": "vendor",
@@ -22,28 +22,28 @@
 		}
 	},
 	"require": {
-		"php": "^7.4",
+		"php": "^8.0",
 		"ext-json": "*",
 		"ext-ctype": "*",
 		"ext-iconv": "*",
 
 		"typo3/minimal": "11.5.0",
-		"typo3/cms-felogin" : "11.5.0",
-		"typo3/cms-fluid-styled-content": "11.5.0",
+		"typo3/cms-felogin" : "11.5.3",
+		"typo3/cms-fluid-styled-content": "11.5.3",
 
 		"lms/demo": "@dev",
 		"lms/routes": "v11.x-dev",
 		"lms/facade": "v11.x-dev"
 	},
 	"require-dev": {
-		"vimeo/psalm": "^4.10.0",
-		"typo3/testing-framework": "^6.11.3",
+		"vimeo/psalm": "^4.12.0",
+		"typo3/testing-framework": "^6.14.0",
 		"codeception/codeception": "^4.1.22",
-		"codeception/module-rest": "*",
-		"codeception/module-db": "*",
-		"codeception/module-asserts": "*",
-		"codeception/module-webdriver": "*",
-		"codeception/module-phpbrowser": "*"
+		"codeception/module-rest": "^1.4.2",
+		"codeception/module-db": "^1.1.0",
+		"codeception/module-asserts": "^1.3.1",
+		"codeception/module-webdriver": "^1.4.0",
+		"codeception/module-phpbrowser": "^1.0.2"
 	},
 	"autoload": {
 		"psr-4": {
