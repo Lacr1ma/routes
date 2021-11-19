@@ -64,7 +64,3 @@ Output: ::
    api/demo/clients/2
 
 .. code-block:: javascript
-
-   readResource(showClientUrl).then(function (client) {
-      console.log(client);
-   });

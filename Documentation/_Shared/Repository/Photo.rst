@@ -5,7 +5,7 @@
 
         namespace LMS\Demo\Domain\Repository;
 
-        class PhotoRepository extends \LMS\Facade\Repository\AbstractRepository
+        class PhotoRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         {
             // ...
         }

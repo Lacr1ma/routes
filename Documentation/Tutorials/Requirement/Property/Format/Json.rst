@@ -30,14 +30,15 @@ Direct Output
 
         namespace LMS\Demo\Controller;
 
+        use Psr\Http\Message\ResponseInterface;
+
         class ClientApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         {
-            /**
-            * @return string
-            */
-            public function testAction(): string
+            public function testAction(): ResponseInterface
             {
-                return json_encode(['status' => 'ok']);
+               return $this->jsonResponse(
+                  (string)json_encode('status' => 'ok')
+               );
             }
         }
 

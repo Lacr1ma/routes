@@ -7,13 +7,15 @@
 
 .. code-block:: php
 
-   \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-       'LMS.demo',
-       'DemoApi',
-       [
-           'DemoApi' => 'test'
-       ],
-       [
-           'DemoApi' => 'test'
-       ]
-   );
+    use Vendor\Demo\Controller\DemoApiController;
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+        'Demo',
+        'DemoApi',
+        [
+            DemoApiController::class => 'test'
+        ],
+        [
+            DemoApiController::class => 'test'
+        ]
+    );

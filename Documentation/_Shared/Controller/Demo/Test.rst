@@ -5,15 +5,16 @@
 
         namespace LMS\Demo\Controller;
 
+        use Psr\Http\Message\ResponseInterface;
+
         class DemoApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         {
-            /**
-            * @return string
-            */
-            public function testAction(): string
+            public function testAction(): ResponseInterface
             {
-                return json_encode(
-                    'ok' => true
+                return $this->jsonResponse(
+                    (string)json_encode(
+                        'ok' => true
+                    )
                 );
             }
         }

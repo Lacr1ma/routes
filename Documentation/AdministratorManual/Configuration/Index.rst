@@ -20,43 +20,8 @@ Properties
 	==================================== ====================================== ============== ===============
 	Property                             Title                                  Sheet          Type
 	==================================== ====================================== ============== ===============
-	cacheDirectoryPath                    Cache directory path                  General         string
-	suffix                                Route Location Path                   General         string
 	`redirect.loginPage`                  PageId that contains Login Form       General         int
 	==================================== ====================================== ============== ===============
-
-.. _cacheDirectoryPath:
-
-cacheDirectoryPath
-"""""""
-.. container:: table-row
-
-   Property
-         cacheDirectoryPath
-   Data type
-         string
-   Description
-         Route configuration data could be cached and placed in specific directory.
-         You can specify a directory if you need caching.
-
-         .. note:: If set, any route changes will be available after deleting the cache file manually!
-
-.. _suffix:
-
-suffix
-""""""""""""""
-.. container:: table-row
-
-   Property
-         suffix
-   Data type
-         string
-   Description
-         By default route extension scans user-defined routes under the ``EXT:my_extension/Configuration/``
-
-         :typoscript:`plugin.tx_routes.settings.suffix = /Configuration`
-
-.. _redirect.loginPage:
 
 redirect.loginPage
 """""""""

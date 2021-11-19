@@ -15,14 +15,16 @@ Contains the plugin name from **ext_localconf.php**.
    :linenos:
    :emphasize-lines: 3
 
+   use LMS\Demo\Controller\ClientApiController;
+
    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-       'LMS.demo',
+       'Demo',
        'Client',
        [
-           'ClientApi' => 'index'
+           ClientApi::class => 'index'
        ],
        [
-           'DemoApi' => 'index'
+           ClientApi::class => 'index'
        ]
    );
 
@@ -35,9 +37,6 @@ Contains the plugin name from **ext_localconf.php**.
       controller:   LMS\Demo\Controller\ClientApiController::index
       defaults:
         plugin:     Client
-
-.. tip::
-   Since v10 this property is **required**.
 
 Example request
 ^^^^^^^^^^^^^^^^

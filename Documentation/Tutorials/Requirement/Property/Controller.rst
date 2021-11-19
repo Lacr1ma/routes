@@ -33,17 +33,17 @@ Defines the Extbase Action, that must be executed when request is triggered.
         namespace LMS\Demo\Controller;
 
         use LMS\Demo\Repository\PhotoRepository;
+        use Psr\Http\Message\ResponseInterface;
 
         class PhotoApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         {
-            /**
-            * @return string
-            */
-            public function allAction(): string
+            public function allAction(): ResponseInterface
             {
-                $photos = PhotoRepository::make()->findAll()->toArray();
+               $photos = PhotoRepository::make()->findAll()->toArray();
 
-                return json_encode($photos);
+               return $this->jsonResponse(
+                  (string)json_encode($photos)
+               );
             }
         }
 

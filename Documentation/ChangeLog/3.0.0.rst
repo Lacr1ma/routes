@@ -1,0 +1,30 @@
+
+
+3.0.0
+------------------
+
+.. rst-class:: bignums-xxl
+
+#. [Breaking] JavaScript based sugar has been removed
+
+    We have removed axios and Routes.js.
+    If you still using any of these, just copy it from previous release
+    and connect the assets in your *theme* extension.
+
+#. PHP 8.0 support
+
+    The codebase has been refactored to support php 8.0.
+    We also have an intention to fix future issue for 8.1.
+
+#. Caching
+
+    Some users were facing numerous route caching issues.
+    We've added some additional <do-not-cache> parameters in this release
+    which solves some of the problems.
+
+#. Remove *facade* and *carbon* dependencies
+
+    Starting from now, this extension do not require any vendor dependencies,
+    but only TYPO3 ^11.4.3
+    If you still using any of these, the new version of *routes* works fine with them,
+    just add them to your root composer.json.

@@ -6,17 +6,16 @@
         namespace LMS\Demo\Controller;
 
         use LMS\Demo\Domain\Model\Photo;
+        use Psr\Http\Message\ResponseInterface;
 
         class PhotoApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         {
-            /**
-            * @param \LMS\Demo\Domain\Model\Photo $photo
-            * @return string
-            */
-            public function showAction(Photo $photo): string
+            public function showAction(Photo $photo): ResponseInterface
             {
-                return json_encode(
-                    $photo->_getProperties()
+                return $this->jsonResponse(
+                    (string)json_encode(
+                        $photo->_getProperties()
+                    )
                 );
             }
         }

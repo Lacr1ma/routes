@@ -15,7 +15,6 @@ Shortly saying, you can create an API for your TYPO3 Project.
 **Features**
 
 - Allow developer to register it's own route using **yml**.
-- CRUD out of the box.
 - Additional middleware for your routes.
 - Simple module for general information.
 

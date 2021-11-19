@@ -5,24 +5,15 @@
 
         namespace LMS\Demo\Domain\Model;
 
-        class Photo extends \LMS\Facade\Model\AbstractModel
+        class Photo extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         {
-            /**
-             * @var string
-             */
-            protected $url;
+            protected string $url = '';
 
-            /**
-             * @param string $url
-             */
             public function setUrl(string $url): void
             {
                 $this->url = $url;
             }
 
-            /**
-             * @return string
-             */
             public function getUrl(): string
             {
                 return $this->url;

@@ -50,7 +50,6 @@ API Routes
 
 	Introduction/Index
 	AdministratorManual/Index
-	DeveloperManual/Index
 	Tutorials/Index
 	ChangeLog/Index
 	Error/Index

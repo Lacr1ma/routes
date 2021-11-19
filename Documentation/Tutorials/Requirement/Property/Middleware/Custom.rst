@@ -51,9 +51,6 @@ For this situations it's possible to create your own middleware.
                 $this->deny('I deny, because i can...', 401);
             }
 
-            /**
-             * @return string
-             */
             private function getMiddlewareRole(): string
             {
                 return (string)$this->getProperties()[0];

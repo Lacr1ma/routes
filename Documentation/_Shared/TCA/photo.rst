@@ -11,9 +11,6 @@
                 'delete' => 'deleted',
                 'searchFields' => 'url'
             ],
-            'interface' => [
-                'showRecordFieldList' => 'url'
-            ],
             'types' => [
                 '1' => [
                     'showitem' => '

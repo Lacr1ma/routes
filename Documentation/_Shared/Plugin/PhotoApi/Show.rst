@@ -1,15 +1,17 @@
 .. code-block:: php
 
-   \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-       'LMS.demo',
-       'PhotoApi',
-       [
-           'PhotoApi' => 'show'
-       ],
-       [
-           'PhotoApi' => 'show'
-       ]
-   );
+    use Vendor\Demo\Controller\PhotoApiController;
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+        'Demo',
+        'PhotoApi',
+        [
+            PhotoApiController::class => 'show'
+        ],
+        [
+            PhotoApiController::class => 'show'
+        ]
+    );
 
 .. tip::
 

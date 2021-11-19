@@ -18,7 +18,7 @@ First of all you can check our example which we use for our test `suit <https://
 
     It's a good idea to check the :file:`var/log/typo3_*.log` if your route has been mentioned in there.
 
-2. LMS3\\Facade\\Extbase\\Plugin::getNameBasedOn() must be of type string, null returned.
+2. LMS\\Routes\\Support\\Plugin::getNameBasedOn() must be of type string, null returned.
 
     Check if plugin connected correctly. :ref:`See <demoplugin>`.
 

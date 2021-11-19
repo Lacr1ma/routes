@@ -18,7 +18,5 @@ For administrators
 	:maxdepth: 5
 	:titlesonly:
 
-	Installation/Index
-	Update/Index
 	Configuration/Index
 	Templates/Index

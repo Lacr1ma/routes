@@ -6,17 +6,18 @@
         namespace LMS\Demo\Controller;
 
         use LMS\Demo\Domain\Model\Photo;
+        use Psr\Http\Message\ResponseInterface;
 
         class PhotoApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         {
-            /**
-            * @param string $url
-            * @return string
-            */
-            public function storeAction(string $url): string
+            public function storeAction(string $url): ResponseInterface
             {
                 $created = (bool)Photo::create(compact('url'));
 
-                return json_encode(compact('created');
+                return $this->jsonResponse(
+                    (string)json_encode(
+                        compact('created')
+                    )
+                );
             }
         }

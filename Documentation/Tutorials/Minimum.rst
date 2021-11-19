@@ -11,8 +11,6 @@ Bare Minimum
 
 This is an example of the minimum layers that should exist.
 
-Please read :ref:`this <migration>` as well.
-
 .. rst-class:: bignums-xxl
 
 1. Define a route (Configuration/Routes.yml)

@@ -38,14 +38,16 @@ We also have an intention to protect the route by **VerifyAdminBackendSession** 
 
     .. code-block:: php
 
+       use LMS\Demo\Controller\PhotoApiController;
+
        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-           'LMS.demo',
+           'Demo',
            'PhotoApi',
            [
-               'PhotoApi' => 'show'
+              PhotoApi::class => 'show'
            ],
            [
-               'PhotoApi' => 'show'
+              PhotoApi::class => 'show'
            ]
        );
 
@@ -75,9 +77,6 @@ We also have an intention to protect the route by **VerifyAdminBackendSession** 
                     'delete' => 'deleted',
                     'searchFields' => 'url'
                 ],
-                'interface' => [
-                    'showRecordFieldList' => 'url'
-                ],
                 'types' => [
                     '1' => [
                         'showitem' => '
@@ -106,16 +105,10 @@ We also have an intention to protect the route by **VerifyAdminBackendSession** 
 
             namespace LMS\Demo\Domain\Model;
 
-            class Photo extends \LMS\Facade\Model\AbstractModel
+            class Photo extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             {
-                /**
-                 * @var string
-                 */
-                protected $url;
+                protected string $url = '';
 
-                /**
-                 * @return string
-                 */
                 public function getUrl(): string
                 {
                     return $this->url;
@@ -132,16 +125,17 @@ We also have an intention to protect the route by **VerifyAdminBackendSession** 
             namespace LMS\Demo\Controller;
 
             use LMS\Demo\Domain\Model\Photo;
+            use Psr\Http\Message\ResponseInterface;
 
             class PhotoApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             {
-                /**
-                * @param \LMS\Demo\Domain\Model\Photo $photo
-                * @return string
-                */
-                public function showAction(Photo $photo): string
+                public function showAction(Photo $photo): ResponseInterface
                 {
-                    return json_encode($photo->_getProperties());
+                     return $this->jsonResponse(
+                            (string)json_encode(
+                                   $photo->_getProperties()
+                            )
+                     );
                 }
             }
 

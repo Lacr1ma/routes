@@ -17,5 +17,4 @@ Tutorials
 	:titlesonly:
 
 	Minimum
-	Crud/Index
 	Requirement/Index
