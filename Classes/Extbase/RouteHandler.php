@@ -152,6 +152,10 @@ class RouteHandler
         ServerRequest::withParameter('format', $route->getFormat(), $plugin);
 
         foreach ($route->getArguments() as $name => $value) {
+            if (is_string($value) && ServerRequest::isJson($value)) {
+                $value = json_decode($value, true);
+            }
+
             ServerRequest::withParameter($name, $value, $plugin);
         }
 

@@ -52,6 +52,16 @@ class ServerRequest
     }
 
     /**
+     * Check whether data can be converted to json
+     */
+    public static function isJson(string $data): bool
+    {
+        json_decode($data);
+
+        return json_last_error() === JSON_ERROR_NONE;
+    }
+
+    /**
      * Adds a new query parameter to the current request.
      *
      * @param mixed $value
