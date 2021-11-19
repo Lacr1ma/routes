@@ -63,7 +63,7 @@ class Cest
     public function store(AcceptanceTester $I)
     {
         $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendPOST('https://routes.ddev.site/api/demo/photos', ['data' => ['title' => 'new']]);
+        $I->sendPOST('https://routes.ddev.site/api/demo/photos', '{"data": {"title": "new"}}');
 
         $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
         $I->seeResponseContainsJson(['success' => true]);
