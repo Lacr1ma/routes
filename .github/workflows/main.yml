@@ -31,11 +31,11 @@ jobs:
         run: ddev exec bin/phpunit -c public/typo3conf/ext/routes/Tests/Build/FunctionalTests.xml
 
       - name: Acceptance [Requirements]
-        run: ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
+        run: ddev exec bin/codecept run acceptance -f -vvv -c public/typo3conf/ext/routes/Tests/requirements.yml --env github
 
       - name: Acceptance [Crud]
-        run: ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
+        run: ddev exec bin/codecept run acceptance -f -vvv -c public/typo3conf/ext/routes/Tests/crud.suite.yml --env github
 
       - name: Acceptance [Backend]
-        run: ddev exec bin/codecept run acceptance -f -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
+        run: ddev exec bin/codecept run acceptance -f -vvv -c public/typo3conf/ext/routes/Tests/Backend.suite.yml --env github
         if: ${{ false }}

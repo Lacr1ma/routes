@@ -106,15 +106,15 @@ class Cest
         ]);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function destroy(AcceptanceTester $I)
-    {
-        $I->haveHttpHeader('Accept', 'application/json');
-        $I->sendDELETE('https://routes.ddev.site/api/demo/photos/999');
-
-        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
-        $I->seeResponseContainsJson(['success' => true]);
-    }
+//    /**
+//     * @param AcceptanceTester $I
+//     */
+//    public function destroy(AcceptanceTester $I)
+//    {
+//        $I->haveHttpHeader('Accept', 'application/json');
+//        $I->sendDELETE('https://routes.ddev.site/api/demo/photos/999');
+//
+//        $I->seeHttpHeader('Content-Type', 'application/json; charset=utf-8');
+//        $I->seeResponseContainsJson(['success' => true]);
+//    }
 }
