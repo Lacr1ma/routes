@@ -27,7 +27,7 @@
 		"ext-ctype": "*",
 		"ext-iconv": "*",
 
-		"typo3/minimal": "11.5.0",
+		"typo3/minimal": "11.0.x-dev",
 		"typo3/cms-felogin" : "11.5.3",
 		"typo3/cms-fluid-styled-content": "11.5.3",
 
