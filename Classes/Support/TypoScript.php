@@ -48,7 +48,7 @@ class TypoScript
     {
         $ts = $this->retrieveFullTypoScriptConfigurationFor($extKey);
 
-        return (array)$ts['settings.'];
+        return $ts['settings.'] ?? [];
     }
 
     /**
@@ -64,6 +64,6 @@ class TypoScript
             return [];
         }
 
-        return $ts['plugin.'][$extKey . '.'] ?: [];
+        return $ts['plugin.'][$extKey . '.'] ?? [];
     }
 }

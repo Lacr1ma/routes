@@ -73,7 +73,7 @@ class RouteService
      */
     public function findMiddlewareFor(string $slug): array
     {
-        $middleware = $this->getRouteFor($slug)->getOptions()['middleware'];
+        $middleware = $this->getRouteFor($slug)->getOptions()['middleware'] ?? [];
         if (!is_array($middleware)) {
             return [];
         }

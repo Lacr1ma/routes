@@ -86,6 +86,6 @@ class ServerRequest
     {
         $allQueryParameters = ServerRequest::getInstance()->getQueryParams();
 
-        return $allQueryParameters[$name] ?: [];
+        return $allQueryParameters[$name] ?? [];
     }
 }

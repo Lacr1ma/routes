@@ -124,7 +124,9 @@ class RouteHandler
      */
     private function processMiddleware(ServerRequestInterface $request): void
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware']) {
+        $debugMode = $GLOBALS['TYPO3_CONF_VARS']['FE']['disableRoutesMiddleware'] ?? false;
+
+        if ($debugMode) {
             return;
         }
 

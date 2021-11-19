@@ -45,9 +45,11 @@ class Authenticate extends AbstractRouteMiddleware
             return;
         }
 
-        if (!$this->response->isJson()) {
+        $loginPage = $this->loginPage();
+
+        if (!$this->response->isJson() && $loginPage) {
             throw new PropagateResponseException(
-                $this->redirect->toPage($this->loginPage())
+                $this->redirect->toPage($loginPage)
             );
         }
 
