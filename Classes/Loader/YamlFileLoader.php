@@ -56,7 +56,11 @@ class YamlFileLoader extends SymfonyLoader
     {
         $yml = $this->retrievePathFor($file . '.yml');
         $yaml = $this->retrievePathFor($file . '.yaml');
-        $custom = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'];
+        if (array_key_exists("additionalPathList", $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes'])) {
+            $custom = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'];
+        } else {
+            $custom = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['routes']['additionalPathList'] = [];
+        }
 
         return array_merge($yml, $yaml, $custom);
     }
