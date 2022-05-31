@@ -36,9 +36,9 @@ Direct Output
         {
             public function testAction(): ResponseInterface
             {
-               return $this->jsonResponse(
-                  (string)json_encode('status' => 'ok')
-               );
+               return $this->jsonResponse(json_encode([
+                   'status' => 'ok',
+               ]));
             }
         }
 
