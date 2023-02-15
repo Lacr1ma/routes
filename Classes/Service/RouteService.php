@@ -29,6 +29,7 @@ namespace LMS\Routes\Service;
 use LMS\Routes\Domain\Model\Route;
 use LMS\Routes\Support\TypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\Router as SymfonyRouter;
 use Symfony\Component\Routing\Exception\NoConfigurationException;
@@ -40,12 +41,10 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
  */
 class RouteService
 {
-    private array $ts;
     private SymfonyRouter $router;
 
-    public function __construct(TypoScript $ts, Router $router)
+    public function __construct(Router $router)
     {
-        $this->ts = $ts->getSettings();
         $this->router = $router->getRouter();
     }
 
@@ -56,12 +55,14 @@ class RouteService
      * @throws MethodNotAllowedException
      * @throws NoConfigurationException
      */
-    public function findRouteFor(string $slug): Route
+    public function findRouteFor(ServerRequestInterface $request): Route
     {
+        $slug = $request->getUri()->getPath();
+
         $routeSettings = $this->router->match($slug);
 
         $route = GeneralUtility::makeInstance(Route::class);
-        $route->setConfiguration($routeSettings);
+        $route->setConfiguration($routeSettings, $request);
 
         return $route;
     }
@@ -71,15 +72,20 @@ class RouteService
      *
      * @psalm-suppress PossiblyNullReference
      */
-    public function findMiddlewareFor(string $slug): array
+    public function findMiddlewareFor(ServerRequestInterface $request): array
     {
+        $slug = $request->getUri()->getPath();
+        $tsFull = $request->getAttribute('frontend.typoscript')->getSetupArray();
+
         $middleware = $this->getRouteFor($slug)->getOptions()['middleware'] ?? [];
         if (!is_array($middleware)) {
             return [];
         }
 
+        $tsMiddlewares = $tsFull['plugin.']['tx_routes.']['settings.']['middleware.'] ?? [];
+
         foreach ($middleware as $key => $mwName) {
-            $middleware[$key] = $this->getMiddlewareNamespaceByName($mwName) ?: $mwName;
+            $middleware[$key] = $this->getMiddlewareNamespaceByName($mwName, $tsMiddlewares) ?: $mwName;
         }
 
         return $this->array_flatten($middleware);
@@ -88,7 +94,7 @@ class RouteService
     /**
      * Attempt to retrieve all associated middleware by query
      */
-    private function getMiddlewareNamespaceByName(string $name): array
+    private function getMiddlewareNamespaceByName(string $name, array $middlewarePool): array
     {
         if ($name === 'auth') {
             return [
@@ -97,7 +103,7 @@ class RouteService
             ];
         }
 
-        $namespaces = $this->ts['middleware.'];
+        $namespaces = $middlewarePool;
 
         return array_values($namespaces["$name."] ?? []);
     }
