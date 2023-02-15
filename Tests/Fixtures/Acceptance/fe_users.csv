@@ -1,0 +1,3 @@
+fe_users
+,"uid","pid","tstamp","crdate","username","password","disable","deleted","starttime","endtime","usergroup","first_name","last_name","email"
+,"1","5","1571485756","1571485756","user","$argon2i$v=19$m=65536,t=16,p=1$ZnJsWTI4WlZmbGFwbk9YNA$NRjnf5FLe2P7wCePxlZ3wKkrUaJCoAYWjgsmaDl5LFw","0","0","0","0","1","Serhii","Borulko","user@example.com"

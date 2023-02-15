@@ -1,6 +1,6 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:routes/Configuration/TypoScript/setup.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:demo/Configuration/TypoScript/setup.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript">
+@import 'EXT:routes/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:demo/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
 
 plugin.tx_routes.settings.redirect.loginPage = 3
 

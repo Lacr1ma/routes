@@ -1,0 +1,3 @@
+sys_template
+,"uid","pid","title","root","clear","include_static_file","constants"
+,"1","1","Root","1","3","EXT:routes/Configuration/TypoScript,EXT:bootstrap_package/Configuration/TypoScript","plugin.tx_routes.settings.redirect.loginPage = 3"
