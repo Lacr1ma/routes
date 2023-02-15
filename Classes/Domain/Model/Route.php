@@ -29,6 +29,7 @@ namespace LMS\Routes\Domain\Model;
 use LMS\Routes\Support\Plugin;
 use LMS\Routes\Support\Route\Controller;
 use LMS\Routes\Support\Route\Arguments as ContainsArguments;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -49,14 +50,14 @@ class Route
         $this->pluginService = $service;
     }
 
-    public function setConfiguration(array $config): void
+    public function setConfiguration(array $config, ServerRequestInterface $request): void
     {
         [$controllerFQCN, $this->action] = explode('::', $config['_controller']);
 
         $this->plugin = $config['plugin'] ?? '';
         $this->format = $config['_format'] ?? '';
 
-        $this->controller->initializeController($controllerFQCN);
+        $this->controller->initializeController($controllerFQCN, $request);
         $this->initializeArguments($config);
     }
 
