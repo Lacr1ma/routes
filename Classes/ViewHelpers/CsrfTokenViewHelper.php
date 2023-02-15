@@ -31,6 +31,7 @@ namespace LMS\Routes\ViewHelpers;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 
@@ -54,7 +55,8 @@ class CsrfTokenViewHelper extends AbstractViewHelper
 
         $this->registry->set('tx_routes', $this->user, $action);
 
-        return FormProtectionFactory::get()
+        return GeneralUtility::makeInstance(FormProtectionFactory::class)
+            ->createForType('frontend')
             ->generateToken('routes', $action, $this->user);
     }
 
