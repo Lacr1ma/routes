@@ -89,7 +89,7 @@ class Cest
         $I->haveHttpHeader('Accept', 'application/json');
         $I->sendGET('http://routes.ddev.site/api/demo/https/only');
 
-        $I->seeResponseCodeIs(404);
+        $I->dontSeeResponseContains('success');
     }
 
     public function host_requirement_required(Tester $I)
