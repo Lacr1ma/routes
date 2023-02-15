@@ -47,7 +47,7 @@ class BackendEnvironment extends \TYPO3\TestingFramework\Core\Acceptance\Extensi
             'fluid_styled_content'
         ],
         'testExtensionsToLoad' => [
-            'typo3conf/ext/routes'
+            '../vendor/lms/routes'
         ],
         'xmlDatabaseFixtures' => [
             'typo3conf/ext/routes/Tests/Fixtures/Acceptance/pages.xml',
