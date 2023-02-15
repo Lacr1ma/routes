@@ -27,6 +27,7 @@ namespace LMS\Routes\Middleware\Api;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 
 /**
@@ -44,7 +45,9 @@ class VerifyCsrfToken extends AbstractRouteMiddleware
         $user = (string)$this->user->getUser();
         $action = $this->getActionBasedOnEnv();
 
-        $protector = FormProtectionFactory::get();
+        $protector = GeneralUtility::makeInstance(FormProtectionFactory::class)
+            ->createForType('frontend');
+
         if ($protector->validateToken($csrf, 'routes', $action, $user)) {
             return;
         }
