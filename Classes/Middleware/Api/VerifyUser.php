@@ -75,7 +75,8 @@ class VerifyUser extends AbstractRouteMiddleware
     {
         $ext = $this->getAdminExtensionName();
 
-        $admins = $this->getSettings($ext)['middleware.']['admin.']['users'];
+        $ts = $this->getSettings($ext);
+        $admins = $ts['middleware.']['admin.']['users'] ?? '';
 
         return GeneralUtility::intExplode(',', $admins, true);
     }
