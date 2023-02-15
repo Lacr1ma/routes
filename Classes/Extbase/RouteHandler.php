@@ -75,10 +75,8 @@ class RouteHandler
      */
     public function handle(ServerRequestInterface $request)
     {
-        $slug = $request->getUri()->getPath();
-
         try {
-            $this->processRoute($request, $this->routeService->findRouteFor($slug));
+            $this->processRoute($request, $this->routeService->findRouteFor($request));
         } catch (MethodNotAllowedException $exception) {
             $this->output = $this->error->messageFor($exception);
             $this->status = (int)$exception->getCode() ?: 200;
@@ -101,7 +99,6 @@ class RouteHandler
     {
         $GLOBALS['TSFE']->set_no_cache();
         $GLOBALS['TSFE']->determineId($request);
-        $GLOBALS['TSFE']->getConfigArray();
 
         $this->processMiddleware(
             $request->withQueryParams($route->getArguments())
@@ -130,9 +127,7 @@ class RouteHandler
             return;
         }
 
-        $slug = $request->getUri()->getPath();
-
-        foreach ($this->routeService->findMiddlewareFor($slug) as $middlewareRoute) {
+        foreach ($this->routeService->findMiddlewareFor($request) as $middlewareRoute) {
             $middleware = GeneralUtility::makeInstance(Middleware::class);
             $middleware->setRoute($middlewareRoute);
 
@@ -173,6 +168,6 @@ class RouteHandler
      */
     private function bootstrap(array $config): void
     {
-        $this->output = $this->bootstrap->run('', $config);
+        $this->output = $this->bootstrap->run('', $config, ServerRequest::getInstance());
     }
 }
