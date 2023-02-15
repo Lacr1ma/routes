@@ -26,6 +26,7 @@ namespace LMS\Routes\Loader;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\{Core\Environment, Utility\GeneralUtility};
 
 /**
@@ -58,12 +59,14 @@ class Yaml
      */
     private function getPossiblePaths(): array
     {
-        $yamlFolderPath = '/Configuration';
-        $customExtensionsFolderPath = Environment::getPublicPath() . '/typo3conf/ext/';
+        $customExtensionsFolderPath = Environment::getComposerRootPath() . '/vendor/*/*/Configuration';
+
+        $finder = new Finder();
+        $result = $finder->in($customExtensionsFolderPath)->name('Routes.yaml');
 
         $paths = [];
-        foreach (GeneralUtility::get_dirs($customExtensionsFolderPath) as $extensionKey) {
-            $paths[] = $customExtensionsFolderPath . $extensionKey . $yamlFolderPath;
+        foreach ($result->getIterator() as $path) {
+            $paths[] = $path->getPath();
         }
 
         return $paths;
