@@ -35,6 +35,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
 use Symfony\Component\Routing\Exception\{NoConfigurationException, ResourceNotFoundException};
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -62,6 +63,7 @@ class ExtbaseRouteResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = $this->disableRouting($request);
 
         try {
