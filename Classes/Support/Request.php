@@ -26,7 +26,7 @@ namespace LMS\Routes\Support;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Extbase\Mvc\Request as ExtbaseRequest;
+use Psr\Http\Message\ServerRequestInterface as ExtbaseRequest;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -35,18 +35,16 @@ class Request
 {
     private ExtbaseRequest $request;
 
-    public function __construct(ExtbaseRequest $request)
+    public function setOriginalRequest(ExtbaseRequest $request)
     {
-        $this->request = $request;
+        $this->request = new \TYPO3\CMS\Extbase\Mvc\Request($request);
     }
 
     private function initialize(string $controllerFQCN): ExtbaseRequest
     {
         $request = $this->request;
 
-        $request->setControllerObjectName($controllerFQCN);
-
-        return $request;
+        return $request->withControllerObjectName($controllerFQCN);
     }
 
     public function getControllerNameBasedOn(string $controllerFQCN): string
