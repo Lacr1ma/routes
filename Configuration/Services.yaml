@@ -42,3 +42,7 @@ services:
 
   LMS\Routes\Middleware\Api\VerifyUser:
     public: true
+
+  LMS\Routes\Support\Request:
+    arguments:
+      - '@TYPO3\CMS\Core\Http\ServerRequest'
