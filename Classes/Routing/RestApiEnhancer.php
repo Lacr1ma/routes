@@ -44,7 +44,8 @@ class RestApiEnhancer extends PluginEnhancer
     {
         $defaultOptions = $collection->get('default')->getOptions();
 
-        $apiRoute = new Route('/api/{any}', [], ['any' => '.*'], $defaultOptions);
+		$pathPrefix = empty($this->configuration['pathPrefix']) ? '/api/' : ('/' . trim($this->configuration['pathPrefix'], '/') . '/');
+        $apiRoute = new Route($pathPrefix . '{any}', [], ['any' => '.*'], $defaultOptions);
 
         $collection->add('api', $apiRoute);
     }

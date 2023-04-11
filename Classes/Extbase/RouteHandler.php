@@ -67,6 +67,26 @@ class RouteHandler
         $this->bootstrap = $bootstrap;
         $this->routeService = $service;
     }
+	
+	/**
+	 * Returns the Path of the requested URI without the site base path.
+	 * 
+	 * @param ServerRequestInterface $request
+	 * @return string
+	 */
+	private function slugFromRequest(ServerRequestInterface $request): string {
+		$slug = $request->getUri()->getPath();
+		
+		// Remove the site base path from the slug - see: typo3/sysext/frontend/Classes/Middleware/StaticRouteResolver.php
+		if (($site = $request->getAttribute('site', null)) instanceof \TYPO3\CMS\Core\Site\Entity\Site) {
+			$siteBasePath = '/' . trim($site->getBase()->getPath(), '/');
+			if(str_starts_with($slug, $siteBasePath)) {
+				$slug = substr($slug, strlen($siteBasePath));
+				$slug = '/' . ltrim($slug, '/');
+			}
+		}
+		return $slug;
+	}
 
     /**
      * @throws NoConfigurationException
@@ -75,7 +95,7 @@ class RouteHandler
      */
     public function handle(ServerRequestInterface $request)
     {
-        $slug = $request->getUri()->getPath();
+        $slug = $this->slugFromRequest($request);
 
         try {
             $this->processRoute($request, $this->routeService->findRouteFor($slug));
@@ -130,7 +150,7 @@ class RouteHandler
             return;
         }
 
-        $slug = $request->getUri()->getPath();
+        $slug = $this->slugFromRequest($request);
 
         foreach ($this->routeService->findMiddlewareFor($slug) as $middlewareRoute) {
             $middleware = GeneralUtility::makeInstance(Middleware::class);
