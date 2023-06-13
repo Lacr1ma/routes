@@ -59,7 +59,11 @@ class Yaml
      */
     private function getPossiblePaths(): array
     {
-        $customExtensionsFolderPath = Environment::getComposerRootPath() . '/vendor/*/*/Configuration';
+        if (Environment::isComposerMode()) {
+            $customExtensionsFolderPath = Environment::getProjectPath() . '/vendor/*/*/Configuration';
+        } else {
+            $customExtensionsFolderPath = Environment::getExtensionsPath() . '/*/Configuration';
+        }
 
         $finder = new Finder();
         $result = $finder->in($customExtensionsFolderPath)->name('Routes.yaml');
