@@ -161,7 +161,7 @@ class RouteHandler
 
         if (ServerRequest::isFormSubmit()) {
             foreach (ServerRequest::formBody() as $name => $value) {
-                ServerRequest::withParameter($name, (string)$value, $plugin);
+                ServerRequest::withParameter($name, is_array($value) ? $value : (string)$value, $plugin);
             }
         }
     }
