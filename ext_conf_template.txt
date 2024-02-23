@@ -1,0 +1,2 @@
+# cat=routes; type=int; label=Activate the caching (1 = yes, 0 = no)
+activeCache = 0
